@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt - BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de IPVA</title>
+   <link rel="stylesheet" href="css/style.css">
+   
+</head>
+<body>
+    <div class="container">
+        <h1>Cálculo de IPVA</h1>
+        <form id="ipvaForm">
+            <div class="form-group">
+                <label for="valor_veiculo">Valor do Veículo (R$):</label>
+                <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo" required>
+            </div>
+            <div class="form-group">
+                <label for="aliquota">Alíquota (%):</label>
+                <input type="number" step="0.01" id="aliquota" name="aliquota" required>
+            </div>
+            <button type="submit">Calcular IPVA</button>
+        </form>
+        <div id="results" class="results" style="display:none;">
+            <h2>Resultados:</h2>
+            <p id="ipvaIntegral"></p>
+            <p id="ipvaAjustado"></p>
+        </div>
+    </div>
+   <script src="script.js" defer></script> 
+</body>
+</html>
