@@ -19,6 +19,6 @@ document.getElementById('ipvaForm').addEventListener('submit', function(event) {
 
     // Exibir resultados
     document.getElementById('ipvaIntegral').innerText = `Valor Integral do IPVA: R$ ${ipvaAnual.toFixed(2)}`;
-    document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado para o Mês 5: R$ ${ipvaAjustado.toFixed(2)}`;
+    document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado para o 5 Mês: R$ ${ipvaAjustado.toFixed(2)}`;
     document.getElementById('results').style.display = 'block';
 });
