@@ -11,9 +11,8 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             background-color: #FFCC29;
@@ -23,6 +22,8 @@
             width: 100%;
             max-width: 400px;
             box-sizing: border-box;
+            margin: 0 auto;
+            flex: 1;
         }
         h1 {
             text-align: center;
@@ -94,6 +95,14 @@
                 font-size: 16px;
             }
         }
+        footer {
+            background-color: #FFCC29;
+            color: #0d0d0d;
+            text-align: center;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -133,6 +142,12 @@
             <p id="totalComAdicional"></p>
         </div>
     </div>
+    <footer>
+        Paulo Augusto Nascimento dos Santos<br>
+        Rua Paulo Setubál, 4495, Sobrado 85<br>
+        CEP 81750-190
+        (41)99718-5852
+    </footer>
     <script>
         document.getElementById('ipvaForm').addEventListener('submit', function(event) {
             event.preventDefault();
