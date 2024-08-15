@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,53 +8,59 @@
     <style>
         body {
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            background-color: #1A681E;
+            background: linear-gradient(to right, #004d00, #1A681E); /* Gradiente de verde escuro para verde claro */
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
+
         .container {
-            background-color: #FFCC29;
+            background: linear-gradient(to right, #FFCC29, #FFEB8F); /* Gradiente de amarelo escuro para amarelo claro */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
             box-sizing: border-box;
-            margin: 0 auto;
+            margin: 20px auto;
             flex: 1;
         }
+
         h1 {
             text-align: center;
             color: #0d0d0d;
             font-size: 24px;
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             color: #050000;
             font-size: 18px;
         }
+
         input[type="number"],
         input[type="date"] {
             width: 100%;
             padding: 8px;
-            background-color: #5c6bc0;
+            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
             color: white;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 16px;
         }
+
         button {
             width: 100%;
             padding: 10px;
-            background-color: #5c6bc0;
+            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
             border: none;
             border-radius: 8px;
             color: white;
@@ -61,12 +68,14 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
+
         button:hover {
-            background-color: #3949ab;
+            background: linear-gradient(to right, #3949ab, #5c6bc0); /* Gradiente de azul mais escuro para azul claro */
         }
+
         .results {
             margin-top: 20px;
-            background-color: #5c6bc0;
+            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
             color: white;
             padding: 10px;
             border-radius: 8px;
@@ -74,37 +83,93 @@
             transform: translateY(20px);
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
+
         .results.show {
             opacity: 1;
             transform: translateY(0);
         }
+
         @media (max-width: 480px) {
             h1 {
                 font-size: 20px;
             }
-            label, input[type="number"], input[type="date"], button {
+
+            label,
+            input[type="number"],
+            input[type="date"],
+            button {
                 font-size: 14px;
             }
+
             button {
                 padding: 8px;
             }
+
             .results {
                 padding: 8px;
             }
-            #ipvaIntegral, #ipvaAjustado, #totalComAdicional {
+
+            #ipvaIntegral,
+            #ipvaAjustado,
+            #totalComAdicional,
+            #valorDiferenca {
                 font-size: 16px;
             }
         }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            label {
+                font-size: 20px;
+            }
+
+            input[type="number"],
+            input[type="date"],
+            button {
+                font-size: 18px;
+            }
+
+            .results {
+                padding: 15px;
+            }
+
+            #ipvaIntegral,
+            #ipvaAjustado,
+            #totalComAdicional,
+            #valorDiferenca {
+                font-size: 18px;
+            }
+        }
+
         footer {
-            background-color: #FFCC29;
+            background: linear-gradient(to right, #FFCC29, #FFEB8F); /* Gradiente de amarelo escuro para amarelo claro */
             color: #0d0d0d;
             text-align: center;
             padding: 10px;
             border-top: 1px solid #ccc;
-            font-size: 14px;
+            font-size: 18px;
+            margin-top: -12px;
+        }
+
+        footer a {
+            color: #0d0d0d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Cálculo de IPVA</h1>
@@ -130,6 +195,10 @@
                 <input type="number" step="0.01" id="valorAdicionalExtra" name="valorAdicionalExtra">
             </div>
             <div class="form-group">
+                <label for="valorProposta">Valor da Proposta/Minuta (R$):</label>
+                <input type="number" step="0.01" id="valorProposta" name="valorProposta">
+            </div>
+            <div class="form-group">
                 <label for="dataReferencia">Data de Referência:</label>
                 <input type="date" id="dataReferencia" name="dataReferencia" required>
             </div>
@@ -140,37 +209,35 @@
             <p id="ipvaIntegral"></p>
             <p id="ipvaAjustado"></p>
             <p id="totalComAdicional"></p>
+            <p id="valorDiferenca"></p>
         </div>
     </div>
     <footer>
         Paulo Augusto Nascimento dos Santos<br>
         Rua Paulo Setubál, 4495, Sobrado 85<br>
-        CEP 81750-190
-        (41)99718-5852
+        CEP 81750-190<br>
+        <a href="https://wa.me/5541997185852" target="_blank">(41) 99718-5852</a>
     </footer>
     <script>
-        document.getElementById('ipvaForm').addEventListener('submit', function(event) {
+        document.getElementById('ipvaForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
-            // Obter valores dos inputs
             const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value);
             const aliquota = parseFloat(document.getElementById('aliquota').value);
             const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
             const valorExtra = parseFloat(document.getElementById('valorExtra').value) || 0;
             const valorAdicionalExtra = parseFloat(document.getElementById('valorAdicionalExtra').value) || 0;
+            const valorProposta = parseFloat(document.getElementById('valorProposta').value) || 0;
             const dataReferencia = new Date(document.getElementById('dataReferencia').value);
-            
-            // Definir a data limite
+
             const dataLimite = new Date('2024-12-31');
-            
-            // Função para calcular o número de meses restantes no ano
+
             function calcularMesesRestantes(dataReferencia) {
                 const anoFim = dataLimite.getFullYear();
                 const mesFim = dataLimite.getMonth();
-                
                 const anoReferencia = dataReferencia.getFullYear();
                 const mesReferencia = dataReferencia.getMonth();
-                
+
                 if (anoReferencia < anoFim) {
                     return (12 - mesReferencia) + (mesFim + 1);
                 } else if (anoReferencia === anoFim) {
@@ -179,34 +246,52 @@
                     return 0;
                 }
             }
-            
+
             const mesesRestantes = calcularMesesRestantes(dataReferencia);
-            
-            // Função para calcular o IPVA
+
             function calcularIpva(valorVeiculo, aliquota, mesesRestantes) {
                 const ipvaAnual = valorVeiculo * (aliquota / 100);
                 const ipvaMensal = ipvaAnual / 12;
                 const ipvaAjustado = ipvaMensal * mesesRestantes;
                 return { ipvaAnual, ipvaAjustado };
             }
-            
-            // Calcular valores
+
+            function formatarParaMoeda(valor) {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(valor);
+            }
+
             const { ipvaAnual, ipvaAjustado } = calcularIpva(valorVeiculo, aliquota, mesesRestantes);
 
-            // Exibir resultados com animação
-            const resultsDiv = document.getElementById('results');
-            document.getElementById('ipvaIntegral').innerText = `Valor Integral do IPVA: R$ ${ipvaAnual.toFixed(2)}`;
-            document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado até ${dataLimite.toLocaleDateString('pt-BR')}: R$ ${ipvaAjustado.toFixed(2)} (${mesesRestantes} meses restantes)`;
-
-            // Calcular e exibir total com valores adicionais
             const totalComAdicional = ipvaAjustado + valorAdicional + valorExtra + valorAdicionalExtra;
-            document.getElementById('totalComAdicional').innerText = `Valor Total com Adicional: R$ ${totalComAdicional.toFixed(2)}`;
+            document.getElementById('ipvaIntegral').innerText = `Valor Integral do IPVA: ${formatarParaMoeda(ipvaAnual)}`;
+            document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado até ${dataLimite.toLocaleDateString('pt-BR')}: ${formatarParaMoeda(ipvaAjustado)} (${mesesRestantes} meses restantes)`;
+            document.getElementById('totalComAdicional').innerText = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicional)}`;
 
+            const valorDiferenca = valorProposta - totalComAdicional;
+            let mensagemDiferenca = '';
+
+            if (valorDiferenca > 0) {
+                mensagemDiferenca = `Está sobrando ${formatarParaMoeda(valorDiferenca)}.`;
+            } else if (valorDiferenca < 0) {
+                mensagemDiferenca = `Está faltando ${formatarParaMoeda(Math.abs(valorDiferenca))}. Favor corrigir.`;
+            } else {
+                mensagemDiferenca = 'Os valores estão corretos.';
+            }
+
+            document.getElementById('valorDiferenca').innerText = `Diferença: ${mensagemDiferenca}`;
+
+            const resultsDiv = document.getElementById('results');
             resultsDiv.classList.add('show');
 
-            // Limpar o formulário para novo cálculo
-            document.getElementById('ipvaForm').reset();
+            setTimeout(function () {
+                alert('Obrigado por usar o nosso Site!');
+                location.reload();
+            }, 5000);
         });
     </script>
 </body>
+
 </html>
