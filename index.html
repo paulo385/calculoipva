@@ -154,8 +154,8 @@
             text-align: center;
             padding: 10px;
             border-top: 1px solid #ccc;
-            font-size: 18px;
-            margin-top: -12px;
+            font-size: 16px;
+            margin-top: auto;
         }
 
         footer a {
@@ -167,6 +167,7 @@
         footer a:hover {
             text-decoration: underline;
         }
+
     </style>
 </head>
 
@@ -209,7 +210,7 @@
             <p id="ipvaIntegral"></p>
             <p id="ipvaAjustado"></p>
             <p id="totalComAdicional"></p>
-            <p id="valorDiferenca"></p>
+            <p id="valorDiferenca"></p> <!-- Novo campo para mostrar a diferença -->
         </div>
     </div>
     <footer>
@@ -222,6 +223,7 @@
         document.getElementById('ipvaForm').addEventListener('submit', function (event) {
             event.preventDefault();
 
+            // Obter valores dos inputs
             const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value);
             const aliquota = parseFloat(document.getElementById('aliquota').value);
             const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
@@ -230,11 +232,14 @@
             const valorProposta = parseFloat(document.getElementById('valorProposta').value) || 0;
             const dataReferencia = new Date(document.getElementById('dataReferencia').value);
 
+            // Definir a data limite
             const dataLimite = new Date('2024-12-31');
 
+            // Função para calcular o número de meses restantes no ano
             function calcularMesesRestantes(dataReferencia) {
                 const anoFim = dataLimite.getFullYear();
                 const mesFim = dataLimite.getMonth();
+
                 const anoReferencia = dataReferencia.getFullYear();
                 const mesReferencia = dataReferencia.getMonth();
 
@@ -249,6 +254,7 @@
 
             const mesesRestantes = calcularMesesRestantes(dataReferencia);
 
+            // Função para calcular o IPVA
             function calcularIpva(valorVeiculo, aliquota, mesesRestantes) {
                 const ipvaAnual = valorVeiculo * (aliquota / 100);
                 const ipvaMensal = ipvaAnual / 12;
@@ -256,6 +262,7 @@
                 return { ipvaAnual, ipvaAjustado };
             }
 
+            // Função para formatar valores em moeda brasileira (R$)
             function formatarParaMoeda(valor) {
                 return new Intl.NumberFormat('pt-BR', {
                     style: 'currency',
@@ -263,33 +270,41 @@
                 }).format(valor);
             }
 
+            // Calcular valores
             const { ipvaAnual, ipvaAjustado } = calcularIpva(valorVeiculo, aliquota, mesesRestantes);
 
+            // Calcular e exibir total com valores adicionais
             const totalComAdicional = ipvaAjustado + valorAdicional + valorExtra + valorAdicionalExtra;
             document.getElementById('ipvaIntegral').innerText = `Valor Integral do IPVA: ${formatarParaMoeda(ipvaAnual)}`;
             document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado até ${dataLimite.toLocaleDateString('pt-BR')}: ${formatarParaMoeda(ipvaAjustado)} (${mesesRestantes} meses restantes)`;
             document.getElementById('totalComAdicional').innerText = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicional)}`;
 
-            const valorDiferenca = valorProposta - totalComAdicional;
+            // Calcular a diferença entre o Valor da Proposta/Minuta e o Valor Total com Adicional
             let mensagemDiferenca = '';
 
-            if (valorDiferenca > 0) {
-                mensagemDiferenca = `Está sobrando ${formatarParaMoeda(valorDiferenca)}.`;
-            } else if (valorDiferenca < 0) {
-                mensagemDiferenca = `Está faltando ${formatarParaMoeda(Math.abs(valorDiferenca))}. Favor corrigir.`;
-            } else {
-                mensagemDiferenca = 'Os valores estão corretos.';
+            if (valorProposta > 0) {
+                let valorDiferenca = valorProposta - totalComAdicional;
+                mensagemDiferenca = valorDiferenca > 0 
+                    ? `Está sobrando ${formatarParaMoeda(valorDiferenca)}`
+                    : valorDiferenca < 0 
+                        ? `Está faltando valor, favor corrigir ${formatarParaMoeda(-valorDiferenca)}`
+                        : 'Valores estão equilibrados.';
             }
+            
+            document.getElementById('valorDiferenca').innerText = mensagemDiferenca;
 
-            document.getElementById('valorDiferenca').innerText = `Diferença: ${mensagemDiferenca}`;
-
+            // Exibir resultados
             const resultsDiv = document.getElementById('results');
             resultsDiv.classList.add('show');
 
+            // Limpar o formulário para novo cálculo
+            document.getElementById('ipvaForm').reset();
+
+            // Definir um temporizador de 5 segundos para exibir o alerta e atualizar a página
             setTimeout(function () {
                 alert('Obrigado por usar o nosso Site!');
-                location.reload();
-            }, 5000);
+                location.reload(); // Atualiza a página
+            }, 5000); // 5000 milissegundos = 5 segundos
         });
     </script>
 </body>
