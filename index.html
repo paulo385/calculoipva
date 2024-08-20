@@ -4,14 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calcule o valor do IPVA do seu veículo com base em alíquotas e adicionais. Utilize nossa ferramenta de cálculo para obter o valor ajustado até o final do ano.">
+    <meta name="description"
+        content="Calcule o valor do IPVA do seu veículo com base em alíquotas e adicionais. Utilize nossa ferramenta de cálculo para obter o valor ajustado até o final do ano.">
     <meta name="keywords" content="IPVA, cálculo de IPVA, valor do IPVA, imposto de veículo, ferramenta de cálculo">
     <meta name="author" content="Paulo Augusto Nascimento dos Santos">
     <title>Cálculo de IPVA</title>
     <style>
         body {
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-            background: linear-gradient(to right, #004d00, #1A681E); /* Gradiente de verde escuro para verde claro */
+            background: linear-gradient(to right, #004d00, #1A681E);
+            /* Gradiente de verde escuro para verde claro */
             margin: 0;
             padding: 0;
             display: flex;
@@ -20,7 +22,8 @@
         }
 
         .container {
-            background: linear-gradient(to right, #FFCC29, #FFEB8F); /* Gradiente de amarelo escuro para amarelo claro */
+            background: linear-gradient(to right, #FFCC29, #FFEB8F);
+            /* Gradiente de amarelo escuro para amarelo claro */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -52,7 +55,8 @@
         input[type="date"] {
             width: 100%;
             padding: 8px;
-            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
+            background: linear-gradient(to right, #5c6bc0, #8c9eff);
+            /* Gradiente de azul escuro para azul claro */
             color: white;
             box-sizing: border-box;
             border: 1px solid #ccc;
@@ -63,7 +67,8 @@
         button {
             width: 100%;
             padding: 10px;
-            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
+            background: linear-gradient(to right, #5c6bc0, #8c9eff);
+            /* Gradiente de azul escuro para azul claro */
             border: none;
             border-radius: 8px;
             color: white;
@@ -73,12 +78,14 @@
         }
 
         button:hover {
-            background: linear-gradient(to right, #3949ab, #5c6bc0); /* Gradiente de azul mais escuro para azul claro */
+            background: linear-gradient(to right, #3949ab, #5c6bc0);
+            /* Gradiente de azul mais escuro para azul claro */
         }
 
         .results {
             margin-top: 20px;
-            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
+            background: linear-gradient(to right, #5c6bc0, #8c9eff);
+            /* Gradiente de azul escuro para azul claro */
             color: white;
             padding: 10px;
             border-radius: 8px;
@@ -152,7 +159,8 @@
         }
 
         footer {
-            background: linear-gradient(to right, #FFCC29, #FFEB8F); /* Gradiente de amarelo escuro para amarelo claro */
+            background: linear-gradient(to right, #FFCC29, #FFEB8F);
+            /* Gradiente de amarelo escuro para amarelo claro */
             color: #0d0d0d;
             text-align: center;
             padding: 10px;
@@ -170,7 +178,6 @@
         footer a:hover {
             text-decoration: underline;
         }
-
     </style>
 </head>
 
@@ -217,17 +224,17 @@
         </div>
     </div>
     <footer
-    style="background: linear-gradient(to right, #FFCC29, #FFEB8F); color: #0d0d0d; text-align: center; padding: 10px; border-top: 1px solid #ccc; font-size: 14px;">
-    Paulo Augusto Nascimento dos Santos<br>
-    Rua Paulo Setubál, 4495 Sobrado 85<br>
-    CEP 81750-190<br>
-    <a href="https://wa.me/5541997185852" target="_blank"
-        style="display: flex; justify-content: center; align-items: center; font-size: 14px; color: #0d0d0d; text-decoration: none; margin-top: 5px;">
-        <img src="img/Logo-bw-vertical.png" alt="WhatsApp"
-            style="width: auto; height: 50px; margin-right: 10px; opacity: 0.7; vertical-align: middle;">
-        (41)99718-5852
-    </a>
-</footer>
+        style="background: linear-gradient(to right, #FFCC29, #FFEB8F); color: #0d0d0d; text-align: center; padding: 10px; border-top: 1px solid #ccc; font-size: 14px;">
+        Paulo Augusto Nascimento dos Santos<br>
+        Rua Paulo Setubál, 4495 Sobrado 85<br>
+        CEP 81750-190<br>
+        <a href="https://wa.me/5541997185852" target="_blank"
+            style="display: flex; justify-content: center; align-items: center; font-size: 14px; color: #0d0d0d; text-decoration: none; margin-top: 5px;">
+            <img src="img/Logo-bw-vertical.png" alt="WhatsApp"
+                style="width: auto; height: 50px; margin-right: 10px; opacity: 0.7; vertical-align: middle;">
+            (41)99718-5852
+        </a>
+    </footer>
     <script>
         document.getElementById('ipvaForm').addEventListener('submit', function (event) {
             event.preventDefault();
@@ -293,14 +300,20 @@
 
             if (valorProposta > 0) {
                 let valorDiferenca = valorProposta - totalComAdicional;
-                mensagemDiferenca = valorDiferenca > 0 
+                mensagemDiferenca = valorDiferenca > 0
                     ? `Está sobrando ${formatarParaMoeda(valorDiferenca)}`
-                    : valorDiferenca < 0 
+                    : valorDiferenca < 0
                         ? `Está faltando valor, favor corrigir ${formatarParaMoeda(-valorDiferenca)}`
                         : 'Valores estão equilibrados.';
             }
-            
+
             document.getElementById('valorDiferenca').innerText = mensagemDiferenca;
+
+            // Definir a data atual no campo Data de Referência
+            document.addEventListener('DOMContentLoaded', function () {
+                const dataAtual = new Date().toISOString().split('T')[0];
+                document.getElementById('dataReferencia').value = dataAtual;
+            });
 
             // Exibir resultados
             const resultsDiv = document.getElementById('results');
