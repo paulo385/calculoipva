@@ -284,7 +284,315 @@
 
             document.getElementById('ipvaIntegral').innerText = `Valor Integral do IPVA: ${formatarParaMoeda(ipvaAnual)}`;
             document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado até ${dataLimite.toLocaleDateString('pt-BR')}: ${formatarParaMoeda(ipvaAjustado)} (${mesesRestantes} meses restantes)`;
+            document.getElementById('totalComAdicional').innerText = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicion<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calcule o valor do IPVA do seu veículo com base em alíquotas e adicionais. Utilize nossa ferramenta de cálculo para obter o valor ajustado até o final do ano.">
+    <meta name="keywords" content="IPVA, cálculo de IPVA, valor do IPVA, imposto de veículo, ferramenta de cálculo">
+    <meta name="author" content="Paulo Augusto Nascimento dos Santos">
+    <title>Cálculo de IPVA</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(to right, #006e00, #315e33);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 80vh;
+        }
+
+        .container {
+            background: linear-gradient(to right, #FFCC29, #FFEB8F);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+            margin: 20px auto;
+            flex: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: rgb(3, 3, 3);
+            font-size: 24px;
+        }
+
+        p {
+            color: white;
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #050000;
+            font-size: 18px;
+        }
+
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            background: linear-gradient(to right, #5c6bc0, #8c9eff);
+            color: white;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to right, #5c6bc0, #8c9eff);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #3949ab, #909091);
+        }
+
+        .results {
+            margin-top: 20px;
+            background: linear-gradient(to right, #5c6bc0, #8c9eff);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .results.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .sidebar {
+            width: 200px;
+            background: linear-gradient(to right, #004d00, #1A681E);
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar button {
+            margin-bottom: 10px;
+            background: none;
+            border: 1px solid white;
+            color: white;
+            width: 100%;
+        }
+
+        .sidebar button:hover {
+            background: white;
+            color: #004d00;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #sobre, #contato {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <button id="sobreBtn">Sobre</button>
+        <button id="contatoBtn">Contato</button>
+    </div>
+
+    <div class="content">
+        <div class="container">
+            <h1>Cálculo de IPVA</h1>
+            <form id="ipvaForm">
+                <div class="form-group">
+                    <label for="valor_veiculo">Valor do Veículo (R$):</label>
+                    <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo" required>
+                </div>
+                <div class="form-group">
+                    <label for="aliquota">Alíquota (%):</label>
+                    <input type="number" step="0.01" id="aliquota" name="aliquota" required>
+                </div>
+                <div class="form-group">
+                    <label for="valorAdicional">Valor do Emplacamento (R$):</label>
+                    <input type="number" step="0.01" id="valorAdicional" name="valorAdicional">
+                </div>
+                <div class="form-group">
+                    <label for="valorExtra">Valor da Placa (R$):</label>
+                    <input type="number" step="0.01" id="valorExtra" name="valorExtra">
+                </div>
+                <div class="form-group">
+                    <label for="valorAdicionalExtra">Valor da Baixa de Gravame/Débitos (R$):</label>
+                    <input type="number" step="0.01" id="valorAdicionalExtra" name="valorAdicionalExtra">
+                </div>
+                <div class="form-group">
+                    <label for="valorProposta">Valor da Proposta/Minuta (R$):</label>
+                    <input type="number" step="0.01" id="valorProposta" name="valorProposta">
+                </div>
+                <div class="form-group">
+                    <label for="dataReferencia">Data de Referência:</label>
+                    <input type="date" id="dataReferencia" name="dataReferencia" required>
+                </div>
+                <button type="submit">Calcular IPVA</button>
+            </form>
+            <div id="results" class="results">
+                <h2>Resultados:</h2>
+                <p id="ipvaIntegral"></p>
+                <p id="ipvaAjustado"></p>
+                <p id="totalComAdicional"></p>
+                <p id="valorDiferenca"></p>
+            </div>
+        </div>
+
+        <div id="sobre" class="hidden">
+            <h2>Sobre</h2>
+            <p>Bem-vindo ao nosso site de cálculo de IPVA! Esta plataforma foi desenvolvida para ajudar proprietários de veículos, concessionárias, e lojas de automóveis a calcular de forma rápida e precisa o valor do Imposto sobre a Propriedade de Veículos Automotores (IPVA). Com uma interface intuitiva e fácil de usar, nosso objetivo é fornecer uma ferramenta que simplifique o processo de cálculo do IPVA, levando em consideração não apenas a alíquota do imposto, mas também adicionais como emplacamento, placa, baixa de gravame, e propostas de negociação.</p>
+            <p>O site é projetado para ser acessível a todos os usuários, independentemente de seu nível de conhecimento técnico. Basta inserir os dados necessários, como o valor do veículo, a alíquota, e outros custos associados, e o sistema calculará automaticamente o IPVA integral e ajustado ao final do ano, além de fornecer um valor total considerando todos os adicionais.</p>
+            <p>Nossa ferramenta é especialmente útil para quem precisa ajustar o valor do IPVA a qualquer momento do ano, considerando o número de meses restantes. Isso facilita a negociação e o planejamento financeiro de concessionárias e lojas de automóveis, garantindo que todos os valores sejam calculados com precisão.</p>
+            <p>Além disso, o site é otimizado para dispositivos móveis, permitindo que você acesse e utilize a ferramenta de qualquer lugar, a qualquer momento. Estamos comprometidos em oferecer uma experiência confiável e eficiente, sempre buscando atualizar e melhorar nossas funcionalidades para atender às necessidades dos nossos usuários.</p>    
+        </div>
+
+        <div id="contato" class="hidden">
+            <h2>Contato</h2>
+            <p>Paulo Augusto Nascimento dos Santos<br>Rua Paulo Setubál, 4495 Sobrado 85<br>Curitiba/PR<br>CEP: 81750-190</p>
+            <a href="https://wa.me/5541997185852" target="_blank">
+                <button>Fale com o Paulo Augusto</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('sobreBtn').addEventListener('click', function () {
+            document.getElementById('sobre').classList.remove('hidden');
+            document.getElementById('contato').classList.add('hidden');
+        });
+
+        document.getElementById('contatoBtn').addEventListener('click', function () {
+            document.getElementById('contato').classList.remove('hidden');
+            document.getElementById('sobre').classList.add('hidden');
+        });
+
+        // Definir a data atual no campo Data de Referência
+        document.addEventListener('DOMContentLoaded', function () {
+            const dataAtual = new Date().toISOString().split('T')[0];
+            document.getElementById('dataReferencia').value = dataAtual;
+        });
+
+        // Lógica de cálculo do IPVA
+        document.getElementById('ipvaForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value) || 0;
+            const aliquota = parseFloat(document.getElementById('aliquota').value) || 0;
+            const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
+            const valorExtra = parseFloat(document.getElementById('valorExtra').value) || 0;
+            const valorAdicionalExtra = parseFloat(document.getElementById('valorAdicionalExtra').value) || 0;
+            const valorProposta = parseFloat(document.getElementById('valorProposta').value) || 0;
+            const dataReferencia = new Date(document.getElementById('dataReferencia').value);
+            const dataLimite = new Date('2024-12-31');
+
+            function calcularMesesRestantes(dataReferencia) {
+                const anoFim = dataLimite.getFullYear();
+                const mesFim = dataLimite.getMonth();
+                const anoReferencia = dataReferencia.getFullYear();
+                const mesReferencia = dataReferencia.getMonth();
+
+                if (anoReferencia < anoFim) {
+                    return (12 - mesReferencia) + (mesFim + 1);
+                } else if (anoReferencia === anoFim) {
+                    return (mesFim - mesReferencia) + 1;
+                } else {
+                    return 0;
+                }
+            }
+
+            const mesesRestantes = calcularMesesRestantes(dataReferencia);
+
+            function calcularIpva(valorVeiculo, aliquota, mesesRestantes) {
+                const ipvaAnual = valorVeiculo * (aliquota / 100);
+                const ipvaMensal = ipvaAnual / 12;
+                const ipvaAjustado = ipvaMensal * mesesRestantes;
+                return { ipvaAnual, ipvaAjustado };
+            }
+
+            function formatarParaMoeda(valor) {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(valor);
+            }
+
+            const { ipvaAnual, ipvaAjustado } = calcularIpva(valorVeiculo, aliquota, mesesRestantes);
+            const totalComAdicional = ipvaAjustado + valorAdicional + valorExtra + valorAdicionalExtra;
+
+            document.getElementById('ipvaIntegral').innerText = `Valor Integral do IPVA: ${formatarParaMoeda(ipvaAnual)}`;
+            document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado até ${dataLimite.toLocaleDateString('pt-BR')}: ${formatarParaMoeda(ipvaAjustado)} (${mesesRestantes} meses restantes)`;
             document.getElementById('totalComAdicional').innerText = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicional)}`;
+
+            let mensagemDiferenca = '';
+
+            if (valorProposta > 0) {
+                let valorDiferenca = valorProposta - totalComAdicional;
+                mensagemDiferenca = valorDiferenca > 0
+                    ? `Está sobrando ${formatarParaMoeda(valorDiferenca)}`
+                    : valorDiferenca < 0
+                        ? `Está faltando valor, favor corrigir ${formatarParaMoeda(-valorDiferenca)}`
+                        : 'Valores estão equilibrados.';
+            }
+
+            document.getElementById('valorDiferenca').innerText = mensagemDiferenca;
+            document.getElementById('results').classList.add('show');
+
+            document.getElementById('ipvaForm').reset();
+        });
+    </script>
+</body>
+
+</html>
+al)}`;
 
             let mensagemDiferenca = '';
 
