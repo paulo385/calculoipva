@@ -301,6 +301,32 @@
             document.getElementById('results').classList.add('show');
 
             document.getElementById('ipvaForm').reset();
+
+            // Captura informações do usuário
+            const userAgent = navigator.userAgent.toLowerCase();
+            let deviceType = 'Desconhecido';
+            if (/mobile/i.test(userAgent)) {
+                deviceType = 'Telefone';
+            } else if (/tablet/i.test(userAgent)) {
+                deviceType = 'Tablet';
+            } else {
+                deviceType = 'Desktop';
+            }
+
+            // Envio das informações para o servidor
+            fetch('/register-access', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ip: 'IP-DA-REDE-DO-USUÁRIO',  // Placeholder, substitua conforme necessário
+                    device: deviceType,
+                    timestamp: new Date().toISOString()
+                })
+            }).then(response => response.json())
+              .then(data => console.log('Success:', data))
+              .catch((error) => console.error('Error:', error));
         });
     </script>
 </body>
