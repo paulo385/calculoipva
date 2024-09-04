@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,22 +9,22 @@
     <title>Cálculo de IPVA</title>
     <style>
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(to right, #006e00, #315e33);
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            background: linear-gradient(to right, #004d00, #1A681E); /* Gradiente de verde escuro para verde claro */
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            min-height: 80vh;
+            min-height: 100vh;
         }
 
         .container {
-            background: linear-gradient(to right, #FFCC29, #FFEB8F);
-            padding: 10px;
+            background: linear-gradient(to right, #FFCC29, #FFEB8F); /* Gradiente de amarelo escuro para amarelo claro */
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 600px;
+            max-width: 400px;
             box-sizing: border-box;
             margin: 20px auto;
             flex: 1;
@@ -33,14 +32,8 @@
 
         h1 {
             text-align: center;
-            color: rgb(3, 3, 3);
+            color: #0d0d0d;
             font-size: 24px;
-        }
-
-        p {
-            color: white;
-            font-size: 20px;
-            font-family: Arial, Helvetica, sans-serif;
         }
 
         .form-group {
@@ -58,7 +51,7 @@
         input[type="date"] {
             width: 100%;
             padding: 8px;
-            background: linear-gradient(to right, #5c6bc0, #8c9eff);
+            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
             color: white;
             box-sizing: border-box;
             border: 1px solid #ccc;
@@ -69,7 +62,7 @@
         button {
             width: 100%;
             padding: 10px;
-            background: linear-gradient(to right, #5c6bc0, #8c9eff);
+            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
             border: none;
             border-radius: 8px;
             color: white;
@@ -79,12 +72,12 @@
         }
 
         button:hover {
-            background: linear-gradient(to right, #3949ab, #909091);
+            background: linear-gradient(to right, #3949ab, #5c6bc0); /* Gradiente de azul mais escuro para azul claro */
         }
 
         .results {
             margin-top: 20px;
-            background: linear-gradient(to right, #5c6bc0, #8c9eff);
+            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
             color: white;
             padding: 10px;
             border-radius: 8px;
@@ -98,237 +91,247 @@
             transform: translateY(0);
         }
 
-        .sidebar {
-            width: 200px;
-            background: linear-gradient(to right, #004d00, #1A681E);
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            label,
+            input[type="number"],
+            input[type="date"],
+            button {
+                font-size: 14px;
+            }
+
+            button {
+                padding: 8px;
+            }
+
+            .results {
+                padding: 8px;
+            }
+
+            #ipvaIntegral,
+            #ipvaAjustado,
+            #totalComAdicional,
+            #valorDiferenca {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            label {
+                font-size: 20px;
+            }
+
+            input[type="number"],
+            input[type="date"],
+            button {
+                font-size: 18px;
+            }
+
+            .results {
+                padding: 15px;
+            }
+
+            #ipvaIntegral,
+            #ipvaAjustado,
+            #totalComAdicional,
+            #valorDiferenca {
+                font-size: 18px;
+            }
+        }
+
+        footer {
+            background: linear-gradient(to right, #FFCC29, #FFEB8F); /* Gradiente de amarelo escuro para amarelo claro */
+            color: #0d0d0d;
+            text-align: center;
             padding: 10px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            color: white;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
+            border-top: 1px solid #ccc;
+            font-size: 16px;
+            margin-top: auto;
         }
 
-        .sidebar button {
-            margin-bottom: 10px;
-            background: none;
-            border: 1px solid white;
-            color: white;
-            width: 100%;
+        footer a {
+            color: #0d0d0d;
+            text-decoration: none;
+            font-weight: bold;
         }
 
-        .sidebar button:hover {
-            background: white;
-            color: #004d00;
-        }
-
-        .content {
-            margin-left: 220px;
-            padding: 20px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        #sobre, #contato {
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-            }
-
-            .content {
-                margin-left: 0;
-            }
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-    <div class="sidebar">
-        <button id="sobreBtn">Sobre</button>
-        <button id="contatoBtn">Contato</button>
-    </div>
-
-    <div class="content">
-        <div class="container">
-            <h1>Cálculo de IPVA</h1>
-            <form id="ipvaForm">
-                <div class="form-group">
-                    <label for="valor_veiculo">Valor do Veículo (R$):</label>
-                    <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo" required>
-                </div>
-                <div class="form-group">
-                    <label for="aliquota">Alíquota (%):</label>
-                    <input type="number" step="0.01" id="aliquota" name="aliquota" required>
-                </div>
-                <div class="form-group">
-                    <label for="valorAdicional">Valor do Emplacamento (R$):</label>
-                    <input type="number" step="0.01" id="valorAdicional" name="valorAdicional">
-                </div>
-                <div class="form-group">
-                    <label for="valorExtra">Valor da Placa (R$):</label>
-                    <input type="number" step="0.01" id="valorExtra" name="valorExtra">
-                </div>
-                <div class="form-group">
-                    <label for="valorAdicionalExtra">Valor da Baixa de Gravame/Débitos (R$):</label>
-                    <input type="number" step="0.01" id="valorAdicionalExtra" name="valorAdicionalExtra">
-                </div>
-                <div class="form-group">
-                    <label for="valorProposta">Valor da Proposta/Minuta (R$):</label>
-                    <input type="number" step="0.01" id="valorProposta" name="valorProposta">
-                </div>
-                <div class="form-group">
-                    <label for="dataReferencia">Data de Referência:</label>
-                    <input type="date" id="dataReferencia" name="dataReferencia" required>
-                </div>
-                <button type="submit">Calcular IPVA</button>
-            </form>
-            <div id="results" class="results">
-                <h2>Resultados:</h2>
-                <p id="ipvaIntegral"></p>
-                <p id="ipvaAjustado"></p>
-                <p id="totalComAdicional"></p>
-                <p id="valorDiferenca"></p>
+    <div class="container">
+        <h1>Cálculo de IPVA</h1>
+        <form id="ipvaForm">
+            <div class="form-group">
+                <label for="valor_veiculo">Valor do Veículo (R$):</label>
+                <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo" required>
             </div>
-        </div>
-
-        <div id="sobre" class="hidden">
-            <h2>Sobre</h2>
-            <p>Bem-vindo ao nosso site de cálculo de IPVA! Esta plataforma foi desenvolvida para ajudar proprietários de veículos, concessionárias, e lojas de automóveis a calcular de forma rápida e precisa o valor do Imposto sobre a Propriedade de Veículos Automotores (IPVA). Com uma interface intuitiva e fácil de usar, nosso objetivo é fornecer uma ferramenta que simplifique o processo de cálculo do IPVA, levando em consideração não apenas a alíquota do imposto, mas também adicionais como emplacamento, placa, baixa de gravame, e propostas de negociação.</p>
-            <p>O site é projetado para ser acessível a todos os usuários, independentemente de seu nível de conhecimento técnico. Basta inserir os dados necessários, como o valor do veículo, a alíquota, e outros custos associados, e o sistema calculará automaticamente o IPVA integral e ajustado ao final do ano, além de fornecer um valor total considerando todos os adicionais.</p>
-            <p>Nossa ferramenta é especialmente útil para quem precisa ajustar o valor do IPVA a qualquer momento do ano, considerando o número de meses restantes. Isso facilita a negociação e o planejamento financeiro de concessionárias e lojas de automóveis, garantindo que todos os valores sejam calculados com precisão.</p>
-            <p>Além disso, o site é otimizado para dispositivos móveis, permitindo que você acesse e utilize a ferramenta de qualquer lugar, a qualquer momento. Estamos comprometidos em oferecer uma experiência confiável e eficiente, sempre buscando atualizar e melhorar nossas funcionalidades para atender às necessidades dos nossos usuários.</p>    
-        </div>
-
-        <div id="contato" class="hidden">
-            <h2>Contato</h2>
-            <p>Paulo Augusto Nascimento dos Santos<br>Rua Paulo Setubál, 4495 Sobrado 85<br>Curitiba/PR<br>CEP: 81750-190</p>
-            <a href="https://wa.me/5541997185852" target="_blank">
-                <button>Fale com o Paulo Augusto</button>
-            </a>
+            <div class="form-group">
+                <label for="aliquota">Alíquota (%):</label>
+                <input type="number" step="0.01" id="aliquota" name="aliquota" required>
+            </div>
+            <div class="form-group">
+                <label for="valorAdicional">Valor do Emplacamento (R$):</label>
+                <input type="number" step="0.01" id="valorAdicional" name="valorAdicional">
+            </div>
+            <div class="form-group">
+                <label for="valorExtra">Valor da Placa (R$):</label>
+                <input type="number" step="0.01" id="valorExtra" name="valorExtra">
+            </div>
+            <div class="form-group">
+                <label for="valorAdicionalExtra">Valor da Baixa de Gravame/Débitos (R$):</label>
+                <input type="number" step="0.01" id="valorAdicionalExtra" name="valorAdicionalExtra">
+            </div>
+            <div class="form-group">
+                <label for="valorProposta">Valor da Proposta/Minuta (R$):</label>
+                <input type="number" step="0.01" id="valorProposta" name="valorProposta">
+            </div>
+            <div class="form-group">
+                <label for="dataReferencia">Data de Referência:</label>
+                <input type="date" id="dataReferencia" name="dataReferencia" required>
+            </div>
+            <button type="submit">Calcular IPVA</button>
+        </form>
+        <div id="results" class="results">
+            <h2>Resultados:</h2>
+            <p id="ipvaIntegral"></p>
+            <p id="ipvaAjustado"></p>
+            <p id="totalComAdicional"></p>
+            <p id="valorDiferenca"></p> <!-- Novo campo para mostrar a diferença -->
         </div>
     </div>
-
-    <script>
-        document.getElementById('sobreBtn').addEventListener('click', function () {
-            document.getElementById('sobre').classList.remove('hidden');
-            document.getElementById('contato').classList.add('hidden');
-        });
-
-        document.getElementById('contatoBtn').addEventListener('click', function () {
-            document.getElementById('contato').classList.remove('hidden');
-            document.getElementById('sobre').classList.add('hidden');
-        });
-
-        // Definir a data atual no campo Data de Referência
-        document.addEventListener('DOMContentLoaded', function () {
-            const dataAtual = new Date().toISOString().split('T')[0];
+    <footer
+    style="background: linear-gradient(to right, #FFCC29, #FFEB8F); color: #0d0d0d; text-align: center; padding: 10px; border-top: 1px solid #ccc; font-size: 14px;">
+    Paulo Augusto Nascimento dos Santos<br>
+    Rua Paulo Setubál, 4495 Sobrado 85<br>
+    CEP 81750-190<br>
+    <a href="https://wa.me/5541997185852" target="_blank"
+        style="display: flex; justify-content: center; align-items: center; font-size: 14px; color: #0d0d0d; text-decoration: none; margin-top: 5px;">
+        <img src="img/Logo-bw-vertical.png" alt="WhatsApp"
+            style="width: auto; height: 50px; margin-right: 10px; opacity: 0.7; vertical-align: middle;">
+        (41)99718-5852
+    </a>
+</footer>
+<script>
+    function atualizarDataReferencia() {
+        const dataAtual = new Date().toISOString().split('T')[0];
+        const ultimaAtualizacao = localStorage.getItem('ultimaAtualizacao');
+        
+        if (!ultimaAtualizacao) {
+            // Se não houver registro de última atualização, definir a data atual
             document.getElementById('dataReferencia').value = dataAtual;
-        });
+            localStorage.setItem('ultimaAtualizacao', new Date().toISOString());
+        } else {
+            const ultimaData = new Date(ultimaAtualizacao);
+            const agora = new Date();
+            const diffHoras = (agora - ultimaData) / (1000 * 60 * 60);
 
-        // Lógica de cálculo do IPVA
-        document.getElementById('ipvaForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value) || 0;
-            const aliquota = parseFloat(document.getElementById('aliquota').value) || 0;
-            const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
-            const valorExtra = parseFloat(document.getElementById('valorExtra').value) || 0;
-            const valorAdicionalExtra = parseFloat(document.getElementById('valorAdicionalExtra').value) || 0;
-            const valorProposta = parseFloat(document.getElementById('valorProposta').value) || 0;
-            const dataReferencia = new Date(document.getElementById('dataReferencia').value);
-            const dataLimite = new Date('2024-12-31');
-
-            function calcularMesesRestantes(dataReferencia) {
-                const anoFim = dataLimite.getFullYear();
-                const mesFim = dataLimite.getMonth();
-                const anoReferencia = dataReferencia.getFullYear();
-                const mesReferencia = dataReferencia.getMonth();
-
-                if (anoReferencia < anoFim) {
-                    return (12 - mesReferencia) + (mesFim + 1);
-                } else if (anoReferencia === anoFim) {
-                    return (mesFim - mesReferencia) + 1;
-                } else {
-                    return 0;
-                }
+            if (diffHoras >= 24) {
+                // Se passaram 24 horas, atualize a data de referência
+                document.getElementById('dataReferencia').value = dataAtual;
+                localStorage.setItem('ultimaAtualizacao', new Date().toISOString());
             }
+        }
+    }
 
-            const mesesRestantes = calcularMesesRestantes(dataReferencia);
+    document.addEventListener('DOMContentLoaded', function() {
+        atualizarDataReferencia();
+    });
 
-            function calcularIpva(valorVeiculo, aliquota, mesesRestantes) {
-                const ipvaAnual = valorVeiculo * (aliquota / 100);
-                const ipvaMensal = ipvaAnual / 12;
-                const ipvaAjustado = ipvaMensal * mesesRestantes;
-                return { ipvaAnual, ipvaAjustado };
-            }
+    document.getElementById('ipvaForm').addEventListener('submit', function (event) {
+        event.preventDefault();
 
-            function formatarParaMoeda(valor) {
-                return new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                }).format(valor);
-            }
+        // Obter valores dos inputs
+        const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value);
+        const aliquota = parseFloat(document.getElementById('aliquota').value);
+        const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
+        const valorExtra = parseFloat(document.getElementById('valorExtra').value) || 0;
+        const valorAdicionalExtra = parseFloat(document.getElementById('valorAdicionalExtra').value) || 0;
+        const valorProposta = parseFloat(document.getElementById('valorProposta').value) || 0;
+        const dataReferencia = new Date(document.getElementById('dataReferencia').value);
 
-            const { ipvaAnual, ipvaAjustado } = calcularIpva(valorVeiculo, aliquota, mesesRestantes);
-            const totalComAdicional = ipvaAjustado + valorAdicional + valorExtra + valorAdicionalExtra;
+        // Definir a data limite
+        const dataLimite = new Date('2024-12-31');
 
-            document.getElementById('ipvaIntegral').innerText = `Valor Integral do IPVA: ${formatarParaMoeda(ipvaAnual)}`;
-            document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado até ${dataLimite.toLocaleDateString('pt-BR')}: ${formatarParaMoeda(ipvaAjustado)} (${mesesRestantes} meses restantes)`;
-            document.getElementById('totalComAdicional').innerText = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicional)}`;
+        // Função para calcular o número de meses restantes no ano
+        function calcularMesesRestantes(dataReferencia) {
+            const anoFim = dataLimite.getFullYear();
+            const mesFim = dataLimite.getMonth();
 
-            let mensagemDiferenca = '';
+            const anoReferencia = dataReferencia.getFullYear();
+            const mesReferencia = dataReferencia.getMonth();
 
-            if (valorProposta > 0) {
-                let valorDiferenca = valorProposta - totalComAdicional;
-                mensagemDiferenca = valorDiferenca > 0
-                    ? `Está sobrando ${formatarParaMoeda(valorDiferenca)}`
-                    : valorDiferenca < 0
-                        ? `Está faltando valor, favor corrigir ${formatarParaMoeda(-valorDiferenca)}`
-                        : 'Valores estão equilibrados.';
-            }
-
-            document.getElementById('valorDiferenca').innerText = mensagemDiferenca;
-            document.getElementById('results').classList.add('show');
-
-            document.getElementById('ipvaForm').reset();
-
-            // Captura informações do usuário
-            const userAgent = navigator.userAgent.toLowerCase();
-            let deviceType = 'Desconhecido';
-            if (/mobile/i.test(userAgent)) {
-                deviceType = 'Telefone';
-            } else if (/tablet/i.test(userAgent)) {
-                deviceType = 'Tablet';
+            if (anoReferencia < anoFim) {
+                return (12 - mesReferencia) + (mesFim + 1);
+            } else if (anoReferencia === anoFim) {
+                return (mesFim - mesReferencia) + 1;
             } else {
-                deviceType = 'Desktop';
+                return 0;
             }
+        }
 
-            // Envio das informações para o servidor
-            fetch('/register-access', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    ip: 'IP-DA-REDE-DO-USUÁRIO',  // Placeholder, substitua conforme necessário
-                    device: deviceType,
-                    timestamp: new Date().toISOString()
-                })
-            }).then(response => response.json())
-              .then(data => console.log('Success:', data))
-              .catch((error) => console.error('Error:', error));
-        });
-    </script>
+        const mesesRestantes = calcularMesesRestantes(dataReferencia);
+
+        // Função para calcular o IPVA
+        function calcularIpva(valorVeiculo, aliquota, mesesRestantes) {
+            const ipvaAnual = valorVeiculo * (aliquota / 100);
+            const ipvaMensal = ipvaAnual / 12;
+            const ipvaAjustado = ipvaMensal * mesesRestantes;
+            return { ipvaAnual, ipvaAjustado };
+        }
+
+        // Função para formatar valores em moeda brasileira (R$)
+        function formatarParaMoeda(valor) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(valor);
+        }
+
+        // Calcular valores
+        const { ipvaAnual, ipvaAjustado } = calcularIpva(valorVeiculo, aliquota, mesesRestantes);
+
+        // Calcular e exibir total com valores adicionais
+        const totalComAdicional = ipvaAjustado + valorAdicional + valorExtra + valorAdicionalExtra;
+        document.getElementById('ipvaIntegral').innerText = `Valor Integral do IPVA: ${formatarParaMoeda(ipvaAnual)}`;
+        document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado até ${dataLimite.toLocaleDateString('pt-BR')}: ${formatarParaMoeda(ipvaAjustado)} (${mesesRestantes} meses restantes)`;
+        document.getElementById('totalComAdicional').innerText = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicional)}`;
+
+        // Calcular a diferença entre o Valor da Proposta/Minuta e o Valor Total com Adicional
+        let mensagemDiferenca = '';
+
+        if (valorProposta > 0) {
+            let valorDiferenca = valorProposta - totalComAdicional;
+            mensagemDiferenca = valorDiferenca > 0 
+                ? `Está sobrando ${formatarParaMoeda(valorDiferenca)}`
+                : valorDiferenca < 0 
+                    ? `Está faltando valor, favor corrigir ${formatarParaMoeda(-valorDiferenca)}`
+                    : 'Valores estão equilibrados.';
+        }
+        
+        document.getElementById('valorDiferenca').innerText = mensagemDiferenca;
+        
+        // Exibir resultados
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.classList.add('show');
+
+        // Limpar o formulário para novo cálculo
+        document.getElementById('ipvaForm').reset();
+    });
+</script>
 </body>
-
 </html>
