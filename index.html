@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,6 +92,29 @@
             transform: translateY(0);
         }
 
+        .orcamento-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .orcamento-group label {
+            margin-right: 10px;
+            font-size: 18px;
+            color: #050000;
+        }
+
+        .orcamento-group select {
+            padding: 8px;
+            background: linear-gradient(to right, #5c6bc0, #8c9eff); /* Gradiente de azul escuro para azul claro */
+            color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
         @media (max-width: 480px) {
             h1 {
                 font-size: 20px;
@@ -169,6 +193,7 @@
         footer a:hover {
             text-decoration: underline;
         }
+
     </style>
 </head>
 
@@ -204,6 +229,13 @@
                 <label for="dataReferencia">Data de Referência:</label>
                 <input type="date" id="dataReferencia" name="dataReferencia" required>
             </div>
+            <div class="orcamento-group">
+                <label for="orcamento">Orçamento:</label>
+                <select id="orcamento" name="orcamento">
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
             <button type="submit">Calcular IPVA</button>
         </form>
         <div id="results" class="results">
@@ -219,119 +251,34 @@
     Paulo Augusto Nascimento dos Santos<br>
     Rua Paulo Setubál, 4495 Sobrado 85<br>
     CEP 81750-190<br>
-    <a href="https://wa.me/5541997185852" target="_blank"
-        style="display: flex; justify-content: center; align-items: center; font-size: 14px; color: #0d0d0d; text-decoration: none; margin-top: 5px;">
-        <img src="img/Logo-bw-vertical.png" alt="WhatsApp"
-            style="width: auto; height: 50px; margin-right: 10px; opacity: 0.7; vertical-align: middle;">
-        (41)99718-5852
-    </a>
+    <a href="mailto:pauloauguston.santos@gmail.com" style="color: #0d0d0d; text-decoration: none; font-weight: bold;">pauloauguston.santos@gmail.com</a>
 </footer>
-<script>
-    function atualizarDataReferencia() {
-        const dataAtual = new Date().toISOString().split('T')[0];
-        const ultimaAtualizacao = localStorage.getItem('ultimaAtualizacao');
-        
-        if (!ultimaAtualizacao) {
-            // Se não houver registro de última atualização, definir a data atual
-            document.getElementById('dataReferencia').value = dataAtual;
-            localStorage.setItem('ultimaAtualizacao', new Date().toISOString());
-        } else {
-            const ultimaData = new Date(ultimaAtualizacao);
-            const agora = new Date();
-            const diffHoras = (agora - ultimaData) / (1000 * 60 * 60);
+    <script>
+        document.getElementById('ipvaForm').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-            if (diffHoras >= 24) {
-                // Se passaram 24 horas, atualize a data de referência
-                document.getElementById('dataReferencia').value = dataAtual;
-                localStorage.setItem('ultimaAtualizacao', new Date().toISOString());
-            }
-        }
-    }
+            const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value);
+            const aliquota = parseFloat(document.getElementById('aliquota').value) / 100;
+            const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
+            const valorExtra = parseFloat(document.getElementById('valorExtra').value) || 0;
+            const valorAdicionalExtra = parseFloat(document.getElementById('valorAdicionalExtra').value) || 0;
+            const valorProposta = parseFloat(document.getElementById('valorProposta').value) || 0;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        atualizarDataReferencia();
-    });
+            const ipvaIntegral = valorVeiculo * aliquota;
+            const ipvaAjustado = (valorVeiculo * aliquota) + valorAdicional + valorExtra + valorAdicionalExtra + valorProposta;
 
-    document.getElementById('ipvaForm').addEventListener('submit', function (event) {
-        event.preventDefault();
+            const totalComAdicional = ipvaAjustado;
+            const valorDiferenca = totalComAdicional - ipvaIntegral;
 
-        // Obter valores dos inputs
-        const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value);
-        const aliquota = parseFloat(document.getElementById('aliquota').value);
-        const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
-        const valorExtra = parseFloat(document.getElementById('valorExtra').value) || 0;
-        const valorAdicionalExtra = parseFloat(document.getElementById('valorAdicionalExtra').value) || 0;
-        const valorProposta = parseFloat(document.getElementById('valorProposta').value) || 0;
-        const dataReferencia = new Date(document.getElementById('dataReferencia').value);
+            document.getElementById('ipvaIntegral').textContent = `IPVA Integral: R$ ${ipvaIntegral.toFixed(2)}`;
+            document.getElementById('ipvaAjustado').textContent = `IPVA Ajustado: R$ ${ipvaAjustado.toFixed(2)}`;
+            document.getElementById('totalComAdicional').textContent = `Total com Adicional: R$ ${totalComAdicional.toFixed(2)}`;
+            document.getElementById('valorDiferenca').textContent = `Diferença: R$ ${valorDiferenca.toFixed(2)}`; 
 
-        // Definir a data limite
-        const dataLimite = new Date('2024-12-31');
-
-        // Função para calcular o número de meses restantes no ano
-        function calcularMesesRestantes(dataReferencia) {
-            const anoFim = dataLimite.getFullYear();
-            const mesFim = dataLimite.getMonth();
-
-            const anoReferencia = dataReferencia.getFullYear();
-            const mesReferencia = dataReferencia.getMonth();
-
-            if (anoReferencia < anoFim) {
-                return (12 - mesReferencia) + (mesFim + 1);
-            } else if (anoReferencia === anoFim) {
-                return (mesFim - mesReferencia) + 1;
-            } else {
-                return 0;
-            }
-        }
-
-        const mesesRestantes = calcularMesesRestantes(dataReferencia);
-
-        // Função para calcular o IPVA
-        function calcularIpva(valorVeiculo, aliquota, mesesRestantes) {
-            const ipvaAnual = valorVeiculo * (aliquota / 100);
-            const ipvaMensal = ipvaAnual / 12;
-            const ipvaAjustado = ipvaMensal * mesesRestantes;
-            return { ipvaAnual, ipvaAjustado };
-        }
-
-        // Função para formatar valores em moeda brasileira (R$)
-        function formatarParaMoeda(valor) {
-            return new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            }).format(valor);
-        }
-
-        // Calcular valores
-        const { ipvaAnual, ipvaAjustado } = calcularIpva(valorVeiculo, aliquota, mesesRestantes);
-
-        // Calcular e exibir total com valores adicionais
-        const totalComAdicional = ipvaAjustado + valorAdicional + valorExtra + valorAdicionalExtra;
-        document.getElementById('ipvaIntegral').innerText = `Valor Integral do IPVA: ${formatarParaMoeda(ipvaAnual)}`;
-        document.getElementById('ipvaAjustado').innerText = `Valor do IPVA Ajustado até ${dataLimite.toLocaleDateString('pt-BR')}: ${formatarParaMoeda(ipvaAjustado)} (${mesesRestantes} meses restantes)`;
-        document.getElementById('totalComAdicional').innerText = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicional)}`;
-
-        // Calcular a diferença entre o Valor da Proposta/Minuta e o Valor Total com Adicional
-        let mensagemDiferenca = '';
-
-        if (valorProposta > 0) {
-            let valorDiferenca = valorProposta - totalComAdicional;
-            mensagemDiferenca = valorDiferenca > 0 
-                ? `Está sobrando ${formatarParaMoeda(valorDiferenca)}`
-                : valorDiferenca < 0 
-                    ? `Está faltando valor, favor corrigir ${formatarParaMoeda(-valorDiferenca)}`
-                    : 'Valores estão equilibrados.';
-        }
-        
-        document.getElementById('valorDiferenca').innerText = mensagemDiferenca;
-        
-        // Exibir resultados
-        const resultsDiv = document.getElementById('results');
-        resultsDiv.classList.add('show');
-
-        // Limpar o formulário para novo cálculo
-        document.getElementById('ipvaForm').reset();
-    });
-</script>
+            const results = document.getElementById('results');
+            results.classList.add('show');
+        });
+    </script>
 </body>
+
 </html>
