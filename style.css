@@ -27,7 +27,8 @@ body {
   max-width: 800px;
 }
 
-h1, h2 {
+h1,
+h2 {
   color: var(--primary-color);
   text-align: center;
 }
@@ -147,7 +148,7 @@ button:hover {
   body {
     flex-direction: column;
   }
-  
+
   .sidebar {
     margin-right: 0;
     margin-bottom: 2rem;
@@ -162,7 +163,10 @@ button:hover {
   display: none;
 }
 
-#sobre, #contato, #tabela, #ajuda {
+#sobre,
+#contato,
+#tabela,
+#ajuda {
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
   padding: 2rem;
@@ -179,7 +183,8 @@ button:hover {
   margin-top: 1rem;
 }
 
-#tabela th, #tabela td {
+#tabela th,
+#tabela td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
@@ -203,7 +208,8 @@ button:hover {
   border-collapse: collapse;
 }
 
-#servicosTabela th, #servicosTabela td {
+#servicosTabela th,
+#servicosTabela td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;

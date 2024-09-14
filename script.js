@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const calculadora = document.getElementById('calculadora');
   const tabela = document.getElementById('tabela');
   const contato = document.getElementById('contato');
@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('dataReferencia').value = today;
 
   document.querySelectorAll('.ajuda-opcao').forEach(button => {
-    button.addEventListener('click', function() {
-      switch(this.textContent) {
+    button.addEventListener('click', function () {
+      switch (this.textContent) {
         case 'Calcular Valores e Serviços':
           showSection(calculadora);
           break;
@@ -75,16 +75,16 @@ document.addEventListener('DOMContentLoaded', function() {
   function generatePDF(data) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    
+
     doc.setFontSize(18);
     const title = 'Orçamento';
     const pageWidth = doc.internal.pageSize.width;
     const titleWidth = doc.getStringUnitWidth(title) * doc.internal.getFontSize() / doc.internal.scaleFactor;
     const titleX = (pageWidth - titleWidth) / 2;
     doc.text(title, titleX, 20);
-    
+
     doc.setFontSize(12);
-    
+
     function addBoldText(label, value, x, y) {
       doc.setFont(undefined, 'normal');
       doc.text(`${label}: `, x, y);
@@ -102,17 +102,17 @@ document.addEventListener('DOMContentLoaded', function() {
     addBoldText('Valor Integral do IPVA', data.ipvaIntegral, 10, 90);
     addBoldText('Valor do IPVA Ajustado', data.ipvaAjustado, 10, 100);
     addBoldText('Valor Total com Adicional', data.totalComAdicional, 10, 110);
-    
+
     doc.setFont(undefined, 'normal');
     doc.text('Descrição:', 10, 130);
     doc.setFont(undefined, 'bold');
     const splitDescription = doc.splitTextToSize(data.descricao, 180);
     doc.text(splitDescription, 10, 140);
-    
+
     doc.setFont(undefined, 'normal');
     const splitMensagem = doc.splitTextToSize(data.mensagemDiferenca, 180);
     doc.text(splitMensagem, 10, 140 + splitDescription.length * 5);
-    
+
     doc.setFontSize(10);
     const footerLines = [
       'Paulo Augusto Nascimento dos Santos',
@@ -120,20 +120,20 @@ document.addEventListener('DOMContentLoaded', function() {
       'Curitiba/PR',
       'CEP: 81750-190'
     ];
-    
+
     const footerY = 260;
     const lineHeight = 5;
-    
+
     footerLines.forEach((line, index) => {
       const lineWidth = doc.getStringUnitWidth(line) * doc.internal.getFontSize() / doc.internal.scaleFactor;
       const lineX = (pageWidth - lineWidth) / 2;
       doc.text(line, lineX, footerY + (index * lineHeight));
     });
-    
+
     doc.save('Orçamento de Serviços.pdf');
   }
 
-  document.getElementById('ipvaForm').addEventListener('submit', function(event) {
+  document.getElementById('ipvaForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
     const nome = document.getElementById('nome').value;
@@ -278,10 +278,10 @@ document.addEventListener('DOMContentLoaded', function() {
       'Curitiba/PR',
       'CEP: 81750-190'
     ];
-    
+
     const footerY = doc.internal.pageSize.height - 30;
     const lineHeight = 5;
-    
+
     footerLines.forEach((line, index) => {
       doc.text(line, doc.internal.pageSize.width / 2, footerY + (index * lineHeight), { align: 'center' });
     });
