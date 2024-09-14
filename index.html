@@ -11,15 +11,15 @@
 <body>
   <div class="sidebar">
     <button id="ajudaBtn">Em que posso ajudar?</button>
-    <button id="calcBtn">Calculadora</button>
+    <button id="calcBtn">Valores e Serviços</button>
     <button id="tabelaBtn">Tabela</button>
     <button id="contatoBtn">Contato</button>
     <button id="sobreBtn">Sobre</button>
   </div>
-  
+
   <div class="content">
     <div id="calculadora" class="container hidden">
-      <h1>VeículoFácil - Calculadora de IPVA e Serviços Automotivos</h1>
+      <h1>VeículoFácil - Valores e Serviços Automotivos</h1>
       <form id="ipvaForm" novalidate>
         <div class="form-group">
           <label for="nome">Nome:</label>
@@ -62,6 +62,10 @@
           <input type="date" id="dataReferencia" name="dataReferencia">
         </div>
         <div class="form-group">
+          <label for="descricao">Descrição:</label>
+          <textarea id="descricao" name="descricao" rows="4"></textarea>
+        </div>
+        <div class="form-group">
           <label for="gerarPDF">
             <input type="checkbox" id="gerarPDF" name="gerarPDF">
             Gerar orçamento em PDF
@@ -77,7 +81,7 @@
         <p id="valorDiferenca"></p>
       </div>
     </div>
-  
+
     <div id="tabela" class="hidden">
       <h2>Tabela Atualizada 2024</h2>
       <table id="servicosTabela">
@@ -307,7 +311,7 @@
             <td><input type="checkbox" class="servico-checkbox"></td>
             <td>ALTERAÇÃO CATEG (ALUGUEL/PARTIC)</td>
             <td></td>
-            <td data-valor="80.00">ADC MAIS  80,00</td>
+            <td data-valor="80.00">ADC MAIS 80,00</td>
           </tr>
           <tr>
             <td colspan="3"><strong>CARTÓRIO</strong></td>
@@ -349,7 +353,7 @@
       </table>
       <button id="gerarOrcamentoPDF">Gerar Orçamento PDF</button>
     </div>
-  
+
     <div id="contato" class="hidden">
       <h2>Contato</h2>
       <p>Paulo Augusto Nascimento dos Santos<br>Rua Paulo Setubál, 4495 Sobrado 85<br>Curitiba/PR<br>CEP: 81750-190</p>
@@ -357,10 +361,12 @@
         <button>Fale com o Paulo Augusto</button>
       </a>
     </div>
-  
+
     <div id="sobre" class="hidden">
       <h2>Sobre</h2>
-      <p>Bem-vindo à nossa Calculadora de IPVA aprimorada! Esta ferramenta foi desenvolvida para simplificar o processo de cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários de veículos, concessionárias e lojas de automóveis.</p>
+      <p>Bem-vindo à nossa Calculadora de IPVA aprimorada! Esta ferramenta foi desenvolvida para simplificar o processo
+        de cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários de veículos,
+        concessionárias e lojas de automóveis.</p>
       <p>Nossa calculadora oferece uma interface intuitiva e fácil de usar, permitindo que você calcule rapidamente:</p>
       <ul>
         <li>O valor integral do IPVA</li>
@@ -368,19 +374,22 @@
         <li>O total considerando custos adicionais como emplacamento, placa e baixa de gravame</li>
         <li>A diferença entre o valor da proposta e o total calculado</li>
       </ul>
-      <p>Além disso, você pode incluir informações como nome, marca/modelo do veículo e RENAVAM para gerar um orçamento detalhado em PDF.</p>
-      <p>Utilizamos tecnologias modernas para garantir cálculos precisos e uma experiência de usuário suave em todos os dispositivos.</p>
+      <p>Além disso, você pode incluir informações como nome, marca/modelo do veículo e RENAVAM para gerar um orçamento
+        detalhado em PDF.</p>
+      <p>Utilizamos tecnologias modernas para garantir cálculos precisos e uma experiência de usuário suave em todos os
+        dispositivos.</p>
     </div>
-  
+
     <div id="ajuda" class="container">
       <h2>Em que posso ajudar?</h2>
       <p>Selecione uma opção abaixo:</p>
-      <button class="ajuda-opcao">Calcular IPVA</button>
+      <button class="ajuda-opcao">Calcular Valores e Serviços</button>
       <button class="ajuda-opcao">Ver tabela de serviços</button>
       <button class="ajuda-opcao">Entrar em contato</button>
       <button class="ajuda-opcao">Saber mais sobre nós</button>
     </div>
-  </div> 
+  </div>
+</body> 
 </body>
 <script src="script.js"></script>
 </html>
