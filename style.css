@@ -45,7 +45,8 @@ label {
 
 input[type="number"],
 input[type="date"],
-input[type="text"] {
+input[type="text"],
+textarea {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ccc;
@@ -59,7 +60,8 @@ input[type="text"] {
 
 input[type="number"]:focus,
 input[type="date"]:focus,
-input[type="text"]:focus {
+input[type="text"]:focus,
+textarea:focus {
   border-color: var(--accent-color);
   outline: none;
 }
@@ -257,4 +259,14 @@ button:hover {
 
 .ajuda-opcao:hover {
   background-color: #FFD700;
+}
+
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  resize: vertical;
 }
