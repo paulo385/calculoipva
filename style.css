@@ -266,6 +266,15 @@ button:hover {
 .ajuda-opcao:hover {
   background-color: #FFD700;
 }
+.logo {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #f0f0f0;
+  font-size: 1.2rem;
+}
 
 textarea {
   width: 100%;
