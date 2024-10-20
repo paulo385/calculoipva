@@ -24,419 +24,419 @@
 
   <body>
     <div class="sidebar">
-      <button id="ajudaBtn">Em que posso ajudar?</button>
-      <button id="calcBtn">Calculadora</button>
-      <button id="novaTabelaBtn">Tabela Aliquota 2024</button>
-      <button id="siteDetranBtn">Site Detran</button>
-      <button id="contatoBtn">Contato</button>
-      <button id="sobreBtn">Sobre</button>
+        <button id="ajudaBtn">Em que posso ajudar?</button>
+        <button id="calcBtn">Calculadora</button>
+        <button id="novaTabelaBtn">Tabela Aliquota 2024</button>
+        <button id="siteDetranBtn">Site Detran</button>
+        <button id="contatoBtn">Contato</button>
+        <button id="sobreBtn">Sobre</button>
     </div>
 
     <div class="content">
-      <div id="calculadora" class="container hidden">
-        <h1>VeículoFácil - Calculadora de IPVA e Serviços Automotivos</h1>
-        <form id="ipvaForm" novalidate>
-          <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome">
-          </div>
-          <div class="form-group">
-            <label for="tipoCarro">Marca/Modelo:</label>
-            <input type="text" id="tipoCarro" name="tipoCarro">
-          </div>
-          <div class="form-group">
-            <label for="renavam">RENAVAM:</label>
-            <input type="text" id="renavam" name="renavam">
-          </div>
-          <div class="form-group">
-            <label for="valor_veiculo">Valor do Veículo (R$):</label>
-            <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo">
-          </div>
-          <div class="form-group">
-            <label for="aliquota">Alíquota (%):</label>
-            <input type="number" step="0.01" id="aliquota" name="aliquota">
-          </div>
-          <div class="form-group">
-            <label for="valorAdicional">Valor do Emplacamento (R$):</label>
-            <input type="number" step="0.01" id="valorAdicional" name="valorAdicional">
-          </div>
-          <div class="form-group">
-            <label for="valorExtra">Valor da Placa (R$):</label>
-            <input type="number" step="0.01" id="valorExtra" name="valorExtra">
-          </div>
-          <div class="form-group">
-            <label for="valorAdicionalExtra">Valor da Baixa de Gravame/Débitos (R$):</label>
-            <input type="number" step="0.01" id="valorAdicionalExtra" name="valorAdicionalExtra">
-          </div>
-          <div class="form-group">
-            <label for="valorProposta">Valor da Proposta/Minuta (R$):</label>
-            <input type="number" step="0.01" id="valorProposta" name="valorProposta">
-          </div>
-          <div class="form-group">
-            <label for="dataReferencia">Data de Referência:</label>
-            <input type="date" id="dataReferencia" name="dataReferencia">
-          </div>
-          <div class="form-group">
-            <label for="gerarPDF">
-              <input type="checkbox" id="gerarPDF" name="gerarPDF">
-              Gerar orçamento em PDF
-            </label>
-          </div>
-          <a href="https://veiculos.fipe.org.br/" target="_blank"
-            style="margin-top: 1rem; display: block; text-align: center; color: var(--primary-color);">Acesse
-            Aqui a tabela Fipe</a>
-          <button type="submit">Calcular IPVA</button>
-        </form>
-        <div id="results" class="results hidden">
-          <h2>Resultados:</h2>
-          <p id="ipvaIntegral"></p>
-          <p id="ipvaAjustado"></p>
-          <p id="totalComAdicional"></p>
-          <p id="valorDiferenca"></p>
+        <div id="calculadora" class="container hidden">
+            <h1>VeículoFácil - Calculadora de IPVA e Serviços Automotivos</h1>
+            <form id="ipvaForm" novalidate>
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome">
+                </div>
+                <div class="form-group">
+                    <label for="tipoCarro">Marca/Modelo:</label>
+                    <input type="text" id="tipoCarro" name="tipoCarro">
+                </div>
+                <div class="form-group">
+                    <label for="renavam">RENAVAM:</label>
+                    <input type="text" id="renavam" name="renavam">
+                </div>
+                <div class="form-group">
+                    <label for="valor_veiculo">Valor do Veículo (R$):</label>
+                    <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo">
+                </div>
+                <div class="form-group">
+                    <label for="aliquota">Alíquota (%):</label>
+                    <input type="number" step="0.01" id="aliquota" name="aliquota">
+                </div>
+                <div class="form-group">
+                    <label for="valorAdicional">Valor do Emplacamento (R$):</label>
+                    <input type="number" step="0.01" id="valorAdicional" name="valorAdicional">
+                </div>
+                <div class="form-group">
+                    <label for="valorExtra">Valor da Placa (R$):</label>
+                    <input type="number" step="0.01" id="valorExtra" name="valorExtra">
+                </div>
+                <div class="form-group">
+                    <label for="valorAdicionalExtra">Valor da Baixa de Gravame/Débitos (R$):</label>
+                    <input type="number" step="0.01" id="valorAdicionalExtra" name="valorAdicionalExtra">
+                </div>
+                <div class="form-group">
+                    <label for="valorProposta">Valor da Proposta/Minuta (R$):</label>
+                    <input type="number" step="0.01" id="valorProposta" name="valorProposta">
+                </div>
+                <div class="form-group">
+                    <label for="dataReferencia">Data de Referência:</label>
+                    <input type="date" id="dataReferencia" name="dataReferencia">
+                </div>
+                <div class="form-group">
+                    <label for="gerarPDF">
+                        <input type="checkbox" id="gerarPDF" name="gerarPDF">
+                        Gerar orçamento em PDF
+                    </label>
+                </div>
+                <a href="https://veiculos.fipe.org.br/" target="_blank"
+                    style="margin-top: 1rem; display: block; text-align: center; color: var(--primary-color);">Acesse
+                    Aqui a tabela Fipe</a>
+                <button type="submit">Calcular IPVA</button>
+            </form>
+            <div id="results" class="results hidden">
+                <h2>Resultados:</h2>
+                <p id="ipvaIntegral"></p>
+                <p id="ipvaAjustado"></p>
+                <p id="totalComAdicional"></p>
+                <p id="valorDiferenca"></p>
+            </div>
+        </div>       
+
+        <div id="tabela-servicos" class="hidden">
+            <h2>Tabela Aliquota 2024 por estado</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Particular e Passeio</th>
+                        <th>Caminhonetes e Utilitários</th>
+                        <th>Motocicletas e Quadriciclos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Acre</td>
+                        <td>2,00%</td>
+                        <td>1,00%</td>
+                        <td>1,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Alagoas</td>
+                        <td>3,00%</td>
+                        <td>3,25%</td>
+                        <td>2,75%</td>
+                    </tr>
+                    <tr>
+                        <td>Amazonas</td>
+                        <td>3,00%</td>
+                        <td>3,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Amapá</td>
+                        <td>3,00%</td>
+                        <td>3,00%</td>
+                        <td>1,50%</td>
+                    </tr>
+                    <tr>
+                        <td>Bahia</td>
+                        <td>2,50%</td>
+                        <td>2,50%</td>
+                        <td>2,50%</td>
+                    </tr>
+                    <tr>
+                        <td>Ceará</td>
+                        <td>3,00%</td>
+                        <td>3,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Distrito Federal</td>
+                        <td>3,50%</td>
+                        <td>1,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Espírito Santo</td>
+                        <td>2,00%</td>
+                        <td>2,00%</td>
+                        <td>1,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Goiás</td>
+                        <td>3,75%</td>
+                        <td>3,45%</td>
+                        <td>3,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Maranhão</td>
+                        <td>2,50%</td>
+                        <td>2,50%</td>
+                        <td>1,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Minas Gerais</td>
+                        <td>4,00%</td>
+                        <td>3,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Mato Grosso</td>
+                        <td>3,00%</td>
+                        <td>2,50%</td>
+                        <td>1,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Mato Grosso do Sul</td>
+                        <td>3,50%</td>
+                        <td>3,50%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Pará</td>
+                        <td>2,50%</td>
+                        <td>2,50%</td>
+                        <td>1,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Paraíba</td>
+                        <td>2,50%</td>
+                        <td>2,50%</td>
+                        <td>2,50%</td>
+                    </tr>
+                    <tr>
+                        <td>Paraná</td>
+                        <td>3,50%</td>
+                        <td>3,50%</td>
+                        <td>3,50%</td>
+                    </tr>
+                    <tr>
+                        <td>Pernambuco</td>
+                        <td>3,00%</td>
+                        <td>3,00%</td>
+                        <td>2,50%</td>
+                    </tr>
+                    <tr>
+                        <td>Piauí</td>
+                        <td>2,50%</td>
+                        <td>2,50%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Rio de Janeiro</td>
+                        <td>4,00%</td>
+                        <td>3,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Rio Grande do Norte</td>
+                        <td>3,00%</td>
+                        <td>3,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Rio Grande do Sul</td>
+                        <td>3,00%</td>
+                        <td>3,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Rondônia</td>
+                        <td>3,00%</td>
+                        <td>3,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Roraima</td>
+                        <td>3,00%</td>
+                        <td>2,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Santa Catarina</td>
+                        <td>2,00%</td>
+                        <td>2,00%</td>
+                        <td>1,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Sergipe</td>
+                        <td>2,50%</td>
+                        <td>2,50%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>São Paulo</td>
+                        <td>4,00%</td>
+                        <td>2,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                    <tr>
+                        <td>Tocantins</td>
+                        <td>2,00%</td>
+                        <td>3,00%</td>
+                        <td>2,00%</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-      </div>
 
-      <div id="tabela-servicos" class="hidden">
-        <h2>Tabela Aliquota 2024 por estado</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Estado</th>
-              <th>Particular e Passeio</th>
-              <th>Caminhonetes e Utilitários</th>
-              <th>Motocicletas e Quadriciclos</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Acre</td>
-              <td>2,00%</td>
-              <td>1,00%</td>
-              <td>1,00%</td>
-            </tr>
-            <tr>
-              <td>Alagoas</td>
-              <td>3,00%</td>
-              <td>3,25%</td>
-              <td>2,75%</td>
-            </tr>
-            <tr>
-              <td>Amazonas</td>
-              <td>3,00%</td>
-              <td>3,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Amapá</td>
-              <td>3,00%</td>
-              <td>3,00%</td>
-              <td>1,50%</td>
-            </tr>
-            <tr>
-              <td>Bahia</td>
-              <td>2,50%</td>
-              <td>2,50%</td>
-              <td>2,50%</td>
-            </tr>
-            <tr>
-              <td>Ceará</td>
-              <td>3,00%</td>
-              <td>3,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Distrito Federal</td>
-              <td>3,50%</td>
-              <td>1,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Espírito Santo</td>
-              <td>2,00%</td>
-              <td>2,00%</td>
-              <td>1,00%</td>
-            </tr>
-            <tr>
-              <td>Goiás</td>
-              <td>3,75%</td>
-              <td>3,45%</td>
-              <td>3,00%</td>
-            </tr>
-            <tr>
-              <td>Maranhão</td>
-              <td>2,50%</td>
-              <td>2,50%</td>
-              <td>1,00%</td>
-            </tr>
-            <tr>
-              <td>Minas Gerais</td>
-              <td>4,00%</td>
-              <td>3,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Mato Grosso</td>
-              <td>3,00%</td>
-              <td>2,50%</td>
-              <td>1,00%</td>
-            </tr>
-            <tr>
-              <td>Mato Grosso do Sul</td>
-              <td>3,50%</td>
-              <td>3,50%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Pará</td>
-              <td>2,50%</td>
-              <td>2,50%</td>
-              <td>1,00%</td>
-            </tr>
-            <tr>
-              <td>Paraíba</td>
-              <td>2,50%</td>
-              <td>2,50%</td>
-              <td>2,50%</td>
-            </tr>
-            <tr>
-              <td>Paraná</td>
-              <td>3,50%</td>
-              <td>3,50%</td>
-              <td>3,50%</td>
-            </tr>
-            <tr>
-              <td>Pernambuco</td>
-              <td>3,00%</td>
-              <td>3,00%</td>
-              <td>2,50%</td>
-            </tr>
-            <tr>
-              <td>Piauí</td>
-              <td>2,50%</td>
-              <td>2,50%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Rio de Janeiro</td>
-              <td>4,00%</td>
-              <td>3,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Rio Grande do Norte</td>
-              <td>3,00%</td>
-              <td>3,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Rio Grande do Sul</td>
-              <td>3,00%</td>
-              <td>3,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Rondônia</td>
-              <td>3,00%</td>
-              <td>3,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Roraima</td>
-              <td>3,00%</td>
-              <td>2,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Santa Catarina</td>
-              <td>2,00%</td>
-              <td>2,00%</td>
-              <td>1,00%</td>
-            </tr>
-            <tr>
-              <td>Sergipe</td>
-              <td>2,50%</td>
-              <td>2,50%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>São Paulo</td>
-              <td>4,00%</td>
-              <td>2,00%</td>
-              <td>2,00%</td>
-            </tr>
-            <tr>
-              <td>Tocantins</td>
-              <td>2,00%</td>
-              <td>3,00%</td>
-              <td>2,00%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div id="tabelaDetran" class="hidden">
-        <h2>Site do DETRAN por Estado</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Estado</th>
-              <th>Site do DETRAN</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Acre</td>
-              <td><a href="https://www.detran.ac.gov.br/">DETRAN AC</a></td>
-            </tr>
-            <tr>
-              <td>Alagoas</td>
-              <td><a href="https://www.detran.al.gov.br/">DETRAN AL</a></td>
-            </tr>
-            <tr>
-              <td>Amapá</td>
-              <td><a href="https://www.detran.ap.gov.br/">DETRAN AP</a></td>
-            </tr>
-            <tr>
-              <td>Amazonas</td>
-              <td><a href="https://www.detran.am.gov.br/">DETRAN AM</a></td>
-            </tr>
-            <tr>
-              <td>Bahia</td>
-              <td><a href="https://www.detran.ba.gov.br/">DETRAN BA</a></td>
-            </tr>
-            <tr>
-              <td>Ceará</td>
-              <td><a href="https://www.detran.ce.gov.br/">DETRAN CE</a></td>
-            </tr>
-            <tr>
-              <td>Distrito Federal</td>
-              <td><a href="https://www.detran.df.gov.br/">DETRAN DF</a></td>
-            </tr>
-            <tr>
-              <td>Espírito Santo</td>
-              <td><a href="https://www.detran.es.gov.br/">DETRAN ES</a></td>
-            </tr>
-            <tr>
-              <td>Goiás</td>
-              <td><a href="https://www.detran.go.gov.br/"></a>DETRAN GO</td>
-            </tr>
-            <tr>
-              <td>Maranhão</td>
-              <td><a href="https://www.detran.ma.gov.br/">DETRAN MA</a></td>
-            </tr>
-            <tr>
-              <td>Mato Grosso</td>
-              <td><a href="https://www.detran.mt.gov.br/">DETRAN MT</a></td>
-            </tr>
-            <tr>
-              <td>Mato Grosso do Sul</td>
-              <td><a href="https://www.detran.ms.gov.br/">DETRAN MS</a></td>
-            </tr>
-            <tr>
-              <td>Minas Gerais</td>
-              <td><a href="https://www.detran.mg.gov.br/">DETRAN MG</a></td>
-            </tr>
-            <tr>
-              <td>Pará</td>
-              <td><a href="https://www.detran.pa.gov.br/">DETRAN PA</a></td>
-            </tr>
-            <tr>
-              <td>Paraíba</td>
-              <td><a href="https://www.detran.pb.gov.br/">DETRAN PB</a></td>
-            </tr>
-            <tr>
-              <td>Paraná</td>
-              <td><a href="https://www.detran.ma.gov.br/">DETRAN PR</a></td>
-            </tr>
-            <tr>
-              <td>Pernambuco</td>
-              <td><a href="https://www.detran.pe.gov.br/">DETRAN PE</a></td>
-            </tr>
-            <tr>
-              <td>Piauí</td>
-              <td><a href="https://www.detran.pi.gov.br/">DETRAN PI</a></td>
-            </tr>
-            <tr>
-              <td>Rio de Janeiro</td>
-              <td><a href="https://www.detran.ma.gov.br/">DETRAN RJ</a></td>
-            </tr>
-            <tr>
-              <td>Rio Grande do Norte</td>
-              <td><a href="https://www.detran.rn.gov.br/">DETRAN RN</a></td>
-            </tr>
-            <tr>
-              <td>Rio Grande do Sul</td>
-              <td><a href="https://www.detran.rs.gov.br/">DETRAN RS</a></td>
-            </tr>
-            <tr>
-              <td>Rondônia</td>
-              <td><a href="https://www.detran.ro.gov.br/">DETRAN RO</a></td>
-            </tr>
-            <tr>
-              <td>Roraima</td>
-              <td><a href="https://www.detran.rr.gov.br/">DETRAN RR</a></td>
-            </tr>
-            <tr>
-              <td>Santa Catarina</td>
-              <td><a href="https://www.detran.sc.gov.br/">DETRAN SC</a></td>
-            </tr>
-            <tr>
-              <td>São Paulo</td>
-              <td><a href="https://www.detran.sp.gov.br/">DETRAN SP</a></td>
-            </tr>
-            <tr>
-              <td>Sergipe</td>
-              <td><a href="https://www.detran.se.gov.br/">DETRAN SE</a></td>
-            </tr>
-            <tr>
-              <td>Tocantins</td>
-              <td><a href="https://www.detran.to.gov.br/">DETRAN TO</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div id="contato" class="hidden">
-        <h2>Contato</h2>
-        <p>Paulo Augusto Nascimento dos Santos<br>Rua Paulo Setubál, 4495 Sobrado 85<br>Curitiba/PR<br>CEP:
-          81750-190</p>
-        <a href="https://wa.me/5541997185852" target="_blank">
-          <button>Fale com o Paulo Augusto</button>
-        </a>
-      </div>
-
-      <div id="sobre" class="hidden">
-        <h2>Sobre</h2>
-        <p>Bem-vindo à nossa Calculadora de IPVA aprimorada! Esta ferramenta foi desenvolvida para simplificar o
-          processo de cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários de
-          veículos, concessionárias e lojas de automóveis.</p>
-        <p>Nossa calculadora oferece uma interface intuitiva e fácil de usar, permitindo que você calcule
-          rapidamente:</p>
-        <ul>
-          <li>O valor integral do IPVA</li>
-          <li>O valor ajustado do IPVA até o final do ano</li>
-          <li>O total considerando custos adicionais como emplacamento, placa e baixa de gravame</li>
-          <li>A diferença entre o valor da proposta e o total calculado</li>
-        </ul>
-        <p>Além disso, você pode incluir informações como nome, marca/modelo do veículo e RENAVAM para gerar um
-          orçamento detalhado em PDF.</p>
-        <p>Utilizamos tecnologias modernas para garantir cálculos precisos e uma experiência de usuário suave em
-          todos os dispositivos.</p>
-      </div>
-
-      <div id="ajuda" class="container">
-        <h2>Em que posso ajudar?</h2>
-        <p>Selecione uma opção abaixo:</p>
-        <button class="ajuda-opcao">Calcular IPVA</button>
-        <button class="ajuda-opcao" id="siteDetranBtn">Site Detran</button>
-        <button class="ajuda-opcao">Entrar em contato</button>
-        <button class="ajuda-opcao">Saber mais sobre nós</button>
-        <div class="logo" id="logo">
-          GuaraSoftware - Desde 21/09/2024
+        <div id="tabelaDetran" class="hidden">
+            <h2>Site do DETRAN por Estado</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Estado</th>
+                        <th>Site do DETRAN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Acre</td>
+                        <td><a href="https://www.detran.ac.gov.br/">DETRAN AC</a></td>
+                    </tr>
+                    <tr>
+                        <td>Alagoas</td>
+                        <td><a href="https://www.detran.al.gov.br/">DETRAN AL</a></td>
+                    </tr>
+                    <tr>
+                        <td>Amapá</td>
+                        <td><a href="https://www.detran.ap.gov.br/">DETRAN AP</a></td>
+                    </tr>
+                    <tr>
+                        <td>Amazonas</td>
+                        <td><a href="https://www.detran.am.gov.br/">DETRAN AM</a></td>
+                    </tr>
+                    <tr>
+                        <td>Bahia</td>
+                        <td><a href="https://www.detran.ba.gov.br/">DETRAN BA</a></td>
+                    </tr>
+                    <tr>
+                        <td>Ceará</td>
+                        <td><a href="https://www.detran.ce.gov.br/">DETRAN CE</a></td>
+                    </tr>
+                    <tr>
+                        <td>Distrito Federal</td>
+                        <td><a href="https://www.detran.df.gov.br/">DETRAN DF</a></td>
+                    </tr>
+                    <tr>
+                        <td>Espírito Santo</td>
+                        <td><a href="https://www.detran.es.gov.br/">DETRAN ES</a></td>
+                    </tr>
+                    <tr>
+                        <td>Goiás</td>
+                        <td><a href="https://www.detran.go.gov.br/"></a>DETRAN GO</td>
+                    </tr>
+                    <tr>
+                        <td>Maranhão</td>
+                        <td><a href="https://www.detran.ma.gov.br/">DETRAN MA</a></td>
+                    </tr>
+                    <tr>
+                        <td>Mato Grosso</td>
+                        <td><a href="https://www.detran.mt.gov.br/">DETRAN MT</a></td>
+                    </tr>
+                    <tr>
+                        <td>Mato Grosso do Sul</td>
+                        <td><a href="https://www.detran.ms.gov.br/">DETRAN MS</a></td>
+                    </tr>
+                    <tr>
+                        <td>Minas Gerais</td>
+                        <td><a href="https://www.detran.mg.gov.br/">DETRAN MG</a></td>
+                    </tr>
+                    <tr>
+                        <td>Pará</td>
+                        <td><a href="https://www.detran.pa.gov.br/">DETRAN PA</a></td>
+                    </tr>
+                    <tr>
+                        <td>Paraíba</td>
+                        <td><a href="https://www.detran.pb.gov.br/">DETRAN PB</a></td>
+                    </tr>
+                    <tr>
+                        <td>Paraná</td>
+                        <td><a href="https://www.detran.ma.gov.br/">DETRAN PR</a></td>
+                    </tr>
+                    <tr>
+                        <td>Pernambuco</td>
+                        <td><a href="https://www.detran.pe.gov.br/">DETRAN PE</a></td>
+                    </tr>
+                    <tr>
+                        <td>Piauí</td>
+                        <td><a href="https://www.detran.pi.gov.br/">DETRAN PI</a></td>
+                    </tr>
+                    <tr>
+                        <td>Rio de Janeiro</td>
+                        <td><a href="https://www.detran.ma.gov.br/">DETRAN RJ</a></td>
+                    </tr>
+                    <tr>
+                        <td>Rio Grande do Norte</td>
+                        <td><a href="https://www.detran.rn.gov.br/">DETRAN RN</a></td>
+                    </tr>
+                    <tr>
+                        <td>Rio Grande do Sul</td>
+                        <td><a href="https://www.detran.rs.gov.br/">DETRAN RS</a></td>
+                    </tr>
+                    <tr>
+                        <td>Rondônia</td>
+                        <td><a href="https://www.detran.ro.gov.br/">DETRAN RO</a></td>
+                    </tr>
+                    <tr>
+                        <td>Roraima</td>
+                        <td><a href="https://www.detran.rr.gov.br/">DETRAN RR</a></td>
+                    </tr>
+                    <tr>
+                        <td>Santa Catarina</td>
+                        <td><a href="https://www.detran.sc.gov.br/">DETRAN SC</a></td>
+                    </tr>
+                    <tr>
+                        <td>São Paulo</td>
+                        <td><a href="https://www.detran.sp.gov.br/">DETRAN SP</a></td>
+                    </tr>
+                    <tr>
+                        <td>Sergipe</td>
+                        <td><a href="https://www.detran.se.gov.br/">DETRAN SE</a></td>
+                    </tr>
+                    <tr>
+                        <td>Tocantins</td>
+                        <td><a href="https://www.detran.to.gov.br/">DETRAN TO</a></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-      </div>
+
+        <div id="contato" class="hidden">
+            <h2>Contato</h2>
+            <p>Paulo Augusto Nascimento dos Santos<br>Rua Paulo Setubál, 4495 Sobrado 85<br>Curitiba/PR<br>CEP:
+                81750-190</p>
+            <a href="https://wa.me/5541997185852" target="_blank">
+                <button>Fale com o Paulo Augusto</button>
+            </a>
+        </div>
+
+        <div id="sobre" class="hidden">
+            <h2>Sobre</h2>
+            <p>Bem-vindo à nossa Calculadora de IPVA aprimorada! Esta ferramenta foi desenvolvida para simplificar o
+                processo de cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários de
+                veículos, concessionárias e lojas de automóveis.</p>
+            <p>Nossa calculadora oferece uma interface intuitiva e fácil de usar, permitindo que você calcule
+                rapidamente:</p>
+            <ul>
+                <li>O valor integral do IPVA</li>
+                <li>O valor ajustado do IPVA até o final do ano</li>
+                <li>O total considerando custos adicionais como emplacamento, placa e baixa de gravame</li>
+                <li>A diferença entre o valor da proposta e o total calculado</li>
+            </ul>
+            <p>Além disso, você pode incluir informações como nome, marca/modelo do veículo e RENAVAM para gerar um
+                orçamento detalhado em PDF.</p>
+            <p>Utilizamos tecnologias modernas para garantir cálculos precisos e uma experiência de usuário suave em
+                todos os dispositivos.</p>
+        </div>
+
+        <div id="ajuda" class="container">
+            <h2>Em que posso ajudar?</h2>
+            <p>Selecione uma opção abaixo:</p>
+            <button class="ajuda-opcao">Calcular IPVA</button>
+            <button class="ajuda-opcao" id="siteDetranBtn">Site Detran</button>
+            <button class="ajuda-opcao">Entrar em contato</button>
+            <button class="ajuda-opcao">Saber mais sobre nós</button>
+            <div class="logo" id="logo">
+                GuaraSoftware - Desde 21/09/2024
+            </div>
+        </div>
     </div>
 
-  </body>
+</body>
 
 </html>

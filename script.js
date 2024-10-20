@@ -289,3 +289,14 @@ document.addEventListener('DOMContentLoaded', function () {
     doc.save('Orçamento de Serviços.pdf');
   }
 });
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "VeículoFácil",
+  "url": "https://www.google.com.br/?hl=pt-BR",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://example.com/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}

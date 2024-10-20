@@ -46,8 +46,7 @@ label {
 
 input[type="number"],
 input[type="date"],
-input[type="text"],
-textarea {
+input[type="text"] {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ccc;
@@ -61,8 +60,7 @@ textarea {
 
 input[type="number"]:focus,
 input[type="date"]:focus,
-input[type="text"]:focus,
-textarea:focus {
+input[type="text"]:focus {
   border-color: var(--accent-color);
   outline: none;
 }
@@ -146,12 +144,12 @@ button:hover {
 
 @media (max-width: 768px) {
   body {
-    flex-direction: column;
+      flex-direction: column;
   }
 
   .sidebar {
-    margin-right: 0;
-    margin-bottom: 2rem;
+      margin-right: 0;
+      margin-bottom: 2rem;
   }
 }
 
@@ -166,65 +164,56 @@ button:hover {
 #sobre,
 #contato,
 #tabela,
-#ajuda {
+#ajuda,
+#tabela-servicos,
+#tabelaDetran {
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
   padding: 2rem;
   margin-top: 2rem;
 }
 
-#tabela {
+#tabela,
+#tabela-servicos,
+#tabelaDetran {
   overflow-x: auto;
 }
 
-#tabela table {
+#tabela table,
+#tabela-servicos table,
+#tabelaDetran table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
 }
 
 #tabela th,
-#tabela td {
+#tabela td,
+#tabela-servicos th,
+#tabela-servicos td,
+#tabelaDetran th,
+#tabelaDetran td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
 }
 
-#tabela th {
+#tabela th,
+#tabela-servicos th,
+#tabelaDetran th {
   background-color: var(--primary-color);
   color: white;
 }
 
-#tabela tr:nth-child(even) {
+#tabela tr:nth-child(even),
+#tabela-servicos tr:nth-child(even),
+#tabelaDetran tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-#tabela tr:hover {
-  background-color: #ddd;
-}
-
-#servicosTabela {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-#servicosTabela th,
-#servicosTabela td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-#servicosTabela th {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-#servicosTabela tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-#servicosTabela tr:hover {
+#tabela tr:hover,
+#tabela-servicos tr:hover,
+#tabelaDetran tr:hover {
   background-color: #ddd;
 }
 
@@ -266,22 +255,82 @@ button:hover {
 .ajuda-opcao:hover {
   background-color: #FFD700;
 }
+
+a {
+  text-decoration: none;
+}
+
 .logo {
   position: absolute;
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
-  color: #f0f0f0;
+  color: f0f0f0;
   font-size: 1.2rem;
 }
 
-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  resize: vertical;
+#tabela-servicos {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 2rem;
 }
+
+#tabela-servicos table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#tabela-servicos th,
+#tabela-servicos td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#tabela-servicos th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#tabela-servicos tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#tabela-servicos tr:hover {
+  background-color: #ddd;
+}
+
+#tabelaDetran {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+#tabelaDetran table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+#tabelaDetran th,
+#tabelaDetran td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#tabelaDetran th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+#tabelaDetran tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#tabelaDetran tr:hover {
+  background-color: #ddd;
