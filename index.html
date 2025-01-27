@@ -36,13 +36,12 @@
   <div class="sidebar">
     <button id="ajudaBtn">Em que posso ajudar?</button>
     <button id="calcBtn">IPVA e Serviços</button>
-    <button id="calculadoraBtn">Calculadora</button>
     <button id="novaTabelaBtn">Tabela Aliquota 2024</button>
     <button id="siteDetranBtn">Site Detran</button>
     <button id="contatoBtn">Contato</button>
     <button id="sobreBtn">Sobre</button>
   </div>
-
+  
   <div class="content">
     <div id="calculadora" class="container hidden">
       <h1>VeículoFácil - IPVA e Serviços Automotivos</h1>
@@ -61,17 +60,15 @@
         </div>
         <div class="form-group">
           <label for="valor_veiculo">Valor do Veículo (R$):</label>
-          <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo"
-            placeholder="Digite o valor do veículo">
+          <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo" placeholder="Digite o valor do veículo">
         </div>
         <div class="form-group">
           <label for="aliquota">Alíquota (%):</label>
-          <input type="number" step="0.01" id="aliquota" name="aliquota" value="3.5" readonly>
+          <input type="number" step="0.01" id="aliquota" name="aliquota" value="3.5">
         </div>
         <div class="form-group">
           <label for="valorAdicional">Valor do Emplacamento (R$):</label>
-          <input type="number" step="0.01" id="valorAdicional" name="valorAdicional"
-            placeholder="Digite o valor do emplacamento">
+          <input type="number" step="0.01" id="valorAdicional" name="valorAdicional" placeholder="Digite o valor do emplacamento">
         </div>
         <div class="form-group">
           <label for="valorExtra">Valor da Placa (R$):</label>
@@ -79,13 +76,11 @@
         </div>
         <div class="form-group">
           <label for="valorAdicionalExtra">Valor da Baixa de Gravame/Débitos (R$):</label>
-          <input type="number" step="0.01" id="valorAdicionalExtra" name="valorAdicionalExtra"
-            placeholder="Digite o valor da baixa de gravame ou débitos">
+          <input type="number" step="0.01" id="valorAdicionalExtra" name="valorAdicionalExtra" placeholder="Digite o valor da baixa de gravame ou débitos">
         </div>
         <div class="form-group">
           <label for="valorProposta">Valor da Proposta/Minuta (R$):</label>
-          <input type="number" step="0.01" id="valorProposta" name="valorProposta"
-            placeholder="Digite o valor da proposta ou minuta">
+          <input type="number" step="0.01" id="valorProposta" name="valorProposta" placeholder="Digite o valor da proposta ou minuta">
         </div>
         <div class="form-group">
           <label for="dataReferencia">Data de Referência:</label>
@@ -97,15 +92,15 @@
             Gerar orçamento em PDF
           </label>
         </div>
-        <a href="https://veiculos.fipe.org.br/" target="_blank"
-          style="margin-top: 1rem; display: block; text-align: center; color: var(--primary-color);">Acesse Aqui a
-          tabela Fipe</a>
-        <button type="submit">Calcular IPVA</button>
+        <a href="https://veiculos.fipe.org.br/" target="_blank" class="fipe-button">Acesse Aqui a tabela Fipe</a>
+        <a href="#" class="fipe-button calc-ipva-link">Calcular IPVA</a>
+        <button type="submit" class="hidden">Calcular IPVA</button>
       </form>
       <div id="results" class="results hidden">
         <h2>Resultados:</h2>
         <p id="ipvaIntegral"></p>
         <p id="ipvaAjustado"></p>
+        <p id="valorPropostaResultado"></p>
         <p id="totalComAdicional"></p>
         <p>Detalhamento dos valores adicionais:</p>
         <ul>
@@ -114,9 +109,13 @@
           <li id="valorGravame"></li>
         </ul>
         <p id="valorDiferenca"></p>
+        <div class="form-group">
+          <label for="observacoes">Observações:</label>
+          <textarea id="observacoes" name="observacoes" rows="4" placeholder="Escreva suas observações aqui" style="width:100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; text-align: center; height: 100px;"></textarea>
+        </div>
       </div>
     </div>
-
+  
     <div id="tabela" class="hidden">
       <h2>Serviços Atualizados 2024</h2>
       <table id="servicosTabela">
@@ -388,7 +387,7 @@
       </table>
       <button id="gerarOrcamentoPDF">Gerar Orçamento PDF</button>
     </div>
-
+    
     <div id="tabela-servicos" class="hidden">
       <h2>Tabela Aliquota 2024 por estado</h2>
       <table>
@@ -566,7 +565,7 @@
         </tbody>
       </table>
     </div>
-
+    
     <div id="tabelaDetran" class="hidden">
       <h2>Site do DETRAN por Estado</h2>
       <table>
@@ -577,118 +576,37 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Acre</td>
-            <td>DETRAN AC</td>
-          </tr>
-          <tr>
-            <td>Alagoas</td>
-            <td>DETRAN AL</td>
-          </tr>
-          <tr>
-            <td>Amapá</td>
-            <td>DETRAN AP</td>
-          </tr>
-          <tr>
-            <td>Amazonas</td>
-            <td>DETRAN AM</td>
-          </tr>
-          <tr>
-            <td>Bahia</td>
-            <td>DETRAN BA</td>
-          </tr>
-          <tr>
-            <td>Ceará</td>
-            <td>DETRAN CE</td>
-          </tr>
-          <tr>
-            <td>Distrito Federal</td>
-            <td>DETRAN DF</td>
-          </tr>
-          <tr>
-            <td>Espírito Santo</td>
-            <td>DETRAN ES</td>
-          </tr>
-          <tr>
-            <td>Goiás</td>
-            <td>DETRAN GO</td>
-          </tr>
-          <tr>
-            <td>Maranhão</td>
-            <td>DETRAN MA</td>
-          </tr>
-          <tr>
-            <td>Mato Grosso</td>
-            <td>DETRAN MT</td>
-          </tr>
-          <tr>
-            <td>Mato Grosso do Sul</td>
-            <td>DETRAN MS</td>
-          </tr>
-          <tr>
-            <td>Minas Gerais</td>
-            <td>DETRAN MG</td>
-          </tr>
-          <tr>
-            <td>Pará</td>
-            <td>DETRAN PA</td>
-          </tr>
-          <tr>
-            <td>Paraíba</td>
-            <td>DETRAN PB</td>
-          </tr>
-          <tr>
-            <td>Paraná</td>
-            <td>DETRAN PR</td>
-          </tr>
-          <tr>
-            <td>Pernambuco</td>
-            <td>DETRAN PE</td>
-          </tr>
-          <tr>
-            <td>Piauí</td>
-            <td>DETRAN PI</td>
-          </tr>
-          <tr>
-            <td>Rio de Janeiro</td>
-            <td>DETRAN RJ</td>
-          </tr>
-          <tr>
-            <td>Rio Grande do Norte</td>
-            <td>DETRAN RN</td>
-          </tr>
-          <tr>
-            <td>Rio Grande do Sul</td>
-            <td>DETRAN RS</td>
-          </tr>
-          <tr>
-            <td>Rondônia</td>
-            <td>DETRAN RO</td>
-          </tr>
-          <tr>
-            <td>Roraima</td>
-            <td>DETRAN RR</td>
-          </tr>
-          <tr>
-            <td>Santa Catarina</td>
-            <td>DETRAN SC</td>
-          </tr>
-          <tr>
-            <td>São Paulo</td>
-            <td>DETRAN SP</td>
-          </tr>
-          <tr>
-            <td>Sergipe</td>
-            <td>DETRAN SE</td>
-          </tr>
-          <tr>
-            <td>Tocantins</td>
-            <td>DETRAN TO</td>
-          </tr>
+          <tr><td>Acre</td><td>DETRAN AC</td></tr>
+          <tr><td>Alagoas</td><td>DETRAN AL</td></tr>
+          <tr><td>Amapá</td><td>DETRAN AP</td></tr>
+          <tr><td>Amazonas</td><td>DETRAN AM</td></tr>
+          <tr><td>Bahia</td><td>DETRAN BA</td></tr>
+          <tr><td>Ceará</td><td>DETRAN CE</td></tr>
+          <tr><td>Distrito Federal</td><td>DETRAN DF</td></tr>
+          <tr><td>Espírito Santo</td><td>DETRAN ES</td></tr>
+          <tr><td>Goiás</td><td>DETRAN GO</td></tr>
+          <tr><td>Maranhão</td><td>DETRAN MA</td></tr>
+          <tr><td>Mato Grosso</td><td>DETRAN MT</td></tr>
+          <tr><td>Mato Grosso do Sul</td><td>DETRAN MS</td></tr>
+          <tr><td>Minas Gerais</td><td>DETRAN MG</td></tr>
+          <tr><td>Pará</td><td>DETRAN PA</td></tr>
+          <tr><td>Paraíba</td><td>DETRAN PB</td></tr>
+          <tr><td>Paraná</td><td>DETRAN PR</td></tr>
+          <tr><td>Pernambuco</td><td>DETRAN PE</td></tr>
+          <tr><td>Piauí</td><td>DETRAN PI</td></tr>
+          <tr><td>Rio de Janeiro</td><td>DETRAN RJ</td></tr>
+          <tr><td>Rio Grande do Norte</td><td>DETRAN RN</td></tr>
+          <tr><td>Rio Grande do Sul</td><td>DETRAN RS</td></tr>
+          <tr><td>Rondônia</td><td>DETRAN RO</td></tr>
+          <tr><td>Roraima</td><td>DETRAN RR</td></tr>
+          <tr><td>Santa Catarina</td><td>DETRAN SC</td></tr>
+          <tr><td>São Paulo</td><td>DETRAN SP</td></tr>
+          <tr><td>Sergipe</td><td>DETRAN SE</td></tr>
+          <tr><td>Tocantins</td><td>DETRAN TO</td></tr>
         </tbody>
       </table>
     </div>
-
+  
     <div id="contato" class="hidden">
       <h2>Contato</h2>
       <p>Paulo Augusto Nascimento dos Santos<br>Rua Paulo Setubál, 4495 Sobrado 85<br>Curitiba/PR<br>CEP: 81750-190</p>
@@ -696,12 +614,10 @@
         <button>Fale com oPaulo Augusto</button>
       </a>
     </div>
-
+  
     <div id="sobre" class="hidden">
       <h2>Sobre</h2>
-      <p>Bem-vindo à nossa Calculadora de IPVA aprimorada! Esta ferramenta foi desenvolvida para simplificar o processo
-        de cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários de veículos,
-        concessionárias e lojas de automóveis.</p>
+      <p>Bem-vindo à nossa Calculadora de IPVA aprimorada! Esta ferramenta foi desenvolvida para simplificar o processo de cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários de veículos, concessionárias e lojas de automóveis.</p>
       <p>Nossa calculadora oferece uma interface intuitiva e fácil de usar, permitindo que você calcule rapidamente:</p>
       <ul>
         <li>O valor integral do IPVA</li>
@@ -709,12 +625,10 @@
         <li>O total considerando custos adicionais como emplacamento, placa e baixa de gravame</li>
         <li>A diferença entre o valor da proposta e o total calculado</li>
       </ul>
-      <p>Além disso, você pode incluir informações como nome, marca/modelo do veículo e RENAVAM para gerar um orçamento
-        detalhado em PDF.</p>
-      <p>Utilizamos tecnologias modernas para garantir cálculos precisos e uma experiência de usuário suave em todos os
-        dispositivos.</p>
+      <p>Além disso, você pode incluir informações como nome, marca/modelo do veículo e RENAVAM para gerar um orçamento detalhado em PDF.</p>
+      <p>Utilizamos tecnologias modernas para garantir cálculos precisos e uma experiência de usuário suave em todos os dispositivos.</p>
     </div>
-
+  
     <div id="ajuda" class="container">
       <h2>Em que posso ajudar?</h2>
       <p>Selecione uma opção abaixo:</p>
@@ -726,42 +640,10 @@
         GuaraSoftware - Desde 21/09/2024
       </div>
     </div>
-
-    <!-- Calculator Modal -->
-    <div id="calculatorModal">
-      <div id="calculatorContainer">
-        <div id="calculatorHeader">
-          <h2 style="margin: 0; cursor: grab;">Calculadora</h2>
-        </div>
-        <h3 style="text-align: center; margin: 10px 0;">Calculadora</h3>
-        <div id="calcDisplay">0</div>
-        <div id="calculator">
-          <div class="calculator-button">7</div>
-          <div class="calculator-button">8</div>
-          <div class="calculator-button">9</div>
-          <div class="calculator-button">/</div>
-          <div class="calculator-button">4</div>
-          <div class="calculator-button">5</div>
-          <div class="calculator-button">6</div>
-          <div class="calculator-button">*</div>
-          <div class="calculator-button">1</div>
-          <div class="calculator-button">2</div>
-          <div class="calculator-button">3</div>
-          <div class="calculator-button">-</div>
-          <div class="calculator-button">C</div>
-          <div class="calculator-button">0</div>
-          <div class="calculator-button calculator-comma">,</div>
-          <div class="calculator-button">+</div>
-          <div class="calculator-button" id="equals">=</div>
-          <div class="calculator-button" id="backspace">←</div>
-          <div class="calculator-button">%</div>
-        </div>
-        <button id="modalCloseButton">Fechar</button>
-      </div>
-    </div>
-
+  
   </div>
-
-</body>
+  
+  </body>
+  
 
 </html>
