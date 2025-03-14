@@ -1,0 +1,738 @@
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VeículoFácil - IPVA e Serviços Automotivos</title>
+  
+  <!-- Meta tags for SEO -->
+  <meta name="description" content="Calculadora de IPVA online gratuita. Calcule valores de IPVA, emplacamento, placas e documentação de veículos em todo o Brasil. Consulte alíquotas por estado e acesse sites do DETRAN.">
+  <meta name="keywords" content="IPVA, calculadora IPVA, emplacamento, documentação veicular, DETRAN, alíquota IPVA, serviços automotivos, cálculo de impostos, veículos, transferência de veículos, placas de carro, RENAVAM, tabela FIPE">
+  <meta name="author" content="Paulo Augusto Nascimento dos Santos">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="Portuguese">
+  <meta name="revisit-after" content="7 days">
+  <meta name="generator" content="GuaraSoftware">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://veiculofacil.com.br/">
+  <meta property="og:title" content="VeículoFácil - Calcule IPVA e Serviços Automotivos">
+  <meta property="og:description" content="Calculadora online para IPVA, emplacamento e serviços veiculares. Consulte alíquotas por estado e acesse informações do DETRAN.">
+  <meta property="og:image" content="https://veiculofacil.com.br/images/og-image.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://veiculofacil.com.br/">
+  <meta property="twitter:title" content="VeículoFácil - Calcule IPVA e Serviços Automotivos">
+  <meta property="twitter:description" content="Calculadora online para IPVA, emplacamento e serviços veiculares. Consulte alíquotas por estado e acesse informações do DETRAN.">
+  <meta property="twitter:image" content="https://veiculofacil.com.br/images/og-image.jpg">
+  
+  <!-- Canonical URL -->
+  <meta rel="canonical" href="https://veiculofacil.com.br/">
+  
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "VeículoFácil",
+    "url": "https://veiculofacil.com.br",
+    "description": "Calculadora de IPVA online gratuita. Calcule valores de IPVA, emplacamento, placas e documentação de veículos em todo o Brasil.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://veiculofacil.com.br/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  
+  <!-- Organization Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "VeículoFácil",
+    "url": "https://veiculofacil.com.br",
+    "logo": "https://veiculofacil.com.br/images/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+5541997185852",
+      "contactType": "customer service",
+      "areaServed": "BR",
+      "availableLanguage": "Portuguese"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rua Paulo Setubál, 4495 Sobrado 85",
+      "addressLocality": "Curitiba",
+      "addressRegion": "PR",
+      "postalCode": "81750-190",
+      "addressCountry": "BR"
+    }
+  }
+  </script>
+  
+  <!-- Service Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Calculadora de IPVA",
+    "description": "Cálculo de IPVA, emplacamento e serviços automotivos para todo o Brasil",
+    "provider": {
+      "@type": "Organization",
+      "name": "VeículoFácil"
+    },
+    "serviceType": "Serviços Automotivos",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Brasil"
+    }
+  }
+  </script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+  <!-- Skip to content link for keyboard users -->
+  <a href="#main-content" class="skip-link">Pular para o conteúdo</a>
+  
+  <!-- Mobile menu toggle button -->
+  <button id="menu-toggle" class="menu-toggle" aria-label="Menu de navegação" aria-expanded="false" aria-controls="sidebar">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div id="sidebar" class="sidebar" role="navigation" aria-label="Menu principal">
+    <button id="ajudaBtn" class="sidebar-button" aria-label="Em que posso ajudar" accesskey="h">Em que posso ajudar?</button>
+    <button id="calcBtn" class="sidebar-button" aria-label="IPVA e Serviços" accesskey="c">IPVA e Serviços</button>
+    <button id="tutorialBtn" class="sidebar-button" aria-label="Tutorial" accesskey="u">Tutorial</button>
+    <button id="novaTabelaBtn" class="sidebar-button" aria-label="Tabela Aliquota 2024" accesskey="t">Tabela Aliquota 2024</button>
+    <button id="siteDetranBtn" class="sidebar-button" aria-label="Site Detran" accesskey="d">Site Detran</button>
+    <button id="contatoBtn" class="sidebar-button" aria-label="Contato" accesskey="o">Contato</button>
+    <button id="sobreBtn" class="sidebar-button" aria-label="Sobre" accesskey="s">Sobre</button>
+  </div>
+
+  <div class="content" id="main-content">
+    <div id="calculadora" class="container hidden" role="main">
+      <h1>VeículoFácil - IPVA e Serviços Automotivos</h1>
+      <div id="feedback-message" class="feedback hidden" role="status" aria-live="polite"></div>
+      
+      <div class="calculator-explanation">
+        <details>
+          <summary>Como usar esta calculadora? (Clique para expandir)</summary>
+          <div class="calculator-instructions">
+            <p>Esta calculadora permite estimar o valor do IPVA a ser pago, além de outros custos relacionados à documentação veicular.</p>
+            <ol>
+              <li><strong>Preencha os dados do veículo</strong> - nome, marca/modelo e informações de identificação.</li>
+              <li><strong>Informe o valor do veículo</strong> - utilize o valor de mercado atual ou consulte a <a href="https://veiculos.fipe.org.br/" target="_blank">Tabela FIPE</a>.</li>
+              <li><strong>Ajuste a alíquota</strong> - cada estado possui uma alíquota diferente (pode ser consultada na aba "Tabela Alíquota 2024").</li>
+              <li><strong>Adicione valores extras</strong> - emplacamento, placa e baixa de gravame/débitos, se aplicáveis.</li>
+              <li><strong>Defina a data de referência</strong> - o sistema calculará o valor proporcional até o final do ano.</li>
+              <li><strong>Analise os resultados</strong> - os valores calculados serão exibidos em tempo real abaixo do formulário.</li>
+            </ol>
+            <p><strong>Dica:</strong> Para obter a alíquota correta do seu estado, visite a aba "Tabela Alíquota 2024" e clique na linha correspondente ao seu estado.</p>
+          </div>
+        </details>
+      </div>
+      
+      <form id="ipvaForm" novalidate>
+        <div class="form-group">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required minlength="3" aria-describedby="nome-error">
+          <small class="validation-message" id="nome-error"></small>
+        </div>
+        <div class="form-group">
+          <label for="tipoCarro">Marca/Modelo:</label>
+          <input type="text" id="tipoCarro" name="tipoCarro" placeholder="Digite a marca e o modelo do veículo" required aria-describedby="tipoCarro-error">
+          <small class="validation-message" id="tipoCarro-error"></small>
+        </div>
+        <div class="form-group">
+          <label for="renavam">Placa/Renavam:</label>
+          <input type="text" id="renavam" name="renavam" placeholder="Digite a placa ou Renavam do veículo" required aria-describedby="renavam-error">
+          <small class="validation-message" id="renavam-error"></small>
+        </div>
+        <div class="form-group">
+          <label for="valor_veiculo">Valor do Veículo (R$):</label>
+          <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo"
+            placeholder="Digite o valor do veículo" required min="1" aria-describedby="valor_veiculo-error">
+          <small class="validation-message" id="valor_veiculo-error"></small>
+          <small class="field-tip">Consulte o valor de mercado na <a href="https://veiculos.fipe.org.br/" target="_blank">Tabela FIPE</a>.</small>
+        </div>
+        <div class="form-group">
+          <label for="aliquota">Alíquota (%):</label>
+          <input type="number" step="0.01" id="aliquota" name="aliquota" value="3.5" required min="0.1" max="10" aria-describedby="aliquota-error">
+          <small class="validation-message" id="aliquota-error"></small>
+          <small class="field-tip">Percentual cobrado pelo estado sobre o valor do veículo. Consulte na aba "Tabela Alíquota 2024".</small>
+        </div>
+        <div class="form-group">
+          <label for="valorAdicional">Valor do Emplacamento (R$):</label>
+          <input type="number" step="0.01" id="valorAdicional" name="valorAdicional"
+            placeholder="Digite o valor do emplacamento" min="0" aria-describedby="valorAdicional-error">
+          <small class="validation-message" id="valorAdicional-error"></small>
+          <small class="field-tip">Custos relacionados ao emplacamento do veículo.</small>
+        </div>
+        <div class="form-group">
+          <label for="valorExtra">Valor da Placa (R$):</label>
+          <input type="number" step="0.01" id="valorExtra" name="valorExtra" placeholder="Digite o valor da placa" min="0" aria-describedby="valorExtra-error">
+          <small class="validation-message" id="valorExtra-error"></small>
+          <small class="field-tip">Custo para emissão da placa veicular.</small>
+        </div>
+        <div class="form-group">
+          <label for="valorAdicionalExtra">Valor da Baixa de Gravame/Débitos (R$):</label>
+          <input type="number" step="0.01" id="valorAdicionalExtra" name="valorAdicionalExtra"
+            placeholder="Digite o valor da baixa de gravame ou débitos" min="0" aria-describedby="valorAdicionalExtra-error">
+          <small class="validation-message" id="valorAdicionalExtra-error"></small>
+          <small class="field-tip">Custos para remoção de gravames ou pagamento de débitos pendentes.</small>
+        </div>
+        <div class="form-group">
+          <label for="valorProposta">Valor da Proposta/Minuta (R$):</label>
+          <input type="number" step="0.01" id="valorProposta" name="valorProposta"
+            placeholder="Digite o valor da proposta ou minuta" min="0" aria-describedby="valorProposta-error">
+          <small class="validation-message" id="valorProposta-error"></small>
+          <small class="field-tip">Valor total proposto para a negociação.</small>
+        </div>
+        <div class="form-group">
+          <label for="dataReferencia">Data de Referência:</label>
+          <input type="date" id="dataReferencia" name="dataReferencia" placeholder="Selecione a data de referência" required aria-describedby="dataReferencia-error">
+          <small class="validation-message" id="dataReferencia-error"></small>
+          <small class="field-tip">Define a proporcionalidade do IPVA a ser pago até o final do ano.</small>
+        </div>
+        <div class="form-group checkbox-group">
+          <label for="gerarPDF">
+            <input type="checkbox" id="gerarPDF" name="gerarPDF">
+            Gerar orçamento em PDF
+          </label>
+        </div>
+        <a href="https://veiculos.fipe.org.br/" target="_blank" class="fipe-button" aria-label="Acesse a tabela Fipe (abre em nova janela)">Acesse Aqui a tabela Fipe</a>
+        <a href="#" class="fipe-button calc-ipva-link" role="button" aria-label="Calcular IPVA">Calcular IPVA</a>
+        <button type="submit" class="hidden">Calcular IPVA</button>
+      </form>
+      <div id="results" class="results hidden" role="region" aria-label="Resultados do cálculo">
+        <h2>Resultados:</h2>
+        
+        <div class="results-explanation">
+          <details>
+            <summary>Como interpretar estes resultados? (Clique para expandir)</summary>
+            <div class="results-instructions">
+              <p>Os resultados do cálculo mostram:</p>
+              <ul>
+                <li><strong>Valor Integral do IPVA:</strong> O valor total do imposto para o ano inteiro.</li>
+                <li><strong>Valor do IPVA Ajustado:</strong> O valor proporcional a ser pago considerando os meses restantes do ano a partir da data de referência.</li>
+                <li><strong>Valor da Proposta/Minuta:</strong> O valor total proposto para a negociação.</li>
+                <li><strong>Detalhamento dos valores adicionais:</strong> Emplacamento, placa e baixa de gravame/débitos.</li>
+                <li><strong>Valor Total com Adicional:</strong> A soma do IPVA ajustado mais todos os serviços adicionais.</li>
+                <li><strong>Diferença:</strong> Compara o valor da proposta com o total calculado, indicando se está faltando valor ou se há sobra.</li>
+              </ul>
+              <p><strong>Importante:</strong> Os valores podem variar de acordo com a data de pagamento e eventuais descontos oferecidos pelo estado. Sempre confirme os valores finais junto ao DETRAN de seu estado.</p>
+            </div>
+          </details>
+        </div>
+        
+        <p id="ipvaIntegral"></p>
+        <p id="ipvaAjustado"></p>
+        <p id="valorPropostaResultado"></p>
+        <p id="totalComAdicional"></p>
+        <p>Detalhamento dos valores adicionais:</p>
+        <ul>
+          <li id="valorEmplacamento"></li>
+          <li id="valorPlaca"></li>
+          <li id="valorGravame"></li>
+        </ul>
+        <p id="valorDiferenca"></p>
+        <div class="form-group">
+          <label for="observacoes">Observações:</label>
+          <textarea id="observacoes" name="observacoes" placeholder="Escreva suas observações aqui"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div id="tutorial" class="container hidden" role="main">
+      <h1>Tutorial - Como Calcular seu IPVA</h1>
+      
+      <div class="tutorial-section">
+        <h2>O que é o IPVA?</h2>
+        <p>O Imposto sobre a Propriedade de Veículos Automotores (IPVA) é um tributo estadual cobrado anualmente dos proprietários de veículos. Seu valor é calculado com base no valor do veículo e na alíquota definida pelo estado onde o veículo está registrado.</p>
+      </div>
+      
+      <div class="tutorial-section">
+        <h2>Passo a Passo para Calcular o IPVA</h2>
+        <ol class="tutorial-steps">
+          <li>
+            <h3>Determine o Valor do Veículo</h3>
+            <p>O primeiro passo é saber o valor de mercado do seu veículo. A base de cálculo geralmente é a Tabela FIPE (Fundação Instituto de Pesquisas Econômicas), que pode ser consultada no botão "Acesse Aqui a tabela Fipe" da nossa calculadora.</p>
+          </li>
+          <li>
+            <h3>Identifique a Alíquota do seu Estado</h3>
+            <p>Cada estado brasileiro define suas próprias alíquotas de IPVA, que podem variar conforme o tipo de veículo (carros de passeio, utilitários, motocicletas). Na aba "Tabela Alíquota 2024", você encontra a alíquota correspondente ao seu estado e tipo de veículo. Basta clicar na linha do seu estado para que a alíquota seja automaticamente aplicada à calculadora.</p>
+          </li>
+          <li>
+            <h3>Considere a Data de Referência</h3>
+            <p>O IPVA é um imposto anual, mas se você está adquirindo um veículo no meio do ano, pagará apenas pelos meses restantes. Por exemplo, se comprar um veículo em julho, pagará aproximadamente metade do valor anual do IPVA. Nossa calculadora faz este ajuste automaticamente com base na data de referência informada.</p>
+          </li>
+          <li>
+            <h3>Calcule Custos Adicionais</h3>
+            <p>Além do IPVA, há outros custos associados à transferência ou regularização de um veículo:</p>
+            <ul>
+              <li><strong>Emplacamento:</strong> Custos administrativos para registro do veículo.</li>
+              <li><strong>Placa:</strong> Valor da confecção da placa veicular no padrão Mercosul.</li>
+              <li><strong>Baixa de Gravame/Débitos:</strong> Custos para remoção de restrições financeiras ou pagamento de débitos pendentes.</li>
+            </ul>
+          </li>
+          <li>
+            <h3>Analise os Resultados</h3>
+            <p>Após preencher todos os campos, a calculadora exibirá:</p>
+            <ul>
+              <li>O valor integral do IPVA para o ano todo.</li>
+              <li>O valor ajustado para os meses restantes.</li>
+              <li>O total considerando todos os custos adicionais.</li>
+              <li>A comparação com o valor da proposta/minuta, caso tenha informado.</li>
+            </ul>
+            <p>Este resultado ajuda a entender se o valor proposto em uma negociação é adequado ou se precisa de ajustes.</p>
+          </li>
+          <li>
+            <h3>Gere um Orçamento em PDF (opcional)</h3>
+            <p>Se precisar de um documento para apresentar em uma negociação, marque a opção "Gerar orçamento em PDF" antes de calcular o IPVA. O sistema criará um arquivo PDF com todas as informações detalhadas que poderá ser salvo ou impresso.</p>
+          </li>
+        </ol>
+      </div>
+      
+      <div class="tutorial-section">
+        <h2>Dicas Importantes</h2>
+        <ul class="tutorial-tips">
+          <li><strong>Consulte o DETRAN:</strong> Para valores oficiais, acesse o site do DETRAN do seu estado (disponível na aba "Site Detran").</li>
+          <li><strong>Verifique descontos:</strong> Alguns estados oferecem descontos para pagamento à vista ou antecipado.</li>
+          <li><strong>Atenção aos prazos:</strong> O não pagamento do IPVA no prazo gera multas e juros, além de impedir a renovação do licenciamento anual.</li>
+          <li><strong>Veículos isentos:</strong> Alguns veículos podem ser isentos de IPVA, como táxis, veículos de pessoas com deficiência, veículos com mais de 20 anos (em alguns estados), entre outros.</li>
+        </ul>
+      </div>
+      
+      <div class="tutorial-section">
+        <h2>Exemplo Prático</h2>
+        <div class="example-box">
+          <p><strong>Cenário:</strong> Compra de um veículo de passeio no valor de R$ 50.000,00 no estado do Paraná em 1º de julho de 2024.</p>
+          <ol>
+            <li>Valor do veículo: R$ 50.000,00</li>
+            <li>Alíquota do Paraná para veículos de passeio: 3,5%</li>
+            <li>Data de referência: 01/07/2024 (restam 6 meses no ano)</li>
+            <li>IPVA integral anual: R$ 50.000,00 × 3,5% = R$ 1.750,00</li>
+            <li>IPVA ajustado para 6 meses: R$ 1.750,00 × (6/12) = R$ 875,00</li>
+            <li>Supondo custos adicionais:
+              <ul>
+                <li>Emplacamento: R$ 200,00</li>
+                <li>Placa: R$ 150,00</li>
+                <li>Baixa de gravame: R$ 100,00</li>
+              </ul>
+            </li>
+            <li>Total com adicionais: R$ 875,00 + R$ 200,00 + R$ 150,00 + R$ 100,00 = R$ 1.325,00</li>
+          </ol>
+          <p><strong>Resultado:</strong> O valor total a ser considerado na negociação do veículo é de R$ 1.325,00 para impostos e documentação.</p>
+        </div>
+      </div>
+      
+      <a href="#" id="startCalculator" class="primary-button tutorial-cta">Ir para a Calculadora</a>
+    </div>
+
+    <div id="tabela-servicos" class="hidden" role="region" aria-labelledby="aliquotas-tabela-titulo">
+      <h2 id="aliquotas-tabela-titulo">Tabela Aliquota 2024 por estado</h2>
+      <p class="sr-only">Pressione as setas do teclado para navegar pela tabela. Pressione Enter para selecionar uma alíquota.</p>
+      <div class="table-explanation">
+        <p>Esta tabela mostra as alíquotas de IPVA para diferentes tipos de veículos em cada estado brasileiro. <strong>Clique na linha do seu estado</strong> para aplicar automaticamente a alíquota na calculadora.</p>
+      </div>
+      <div class="table-container">
+        <table role="grid" aria-label="Tabela de alíquotas por estado">
+          <thead>
+            <tr>
+              <th scope="col">Estado</th>
+              <th scope="col">Particular e Passeio</th>
+              <th scope="col">Caminhonetes e Utilitários</th>
+              <th scope="col">Motocicletas e Quadriciclos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Acre</td>
+              <td>2,00%</td>
+              <td>1,00%</td>
+              <td>1,00%</td>
+            </tr>
+            <tr>
+              <td>Alagoas</td>
+              <td>3,00%</td>
+              <td>3,25%</td>
+              <td>2,75%</td>
+            </tr>
+            <tr>
+              <td>Amazonas</td>
+              <td>3,00%</td>
+              <td>3,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Amapá</td>
+              <td>3,00%</td>
+              <td>3,00%</td>
+              <td>1,50%</td>
+            </tr>
+            <tr>
+              <td>Bahia</td>
+              <td>2,50%</td>
+              <td>2,50%</td>
+              <td>2,50%</td>
+            </tr>
+            <tr>
+              <td>Ceará</td>
+              <td>3,00%</td>
+              <td>3,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Distrito Federal</td>
+              <td>3,50%</td>
+              <td>1,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Espírito Santo</td>
+              <td>2,00%</td>
+              <td>2,00%</td>
+              <td>1,00%</td>
+            </tr>
+            <tr>
+              <td>Goiás</td>
+              <td>3,75%</td>
+              <td>3,45%</td>
+              <td>3,00%</td>
+            </tr>
+            <tr>
+              <td>Maranhão</td>
+              <td>2,50%</td>
+              <td>2,50%</td>
+              <td>1,00%</td>
+            </tr>
+            <tr>
+              <td>Minas Gerais</td>
+              <td>4,00%</td>
+              <td>3,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Mato Grosso</td>
+              <td>3,00%</td>
+              <td>2,50%</td>
+              <td>1,00%</td>
+            </tr>
+            <tr>
+              <td>Mato Grosso do Sul</td>
+              <td>3,50%</td>
+              <td>3,50%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Pará</td>
+              <td>2,50%</td>
+              <td>2,50%</td>
+              <td>1,00%</td>
+            </tr>
+            <tr>
+              <td>Paraíba</td>
+              <td>2,50%</td>
+              <td>2,50%</td>
+              <td>2,50%</td>
+            </tr>
+            <tr>
+              <td>Paraná</td>
+              <td>3,50%</td>
+              <td>3,50%</td>
+              <td>3,50%</td>
+            </tr>
+            <tr>
+              <td>Pernambuco</td>
+              <td>3,00%</td>
+              <td>3,00%</td>
+              <td>2,50%</td>
+            </tr>
+            <tr>
+              <td>Piauí</td>
+              <td>2,50%</td>
+              <td>2,50%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Rio de Janeiro</td>
+              <td>4,00%</td>
+              <td>3,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Rio Grande do Norte</td>
+              <td>3,00%</td>
+              <td>3,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Rio Grande do Sul</td>
+              <td>3,00%</td>
+              <td>3,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Rondônia</td>
+              <td>3,00%</td>
+              <td>3,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Roraima</td>
+              <td>3,00%</td>
+              <td>2,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Santa Catarina</td>
+              <td>2,00%</td>
+              <td>2,00%</td>
+              <td>1,00%</td>
+            </tr>
+            <tr>
+              <td>Sergipe</td>
+              <td>2,50%</td>
+              <td>2,50%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>São Paulo</td>
+              <td>4,00%</td>
+              <td>2,00%</td>
+              <td>2,00%</td>
+            </tr>
+            <tr>
+              <td>Tocantins</td>
+              <td>2,00%</td>
+              <td>3,00%</td>
+              <td>2,00%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tabelaDetran" class="hidden" role="region" aria-labelledby="detran-tabela-titulo">
+      <h2 id="detran-tabela-titulo">Site do DETRAN por Estado</h2>
+      <p class="sr-only">Pressione as setas do teclado para navegar pela tabela. Pressione Enter para acessar o site do DETRAN.</p>
+      <div class="table-explanation">
+        <p>Utilize esta tabela para acessar o site oficial do DETRAN em seu estado e obter informações atualizadas sobre documentação, serviços e valores.</p>
+      </div>
+      <div class="table-container">
+        <table role="grid" aria-label="Tabela de sites do DETRAN">
+          <thead>
+            <tr>
+              <th scope="col">Estado</th>
+              <th scope="col">Site do DETRAN</th>
+              <th scope="col">Telefone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Acre</td>
+              <td><a href="https://www.detran.ac.gov.br" target="_blank" class="detran-link">DETRAN AC</a></td>
+              <td>(68) 3215-4100</td>
+            </tr>
+            <tr>
+              <td>Alagoas</td>
+              <td><a href="https://www.detran.al.gov.br" target="_blank" class="detran-link">DETRAN AL</a></td>
+              <td>(82) 3315-2200</td>
+            </tr>
+            <tr>
+              <td>Amapá</td>
+              <td><a href="https://www.detran.ap.gov.br" target="_blank" class="detran-link">DETRAN AP</a></td>
+              <td>(96) 3314-0500</td>
+            </tr>
+            <tr>
+              <td>Amazonas</td>
+              <td><a href="https://www.detran.am.gov.br" target="_blank" class="detran-link">DETRAN AM</a></td>
+              <td>(92) 3643-0200</td>
+            </tr>
+            <tr>
+              <td>Bahia</td>
+              <td><a href="http://www.detran.ba.gov.br" target="_blank" class="detran-link">DETRAN BA</a></td>
+              <td>(71) 3116-2300</td>
+            </tr>
+            <tr>
+              <td>Ceará</td>
+              <td><a href="https://www.detran.ce.gov.br" target="_blank" class="detran-link">DETRAN CE</a></td>
+              <td>(85) 3217-2300</td>
+            </tr>
+            <tr>
+              <td>Distrito Federal</td>
+              <td><a href="http://www.detran.df.gov.br" target="_blank" class="detran-link">DETRAN DF</a></td>
+              <td>(61) 3120-9800</td>
+            </tr>
+            <tr>
+              <td>Espírito Santo</td>
+              <td><a href="https://detran.es.gov.br" target="_blank" class="detran-link">DETRAN ES</a></td>
+              <td>(27) 3137-2600</td>
+            </tr>
+            <tr>
+              <td>Goiás</td>
+              <td><a href="https://www.detran.go.gov.br" target="_blank" class="detran-link">DETRAN GO</a></td>
+              <td>(62) 3272-8000</td>
+            </tr>
+            <tr>
+              <td>Maranhão</td>
+              <td><a href="http://www.detran.ma.gov.br" target="_blank" class="detran-link">DETRAN MA</a></td>
+              <td>(98) 3089-2050</td>
+            </tr>
+            <tr>
+              <td>Mato Grosso</td>
+              <td><a href="http://www.detran.mt.gov.br" target="_blank" class="detran-link">DETRAN MT</a></td>
+              <td>(65) 3615-4700</td>
+            </tr>
+            <tr>
+              <td>Mato Grosso do Sul</td>
+              <td><a href="http://www.detran.ms.gov.br" target="_blank" class="detran-link">DETRAN MS</a></td>
+              <td>(67) 3368-0100</td>
+            </tr>
+            <tr>
+              <td>Minas Gerais</td>
+              <td><a href="https://www.detran.mg.gov.br" target="_blank" class="detran-link">DETRAN MG</a></td>
+              <td>(31) 3222-1890</td>
+            </tr>
+            <tr>
+              <td>Pará</td>
+              <td><a href="http://www.detran.pa.gov.br" target="_blank" class="detran-link">DETRAN PA</a></td>
+              <td>(91) 3214-6000</td>
+            </tr>
+            <tr>
+              <td>Paraíba</td>
+              <td><a href="http://www.detran.pb.gov.br" target="_blank" class="detran-link">DETRAN PB</a></td>
+              <td>(83) 3216-2500</td>
+            </tr>
+            <tr>
+              <td>Paraná</td>
+              <td><a href="http://www.detran.pr.gov.br" target="_blank" class="detran-link">DETRAN PR</a></td>
+              <td>(41) 3361-1212</td>
+            </tr>
+            <tr>
+              <td>Pernambuco</td>
+              <td><a href="http://www.detran.pe.gov.br" target="_blank" class="detran-link">DETRAN PE</a></td>
+              <td>(81) 3184-8000</td>
+            </tr>
+            <tr>
+              <td>Piauí</td>
+              <td><a href="http://www.detran.pi.gov.br" target="_blank" class="detran-link">DETRAN PI</a></td>
+              <td>(86) 3215-4800</td>
+            </tr>
+            <tr>
+              <td>Rio de Janeiro</td>
+              <td><a href="http://www.detran.rj.gov.br" target="_blank" class="detran-link">DETRAN RJ</a></td>
+              <td>(21) 3460-4040</td>
+            </tr>
+            <tr>
+              <td>Rio Grande do Norte</td>
+              <td><a href="http://www.detran.rn.gov.br" target="_blank" class="detran-link">DETRAN RN</a></td>
+              <td>(84) 3232-1200</td>
+            </tr>
+            <tr>
+              <td>Rio Grande do Sul</td>
+              <td><a href="http://www.detran.rs.gov.br" target="_blank" class="detran-link">DETRAN RS</a></td>
+              <td>(51) 3288-2000</td>
+            </tr>
+            <tr>
+              <td>Rondônia</td>
+              <td><a href="http://www.detran.ro.gov.br" target="_blank" class="detran-link">DETRAN RO</a></td>
+              <td>(69) 3216-5000</td>
+            </tr>
+            <tr>
+              <td>Roraima</td>
+              <td><a href="http://www.detran.rr.gov.br" target="_blank" class="detran-link">DETRAN RR</a></td>
+              <td>(95) 3198-3000</td>
+            </tr>
+            <tr>
+              <td>Santa Catarina</td>
+              <td><a href="http://www.detran.sc.gov.br" target="_blank" class="detran-link">DETRAN SC</a></td>
+              <td>(48) 3381-2000</td>
+            </tr>
+            <tr>
+              <td>São Paulo</td>
+              <td><a href="http://www.detran.sp.gov.br" target="_blank" class="detran-link">DETRAN SP</a></td>
+              <td>0800 017 3333</td>
+            </tr>
+            <tr>
+              <td>Sergipe</td>
+              <td><a href="http://www.detran.se.gov.br" target="_blank" class="detran-link">DETRAN SE</a></td>
+              <td>(79) 3226-2000</td>
+            </tr>
+            <tr>
+              <td>Tocantins</td>
+              <td><a href="http://www.detran.to.gov.br" target="_blank" class="detran-link">DETRAN TO</a></td>
+              <td>(63) 3218-2700</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="contato" class="hidden" role="region" aria-labelledby="contato-titulo">
+      <h2 id="contato-titulo">Contato</h2>
+      <p>Paulo Augusto Nascimento dos Santos<br>Rua Paulo Setubál, 4495 Sobrado 85<br>Curitiba/PR<br>CEP: 81750-190</p>
+      <a href="https://wa.me/5541997185852" target="_blank" class="contact-button">
+        Fale com o Paulo Augusto pelo WhatsApp
+      </a>
+    </div>
+
+    <div id="sobre" class="hidden" role="region" aria-labelledby="sobre-titulo">
+      <h2 id="sobre-titulo">Sobre</h2>
+      <p>Bem-vindo à nossa Calculadora de IPVA aprimorada! Esta ferramenta foi desenvolvida para simplificar o processo
+        de cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários de veículos,
+        concessionárias e lojas de automóveis.</p>
+      <p>Nossa calculadora oferece uma interface intuitiva e fácil de usar, permitindo que você calcule rapidamente:</p>
+      <ul>
+        <li>O valor integral do IPVA</li>
+        <li>O valor ajustado do IPVA até o final do ano</li>
+        <li>O total considerando custos adicionais como emplacamento, placa e baixa de gravame</li>
+        <li>A diferença entre o valor da proposta e o total calculado</li>
+      </ul>
+      <p>Além disso, você pode incluir informações como nome, marca/modelo do veículo e RENAVAM para gerar um orçamento
+        detalhado em PDF.</p>
+      <p>Utilizamos tecnologias modernas para garantir cálculos precisos e uma experiência de usuário suave em todos os
+        dispositivos.</p>
+    </div>
+
+    <div id="ajuda" class="container" role="main" aria-labelledby="ajuda-titulo">
+      <h2 id="ajuda-titulo">Em que posso ajudar?</h2>
+      <p>Selecione uma opção abaixo:</p>
+      <button class="ajuda-opcao" aria-label="Calcular IPVA">Calcular IPVA</button>
+      <button class="ajuda-opcao" aria-label="Ver tutorial completo">Acessar Tutorial</button>
+      <button class="ajuda-opcao" id="siteDetranBtn" aria-label="Site Detran">Site Detran</button>
+      <button class="ajuda-opcao" aria-label="Entrar em contato">Entrar em contato</button>
+      <button class="ajuda-opcao" aria-label="Saber mais sobre nós">Saber mais sobre nós</button>
+      <div class="logo" id="logo">
+        GuaraSoftware - Desde 21/09/2024
+      </div>
+    </div>
+
+    <!-- Keyboard navigation help -->
+    <button class="show-keyboard-shortcuts" aria-label="Mostrar atalhos de teclado" aria-expanded="false">Atalhos de Teclado</button>
+    <div class="keyboard-hint hidden" id="keyboard-hint" aria-live="polite">
+      <p><strong>Atalhos de Teclado:</strong></p>
+      <ul>
+        <li>Alt+C: IPVA e Serviços</li>
+        <li>Alt+U: Tutorial</li>
+        <li>Alt+T: Tabela Aliquota</li>
+        <li>Alt+D: Site Detran</li>
+        <li>Alt+O: Contato</li>
+        <li>Alt+S: Sobre</li>
+        <li>Alt+H: Ajuda</li>
+        <li>Tab: Navegar entre elementos</li>
+        <li>Enter/Espaço: Ativar botão ou link</li>
+        <li>Setas: Navegar tabelas</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

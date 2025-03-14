@@ -1,0 +1,1118 @@
+:root {
+  --primary-color: #006e00;
+  --secondary-color: #315e33;
+  --accent-color: #FFCC29;
+  --text-color: #333;
+  --background-color: #f0f0f0;
+  --success-color: #28a745;
+  --error-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --focus-outline-color: #4d90fe;
+}
+
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--text-color);
+}
+
+.container {
+  background-color: var(--background-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+h1, h2 {
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+/* Checkbox group styles for better touch targets */
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 10px;
+  min-width: 20px;
+  min-height: 20px;
+}
+
+input[type="number"],
+input[type="date"],
+input[type="text"] {
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="text"]:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input.invalid {
+  border-color: var(--error-color);
+}
+
+input.valid {
+  border-color: var(--success-color);
+}
+
+.validation-message {
+  display: block;
+  font-size: 0.75rem;
+  min-height: 1rem;
+  margin-top: 0.25rem;
+  color: var(--error-color);
+  transition: all 0.3s ease;
+}
+
+.field-tip {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+button {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  padding: 0.85rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  min-height: 48px;
+}
+
+button:hover {
+  background-color: #FFD700;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* Increased touch targets for sidebar buttons */
+.sidebar-button {
+  font-size: 1.15rem;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.2rem;
+  min-height: 60px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Keyboard focus styles */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus,
+[tabindex]:focus {
+  outline: 3px solid var(--focus-outline-color);
+  outline-offset: 2px;
+  z-index: 100;
+  position: relative;
+}
+
+/* Skip to content link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-color);
+  color: var(--text-color);
+  padding: 12px 16px;
+  z-index: 9999;
+  transition: top 0.3s;
+  font-size: 1.1rem;
+  border-radius: 0 0 8px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+.results {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.results h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.results p {
+  margin-bottom: 0.5rem;
+}
+
+/* Mobile menu button styles */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  border: none;
+}
+
+.menu-toggle span {
+  display: block;
+  position: absolute;
+  width: 26px;
+  height: 3px;
+  background-color: var(--text-color);
+  left: 11px;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle span:nth-child(1) {
+  top: 14px;
+}
+
+.menu-toggle span:nth-child(2) {
+  top: 22px;
+}
+
+.menu-toggle span:nth-child(3) {
+  top: 30px;
+}
+
+.menu-toggle.menu-open span:nth-child(1) {
+  transform: rotate(45deg);
+  top: 22px;
+}
+
+.menu-toggle.menu-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.menu-open span:nth-child(3) {
+  transform: rotate(-45deg);
+  top: 22px;
+}
+
+.sidebar {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-right: 2rem;
+  flex-shrink: 0;
+  width: 220px;
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  transition: all 0.3s ease;
+  text-align: left;
+  padding: 0.85rem 1.2rem;
+}
+
+.sidebar button:hover {
+  background-color: #fff;
+  color: var(--primary-color);
+}
+
+.content {
+  flex: 1;
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.sidebar-hidden {
+  display: none;
+}
+
+#sobre,
+#contato,
+#tabela,
+#ajuda,
+#tabela-servicos,
+#tabelaDetran,
+#tutorial {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 800px;
+  box-sizing: border-box;
+}
+
+#tabela,
+#tabela-servicos,
+#tabelaDetran {
+  overflow-x: auto;
+}
+
+/* Table responsive styles */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#tabela table,
+#tabela-servicos table,
+#tabelaDetran table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  min-width: 600px; /* Set a minimum width for tables */
+}
+
+#tabela th,
+#tabela td,
+#tabela-servicos th,
+#tabela-servicos td,
+#tabelaDetran th,
+#tabelaDetran td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+#tabela th,
+#tabela-servicos th,
+#tabelaDetran th {
+  background-color: var(--primary-color);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+#tabela tr:nth-child(even),
+#tabela-servicos tr:nth-child(even),
+#tabelaDetran tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#tabela tr:hover,
+#tabela-servicos tr:hover,
+#tabelaDetran tr:hover {
+  background-color: #ddd;
+}
+
+/* Links in tables - increased touch targets */
+.detran-link {
+  display: inline-block;
+  padding: 8px 12px;
+  margin: -8px -12px;
+  color: var(--primary-color);
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.detran-link:hover {
+  background-color: rgba(0, 110, 0, 0.1);
+  text-decoration: underline;
+}
+
+/* Keyboard focus for table cells */
+#tabela td:focus,
+#tabela-servicos td:focus,
+#tabelaDetran td:focus,
+.keyboard-focus {
+  outline: 3px solid var(--focus-outline-color);
+  outline-offset: -2px;
+  position: relative;
+  z-index: 1;
+}
+
+#gerarOrcamentoPDF {
+  margin-top: 24px;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  padding: 14px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  min-height: 48px;
+}
+
+#gerarOrcamentoPDF:hover {
+  background-color: #FFD700;
+}
+
+#ajuda {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.ajuda-opcao {
+  display: block;
+  width: 100%;
+  margin-bottom: 1.2rem;
+  padding: 1rem;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 1.1rem;
+  min-height: 60px;
+}
+
+.ajuda-opcao:hover {
+  background-color: #FFD700;
+  transform: translateY(-2px);
+}
+
+.ajuda-opcao:active {
+  transform: translateY(1px);
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Contact button styling */
+.contact-button {
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  margin-top: 16px;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  min-height: 48px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contact-button:hover {
+  background-color: #FFD700;
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.contact-button:active {
+  transform: translateY(1px);
+}
+
+.logo {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: var(--text-color);
+  font-size: 1.2rem;
+}
+
+#tabela-servicos {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+#tabelaDetran {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+#calculatorModal,
+#calculatorContainer,
+#calculatorHeader,
+#calculator {
+  display: none;
+}
+
+#observacoes {
+  text-align: center;
+}
+
+textarea {
+  height: 100px;
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.fipe-button {
+  display: block;
+  width: 100%;
+  margin-top: 1.2rem;
+  text-align: center;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+  box-sizing: border-box;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fipe-button:hover {
+  background-color: #FFD700;
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.fipe-button:active {
+  transform: translateY(1px);
+}
+
+.fipe-button.calc-ipva-link {
+  margin-top: 1.2rem;
+  font-weight: bold;
+}
+
+/* Feedback message styles */
+.feedback {
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeIn 0.5s ease;
+  font-size: 1.05rem;
+}
+
+.feedback.success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.feedback.error {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.feedback.warning {
+  background-color: var(--warning-color);
+  color: var(--text-color);
+}
+
+.feedback.info {
+  background-color: var(--info-color);
+  color: white;
+}
+
+/* Form validation animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shake 0.6s ease;
+}
+
+/* Input focus effect */
+.form-group:focus-within label {
+  color: var(--primary-color);
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Keyboard navigation hints */
+.keyboard-hint {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  z-index: 1000;
+  max-width: 300px;
+}
+
+.show-keyboard-shortcuts {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  z-index: 1000;
+  min-height: 40px;
+  min-width: 150px;
+}
+
+/* Accessibility improvements */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Calculator and tutorial styles */
+.calculator-explanation,
+.results-explanation {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--primary-color);
+}
+
+.calculator-instructions,
+.results-instructions {
+  padding-top: 0.5rem;
+}
+
+details summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--primary-color);
+  padding: 0.5rem 0;
+}
+
+details summary:hover {
+  text-decoration: underline;
+}
+
+.tutorial-section {
+  margin-bottom: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tutorial-section h2 {
+  color: var(--primary-color);
+  margin-top: 0;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+}
+
+.tutorial-section h3 {
+  color: var(--secondary-color);
+  margin-bottom: 0.5rem;
+}
+
+.tutorial-steps {
+  counter-reset: step-counter;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.tutorial-steps li {
+  position: relative;
+  padding-left: 2.5rem;
+  margin-bottom: 1.5rem;
+  counter-increment: step-counter;
+}
+
+.tutorial-steps li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.8rem;
+  height: 1.8rem;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.example-box {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.table-explanation {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-left: 4px solid var(--info-color);
+}
+
+.primary-button {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  margin-top: 16px;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  min-height: 48px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  background-color: #005000;
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: white;
+}
+
+.tutorial-cta {
+  margin: 2rem auto;
+  display: block;
+  max-width: 300px;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .container {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .fipe-button, 
+  .ajuda-opcao,
+  .sidebar-button,
+  button {
+    padding: 0.9rem 1.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .tutorial-section {
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+    padding-top: 70px; /* Space for the mobile menu button */
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    height: 100%;
+    width: 220px;
+    margin: 0;
+    padding-top: 70px;
+    z-index: 900;
+    border-radius: 0;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+  }
+
+  .sidebar.sidebar-visible {
+    left: 0;
+  }
+
+  .content {
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+  
+  .container,
+  #sobre,
+  #contato,
+  #tabela,
+  #ajuda,
+  #tabela-servicos,
+  #tabelaDetran,
+  #tutorial {
+    padding: 1.2rem;
+    margin-top: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  /* Make tables scroll horizontally on small screens */
+  #tabela,
+  #tabela-servicos,
+  #tabelaDetran {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  input[type="number"],
+  input[type="date"],
+  input[type="text"] {
+    font-size: 16px; /* Prevent iOS zoom on focus */
+    padding: 0.9rem;
+  }
+  
+  .feedback {
+    padding: 0.9rem;
+    font-size: 1rem;
+  }
+  
+  .keyboard-hint {
+    width: calc(100% - 20px);
+    max-width: none;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    box-sizing: border-box;
+  }
+  
+  .show-keyboard-shortcuts {
+    bottom: 8px;
+    right: 8px;
+    padding: 10px 14px;
+  }
+  
+  /* Make all interactive elements larger for touch */
+  .fipe-button, 
+  .ajuda-opcao,
+  .contact-button,
+  button {
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    min-height: 60px;
+    border-radius: 8px;
+  }
+  
+  /* Larger table cells for better touch targets */
+  #tabela th,
+  #tabela td,
+  #tabela-servicos th,
+  #tabela-servicos td,
+  #tabelaDetran th,
+  #tabelaDetran td {
+    padding: 14px;
+  }
+  
+  .detran-link {
+    padding: 10px 14px;
+    margin: -10px -14px;
+  }
+  
+  .tutorial-steps li {
+    padding-left: 2.2rem;
+  }
+  
+  .tutorial-steps li::before {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container,
+  #sobre,
+  #contato,
+  #tabela,
+  #ajuda,
+  #tabela-servicos,
+  #tabelaDetran,
+  #tutorial {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  h1 {
+    font-size: 1.3rem;
+  }
+  
+  h2 {
+    font-size: 1.1rem;
+  }
+  
+  button, 
+  .fipe-button,
+  .ajuda-opcao,
+  .contact-button {
+    padding: 0.9rem 1.2rem;
+    font-size: 1.05rem;
+    min-height: 56px;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  /* Stack form labels and inputs for better small screen layout */
+  label {
+    margin-bottom: 0.4rem;
+    font-size: 1rem;
+  }
+  
+  input[type="number"],
+  input[type="date"],
+  input[type="text"],
+  textarea {
+    padding: 0.8rem;
+  }
+  
+  .results {
+    padding: 1rem;
+  }
+  
+  .results h2 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .results p {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  /* Even larger touch targets for very small screens */
+  .sidebar-button {
+    margin-bottom: 1rem;
+    min-height: 54px;
+  }
+  
+  .menu-toggle {
+    width: 54px;
+    height: 54px;
+  }
+  
+  .menu-toggle span {
+    width: 28px;
+    left: 13px;
+  }
+  
+  .menu-toggle span:nth-child(1) {
+    top: 16px;
+  }
+  
+  .menu-toggle span:nth-child(2) {
+    top: 25px;
+  }
+  
+  .menu-toggle span:nth-child(3) {
+    top: 34px;
+  }
+  
+  .menu-toggle.menu-open span:nth-child(1),
+  .menu-toggle.menu-open span:nth-child(3) {
+    top: 25px;
+  }
+  
+  .tutorial-section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .example-box {
+    padding: 1rem;
+  }
+}
+
+/* Print styles for better PDF generation */
+@media print {
+  body {
+    background: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .container,
+  #results {
+    max-width: none;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    background: none;
+  }
+  
+  .sidebar,
+  .menu-toggle,
+  .show-keyboard-shortcuts,
+  button:not(.calc-ipva-link) {
+    display: none;
+  }
+}
+
+/* Table responsiveness improvements */
+@media (max-width: 600px) {
+  .table-container {
+    position: relative;
+  }
+  
+  .table-container::after {
+    content: "⟷";
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    animation: slideHint 2s infinite;
+    opacity: 0.7;
+  }
+  
+  @keyframes slideHint {
+    0%, 100% { transform: translateX(-70%); }
+    50% { transform: translateX(-30%); }
+  }
+  
+  /* Fix table layout on small screens */
+  #tabela table,
+  #tabela-servicos table,
+  #tabelaDetran table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+  }
+  
+  /* Make table cells more compact but keep touch targets large */
+  #tabela th,
+  #tabela td,
+  #tabela-servicos th,
+  #tabela-servicos td,
+  #tabelaDetran th,
+  #tabelaDetran td {
+    padding: 12px 8px;
+    font-size: 0.95rem;
+  }
+  
+  .detran-link {
+    padding: 12px 8px;
+    margin: -12px -8px;
+    font-size: 0.95rem;
+  }
+}
