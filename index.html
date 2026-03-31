@@ -3,18 +3,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VeículoFácil - IPVA e Serviços Automotivos</title>
-  <link rel="shortcut icon" href="favicon.ico" type="image carrinho">
-  <link rel="stylesheet" href="style.css">
-  <script src="main.js"></script>
   
   <!-- Meta tags for SEO -->
   <meta name="description" content="Calculadora de IPVA online gratuita. Calcule valores de IPVA, emplacamento, placas e documentação de veículos em todo o Brasil. Consulte alíquotas por estado e acesse sites do DETRAN.">
   <meta name="keywords" content="IPVA, calculadora IPVA, emplacamento, documentação veicular, DETRAN, alíquota IPVA, serviços automotivos, cálculo de impostos, veículos, transferência de veículos, placas de carro, RENAVAM, tabela FIPE">
   <meta name="author" content="Paulo Augusto Nascimento dos Santos">
   <meta name="robots" content="index, follow">
-  <meta name="language" content="Portuguese">
   <meta name="revisit-after" content="7 days">
   <meta name="generator" content="GuaraSoftware">
+  <meta name="theme-color" content="#006e00">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -32,6 +29,7 @@
   
   <!-- Canonical URL -->
   <meta rel="canonical" href="https://veiculofacil.com.br/">
+  <link rel="manifest" href="/manifest.json">
   
   <link rel="stylesheet" href="styles.css">
   <script type="application/ld+json">
@@ -95,12 +93,22 @@
   </script>
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registered: ', registration);
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+  </script>
 </head>
 
 <body>
-  <!-- Skip to content link for keyboard users -->
-  <a href="#main-content" class="skip-link">Pular para o conteúdo</a>
-  
   <!-- Mobile menu toggle button -->
   <button id="menu-toggle" class="menu-toggle" aria-label="Menu de navegação" aria-expanded="false" aria-controls="sidebar">
     <span></span>
@@ -112,7 +120,7 @@
     <button id="ajudaBtn" class="sidebar-button" aria-label="Em que posso ajudar" accesskey="h">Em que posso ajudar?</button>
     <button id="calcBtn" class="sidebar-button" aria-label="IPVA e Serviços" accesskey="c">IPVA e Serviços</button>
     <button id="tutorialBtn" class="sidebar-button" aria-label="Tutorial" accesskey="u">Tutorial</button>
-    <button id="novaTabelaBtn" class="sidebar-button" aria-label="Tabela Aliquota 2024" accesskey="t">Tabela Aliquota 2024</button>
+    <button id="novaTabelaBtn" class="sidebar-button" aria-label="Tabela Aliquota 2026" accesskey="t">Tabela Aliquota 2026</button>
     <button id="siteDetranBtn" class="sidebar-button" aria-label="Site Detran" accesskey="d">Site Detran</button>
     <button id="contatoBtn" class="sidebar-button" aria-label="Contato" accesskey="o">Contato</button>
     <button id="sobreBtn" class="sidebar-button" aria-label="Sobre" accesskey="s">Sobre</button>
@@ -131,12 +139,12 @@
             <ol>
               <li><strong>Preencha os dados do veículo</strong> - nome, marca/modelo e informações de identificação.</li>
               <li><strong>Informe o valor do veículo</strong> - utilize o valor de mercado atual ou consulte a <a href="https://veiculos.fipe.org.br/" target="_blank">Tabela FIPE</a>.</li>
-              <li><strong>Ajuste a alíquota</strong> - cada estado possui uma alíquota diferente (pode ser consultada na aba "Tabela Alíquota 2024").</li>
+              <li><strong>Ajuste a alíquota</strong> - cada estado possui uma alíquota diferente (pode ser consultada na aba "Tabela Alíquota 2026").</li>
               <li><strong>Adicione valores extras</strong> - emplacamento, placa e baixa de gravame/débitos, se aplicáveis.</li>
               <li><strong>Defina a data de referência</strong> - o sistema calculará o valor proporcional até o final do ano.</li>
               <li><strong>Analise os resultados</strong> - os valores calculados serão exibidos em tempo real abaixo do formulário.</li>
             </ol>
-            <p><strong>Dica:</strong> Para obter a alíquota correta do seu estado, visite a aba "Tabela Alíquota 2024" e clique na linha correspondente ao seu estado.</p>
+            <p><strong>Dica:</strong> Para obter a alíquota correta do seu estado, visite a aba "Tabela Alíquota 2026" e clique na linha correspondente ao seu estado.</p>
           </div>
         </details>
       </div>
@@ -168,7 +176,7 @@
           <label for="aliquota">Alíquota (%):</label>
           <input type="number" step="0.01" id="aliquota" name="aliquota" value="3.5" required min="0.1" max="10" aria-describedby="aliquota-error">
           <small class="validation-message" id="aliquota-error"></small>
-          <small class="field-tip">Percentual cobrado pelo estado sobre o valor do veículo. Consulte na aba "Tabela Alíquota 2024".</small>
+          <small class="field-tip">Percentual cobrado pelo estado sobre o valor do veículo. Consulte na aba "Tabela Alíquota 2026".</small>
         </div>
         <div class="form-group">
           <label for="valorAdicional">Valor do Emplacamento (R$):</label>
@@ -269,7 +277,7 @@
           </li>
           <li>
             <h3>Identifique a Alíquota do seu Estado</h3>
-            <p>Cada estado brasileiro define suas próprias alíquotas de IPVA, que podem variar conforme o tipo de veículo (carros de passeio, utilitários, motocicletas). Na aba "Tabela Alíquota 2024", você encontra a alíquota correspondente ao seu estado e tipo de veículo. Basta clicar na linha do seu estado para que a alíquota seja automaticamente aplicada à calculadora.</p>
+            <p>Cada estado brasileiro define suas próprias alíquotas de IPVA, que podem variar conforme o tipo de veículo (carros de passeio, utilitários, motocicletas). Na aba "Tabela Alíquota 2026", você encontra a alíquota correspondente ao seu estado e tipo de veículo. Basta clicar na linha do seu estado para que a alíquota seja automaticamente aplicada à calculadora.</p>
           </li>
           <li>
             <h3>Considere a Data de Referência</h3>
@@ -315,11 +323,11 @@
       <div class="tutorial-section">
         <h2>Exemplo Prático</h2>
         <div class="example-box">
-          <p><strong>Cenário:</strong> Compra de um veículo de passeio no valor de R$ 50.000,00 no estado do Paraná em 1º de julho de 2024.</p>
+          <p><strong>Cenário:</strong> Compra de um veículo de passeio no valor de R$ 50.000,00 no estado do Paraná em 1º de julho de 2026.</p>
           <ol>
             <li>Valor do veículo: R$ 50.000,00</li>
             <li>Alíquota do Paraná para veículos de passeio: 3,5%</li>
-            <li>Data de referência: 01/07/2024 (restam 6 meses no ano)</li>
+            <li>Data de referência: 01/07/2026 (restam 6 meses no ano)</li>
             <li>IPVA integral anual: R$ 50.000,00 × 3,5% = R$ 1.750,00</li>
             <li>IPVA ajustado para 6 meses: R$ 1.750,00 × (6/12) = R$ 875,00</li>
             <li>Supondo custos adicionais:
@@ -339,7 +347,7 @@
     </div>
 
     <div id="tabela-servicos" class="hidden" role="region" aria-labelledby="aliquotas-tabela-titulo">
-      <h2 id="aliquotas-tabela-titulo">Tabela Aliquota 2024 por estado</h2>
+      <h2 id="aliquotas-tabela-titulo">Tabela Aliquota 2026 por estado</h2>
       <p class="sr-only">Pressione as setas do teclado para navegar pela tabela. Pressione Enter para selecionar uma alíquota.</p>
       <div class="table-explanation">
         <p>Esta tabela mostra as alíquotas de IPVA para diferentes tipos de veículos em cada estado brasileiro. <strong>Clique na linha do seu estado</strong> para aplicar automaticamente a alíquota na calculadora.</p>
@@ -586,156 +594,156 @@
             <tr>
               <td>Maranhão</td>
               <td><a href="http://www.detran.ma.gov.br" target="_blank" class="detran-link">DETRAN MA</a></td>
-              <td>(98) 3089-2050</td>
-            </tr>
-            <tr>
-              <td>Mato Grosso</td>
-              <td><a href="http://www.detran.mt.gov.br" target="_blank" class="detran-link">DETRAN MT</a></td>
-              <td>(65) 3615-4700</td>
-            </tr>
-            <tr>
-              <td>Mato Grosso do Sul</td>
-              <td><a href="http://www.detran.ms.gov.br" target="_blank" class="detran-link">DETRAN MS</a></td>
-              <td>(67) 3368-0100</td>
-            </tr>
-            <tr>
-              <td>Minas Gerais</td>
-              <td><a href="https://www.detran.mg.gov.br" target="_blank" class="detran-link">DETRAN MG</a></td>
-              <td>(31) 3222-1890</td>
-            </tr>
-            <tr>
-              <td>Pará</td>
-              <td><a href="http://www.detran.pa.gov.br" target="_blank" class="detran-link">DETRAN PA</a></td>
-              <td>(91) 3214-6000</td>
-            </tr>
-            <tr>
-              <td>Paraíba</td>
-              <td><a href="http://www.detran.pb.gov.br" target="_blank" class="detran-link">DETRAN PB</a></td>
-              <td>(83) 3216-2500</td>
-            </tr>
-            <tr>
-              <td>Paraná</td>
-              <td><a href="http://www.detran.pr.gov.br" target="_blank" class="detran-link">DETRAN PR</a></td>
-              <td>(41) 3361-1212</td>
-            </tr>
-            <tr>
-              <td>Pernambuco</td>
-              <td><a href="http://www.detran.pe.gov.br" target="_blank" class="detran-link">DETRAN PE</a></td>
-              <td>(81) 3184-8000</td>
-            </tr>
-            <tr>
-              <td>Piauí</td>
-              <td><a href="http://www.detran.pi.gov.br" target="_blank" class="detran-link">DETRAN PI</a></td>
-              <td>(86) 3215-4800</td>
-            </tr>
-            <tr>
-              <td>Rio de Janeiro</td>
-              <td><a href="http://www.detran.rj.gov.br" target="_blank" class="detran-link">DETRAN RJ</a></td>
-              <td>(21) 3460-4040</td>
-            </tr>
-            <tr>
-              <td>Rio Grande do Norte</td>
-              <td><a href="http://www.detran.rn.gov.br" target="_blank" class="detran-link">DETRAN RN</a></td>
-              <td>(84) 3232-1200</td>
-            </tr>
-            <tr>
-              <td>Rio Grande do Sul</td>
-              <td><a href="http://www.detran.rs.gov.br" target="_blank" class="detran-link">DETRAN RS</a></td>
-              <td>(51) 3288-2000</td>
-            </tr>
-            <tr>
-              <td>Rondônia</td>
-              <td><a href="http://www.detran.ro.gov.br" target="_blank" class="detran-link">DETRAN RO</a></td>
-              <td>(69) 3216-5000</td>
-            </tr>
-            <tr>
-              <td>Roraima</td>
-              <td><a href="http://www.detran.rr.gov.br" target="_blank" class="detran-link">DETRAN RR</a></td>
-              <td>(95) 3198-3000</td>
-            </tr>
-            <tr>
-              <td>Santa Catarina</td>
-              <td><a href="http://www.detran.sc.gov.br" target="_blank" class="detran-link">DETRAN SC</a></td>
-              <td>(48) 3381-2000</td>
-            </tr>
-            <tr>
-              <td>São Paulo</td>
-              <td><a href="http://www.detran.sp.gov.br" target="_blank" class="detran-link">DETRAN SP</a></td>
-              <td>0800 017 3333</td>
-            </tr>
-            <tr>
-              <td>Sergipe</td>
-              <td><a href="http://www.detran.se.gov.br" target="_blank" class="detran-link">DETRAN SE</a></td>
-              <td>(79) 3226-2000</td>
-            </tr>
-            <tr>
-              <td>Tocantins</td>
-              <td><a href="http://www.detran.to.gov.br" target="_blank" class="detran-link">DETRAN TO</a></td>
-              <td>(63) 3218-2700</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div id="contato" class="hidden" role="region" aria-labelledby="contato-titulo">
-      <h2 id="contato-titulo">Contato</h2>
-      <p>Paulo Augusto Nascimento dos Santos<br>Rua Paulo Setubál, 4495 Sobrado 85<br>Curitiba/PR<br>CEP: 81750-190</p>
-      <a href="https://wa.me/5541997185852" target="_blank" class="contact-button">
-        Fale com o Paulo Augusto pelo WhatsApp
-      </a>
-    </div>
-
-    <div id="sobre" class="hidden" role="region" aria-labelledby="sobre-titulo">
-      <h2 id="sobre-titulo">Sobre</h2>
-      <p>Bem-vindo à nossa Calculadora de IPVA aprimorada! Esta ferramenta foi desenvolvida para simplificar o processo
-        de cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários de veículos,
-        concessionárias e lojas de automóveis.</p>
-      <p>Nossa calculadora oferece uma interface intuitiva e fácil de usar, permitindo que você calcule rapidamente:</p>
-      <ul>
-        <li>O valor integral do IPVA</li>
-        <li>O valor ajustado do IPVA até o final do ano</li>
-        <li>O total considerando custos adicionais como emplacamento, placa e baixa de gravame</li>
-        <li>A diferença entre o valor da proposta e o total calculado</li>
-      </ul>
-      <p>Além disso, você pode incluir informações como nome, marca/modelo do veículo e RENAVAM para gerar um orçamento
-        detalhado em PDF.</p>
-      <p>Utilizamos tecnologias modernas para garantir cálculos precisos e uma experiência de usuário suave em todos os
-        dispositivos.</p>
-    </div>
-
-    <div id="ajuda" class="container" role="main" aria-labelledby="ajuda-titulo">
-      <h2 id="ajuda-titulo">Em que posso ajudar?</h2>
-      <p>Selecione uma opção abaixo:</p>
-      <button class="ajuda-opcao" aria-label="Calcular IPVA">Calcular IPVA</button>
-      <button class="ajuda-opcao" aria-label="Ver tutorial completo">Acessar Tutorial</button>
-      <button class="ajuda-opcao" id="siteDetranBtn" aria-label="Site Detran">Site Detran</button>
-      <button class="ajuda-opcao" aria-label="Entrar em contato">Entrar em contato</button>
-      <button class="ajuda-opcao" aria-label="Saber mais sobre nós">Saber mais sobre nós</button>
-      <div class="logo" id="logo">
-        GuaraSoftware - Desde 21/09/2024
-      </div>
-    </div>
-
-    <!-- Keyboard navigation help -->
-    <button class="show-keyboard-shortcuts" aria-label="Mostrar atalhos de teclado" aria-expanded="false">Atalhos de Teclado</button>
-    <div class="keyboard-hint hidden" id="keyboard-hint" aria-live="polite">
-      <p><strong>Atalhos de Teclado:</strong></p>
-      <ul>
-        <li>Alt+C: IPVA e Serviços</li>
-        <li>Alt+U: Tutorial</li>
-        <li>Alt+T: Tabela Aliquota</li>
-        <li>Alt+D: Site Detran</li>
-        <li>Alt+O: Contato</li>
-        <li>Alt+S: Sobre</li>
-        <li>Alt+H: Ajuda</li>
-        <li>Tab: Navegar entre elementos</li>
-        <li>Enter/Espaço: Ativar botão ou link</li>
-        <li>Setas: Navegar tabelas</li>
-      </ul>
-    </div>
+              <td>(98) 3089-2050 </small>
+          </td>
+        </tr>
+        <tr>
+          <td>Mato Grosso</td>
+          <td><a href="http://www.detran.mt.gov.br" target="_blank" class="detran-link">DETRAN MT</a></td>
+          <td>(65) 3615-4700</td>
+        </tr>
+        <tr>
+          <td>Mato Grosso do Sul</td>
+          <td><a href="http://www.detran.ms.gov.br" target="_blank" class="detran-link">DETRAN MS</a></td>
+          <td>(67) 3368-0100</td>
+        </tr>
+        <tr>
+          <td>Minas Gerais</td>
+          <td><a href="https://www.detran.mg.gov.br" target="_blank" class="detran-link">DETRAN MG</a></td>
+          <td>(31) 3222-1890</td>
+        </tr>
+        <tr>
+          <td>Pará</td>
+          <td><a href="http://www.detran.pa.gov.br" target="_blank" class="detran-link">DETRAN PA</a></td>
+          <td>(91) 3214-6000</td>
+        </tr>
+        <tr>
+          <td>Paraíba</td>
+          <td><a href="http://www.detran.pb.gov.br" target="_blank" class="detran-link">DETRAN PB</a></td>
+          <td>(83) 3216-2500</td>
+        </tr>
+        <tr>
+          <td>Paraná</td>
+          <td><a href="http://www.detran.pr.gov.br" target="_blank" class="detran-link">DETRAN PR</a></td>
+          <td>(41) 3361-1212</td>
+        </tr>
+        <tr>
+          <td>Pernambuco</td>
+          <td><a href="http://www.detran.pe.gov.br" target="_blank" class="detran-link">DETRAN PE</a></td>
+          <td>(81) 3184-8000</td>
+        </tr>
+        <tr>
+          <td>Piauí</td>
+          <td><a href="http://www.detran.pi.gov.br" target="_blank" class="detran-link">DETRAN PI</a></td>
+          <td>(86) 3215-4800</td>
+        </tr>
+        <tr>
+          <td>Rio de Janeiro</td>
+          <td><a href="http://www.detran.rj.gov.br" target="_blank" class="detran-link">DETRAN RJ</a></td>
+          <td>(21) 3460-4040</td>
+        </tr>
+        <tr>
+          <td>Rio Grande do Norte</td>
+          <td><a href="http://www.detran.rn.gov.br" target="_blank" class="detran-link">DETRAN RN</a></td>
+          <td>(84) 3232-1200</td>
+        </tr>
+        <tr>
+          <td>Rio Grande do Sul</td>
+          <td><a href="http://www.detran.rs.gov.br" target="_blank" class="detran-link">DETRAN RS</a></td>
+          <td>(51) 3288-2000</td>
+        </tr>
+        <tr>
+          <td>Rondônia</td>
+          <td><a href="http://www.detran.ro.gov.br" target="_blank" class="detran-link">DETRAN RO</a></td>
+          <td>(69) 3216-5000</td>
+        </tr>
+        <tr>
+          <td>Roraima</td>
+          <td><a href="http://www.detran.rr.gov.br" target="_blank" class="detran-link">DETRAN RR</a></td>
+          <td>(95) 3198-3000</td>
+        </tr>
+        <tr>
+          <td>Santa Catarina</td>
+          <td><a href="http://www.detran.sc.gov.br" target="_blank" class="detran-link">DETRAN SC</a></td>
+          <td>(48) 3381-2000</td>
+        </tr>
+        <tr>
+          <td>São Paulo</td>
+          <td><a href="http://www.detran.sp.gov.br" target="_blank" class="detran-link">DETRAN SP</a></td>
+          <td>0800 017 3333</td>
+        </tr>
+        <tr>
+          <td>Sergipe</td>
+          <td><a href="http://www.detran.se.gov.br" target="_blank" class="detran-link">DETRAN SE</a></td>
+          <td>(79) 3226-2000</td>
+        </tr>
+        <tr>
+          <td>Tocantins</td>
+          <td><a href="http://www.detran.to.gov.br" target="_blank" class="detran-link">DETRAN TO</a></td>
+          <td>(63) 3218-2700</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>
 
-  <script src="main.js"></script>
+<div id="contato" class="hidden" role="region" aria-labelledby="contato-titulo">
+  <h2 id="contato-titulo">Contato</h2>
+  <p>Paulo Augusto Nascimento dos Santos<br>Rua Paulo Setubál, 4495 Sobrado 85<br>Curitiba/PR<br>CEP: 81750-190</p>
+  <a href="https://wa.me/5541997185852" target="_blank" class="contact-button">
+    Fale com o Paulo Augusto pelo WhatsApp
+  </a>
+</div>
+
+<div id="sobre" class="hidden" role="region" aria-labelledby="sobre-titulo">
+  <h2 id="sobre-titulo">Sobre</h2>
+  <p>Bem-vindo à nossa Calculadora de IPVA aprimorada! Esta ferramenta foi desenvolvida para simplificar o processo
+    de cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários de veículos,
+    concessionárias e lojas de automóveis.</p>
+  <p>Nossa calculadora oferece uma interface intuitiva e fácil de usar, permitindo que você calcule rapidamente:</p>
+  <ul>
+    <li>O valor integral do IPVA</li>
+    <li>O valor ajustado do IPVA até o final do ano</li>
+    <li>O total considerando custos adicionais como emplacamento, placa e baixa de gravame</li>
+    <li>A diferença entre o valor da proposta e o total calculado</li>
+  </ul>
+  <p>Além disso, você pode incluir informações como nome, marca/modelo do veículo e RENAVAM para gerar um orçamento
+    detalhado em PDF.</p>
+  <p>Utilizamos tecnologias modernas para garantir cálculos precisos e uma experiência de usuário suave em todos os
+    dispositivos.</p>
+</div>
+
+<div id="ajuda" class="container" role="main" aria-labelledby="ajuda-titulo">
+  <h2 id="ajuda-titulo">Em que posso ajudar?</h2>
+  <p>Selecione uma opção abaixo:</p>
+  <button class="ajuda-opcao" aria-label="Calcular IPVA">Calcular IPVA</button>
+  <button class="ajuda-opcao" aria-label="Ver tutorial completo">Acessar Tutorial</button>
+  <button class="ajuda-opcao" aria-label="Entrar em contato">Entrar em contato</button>
+  <button class="ajuda-opcao" aria-label="Saber mais sobre nós">Saber mais sobre nós</button>
+  <div class="logo" id="logo">
+    GuaraSoftware - Desde 21/09/2024
+  </div>
+</div>
+
+<!-- Keyboard navigation help -->
+<button class="show-keyboard-shortcuts" aria-label="Mostrar atalhos de teclado" aria-expanded="false">Atalhos de Teclado</button>
+<div class="keyboard-hint hidden" id="keyboard-hint" aria-live="polite">
+  <p><strong>Atalhos de Teclado:</strong></p>
+  <ul>
+    <li>Alt+C: IPVA e Serviços</li>
+    <li>Alt+U: Tutorial</li>
+    <li>Alt+T: Tabela Aliquota</li>
+    <li>Alt+D: Site Detran</li>
+    <li>Alt+O: Contato</li>
+    <li>Alt+S: Sobre</li>
+    <li>Alt+H: Ajuda</li>
+    <li>Tab: Navegar entre elementos</li>
+    <li>Enter/Espaço: Ativar botão ou link</li>
+    <li>Setas: Navegar tabelas</li>
+  </ul>
+</div>
+</div>
+
+<script src="main.js"></script>
 </body>
 </html>
