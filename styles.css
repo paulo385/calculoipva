@@ -152,7 +152,7 @@ a:focus-visible,
   align-items: center;
   gap: 6px;
   padding: 0 24px;
-  background: rgba(11, 18, 32, 0.72);
+  background: rgba(99, 147, 224, 0.72);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   z-index: 900;
@@ -162,15 +162,10 @@ a:focus-visible,
 .sidebar::-webkit-scrollbar { display: none; }
 
 .brand-logo {
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
+  width: auto;
+  height: 60px;
   object-fit: contain;
-  background: #fff;
-  border-radius: 12px;
-  padding: 4px;
   margin-right: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .sidebar-button {
@@ -200,7 +195,7 @@ a:focus-visible,
   border-color: var(--teal);
 }
 
-.sidebar-hidden { /* mantido por compat.: no novo layout a navbar continua visível */ display: none; }
+.sidebar-hidden { /* mantido por compat.: no novo layout a navbar continua visível */ }
 
 /* Mobile: navbar vira menu hamburger + gaveta */
 @media (max-width: 860px) {
@@ -421,13 +416,9 @@ a:focus-visible,
 }
 
 .footer-logo {
-  width: 56px;
-  height: 56px;
+  width: 300px;
+  height:200px;
   object-fit: contain;
-  background: #fff;
-  border-radius: 14px;
-  padding: 6px;
-  box-shadow: var(--shadow-soft);
 }
 
 /* ==========================================================================

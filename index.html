@@ -9,12 +9,13 @@
   <meta name="keywords" content="IPVA, calculadora IPVA, emplacamento, documentação veicular, DETRAN, alíquota IPVA, serviços automotivos, cálculo de impostos, veículos, transferência de veículos, placas de carro, RENAVAM, tabela FIPE">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0b1220">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="VeículoFácil — Painel de IPVA e Serviços Automotivos">
   <meta property="og:description" content="Calculadora online para IPVA, emplacamento e serviços veiculares. Consulte alíquotas por estado e acesse informações do DETRAN.">
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
   <link rel="stylesheet" href="styles.css">
 
@@ -36,12 +37,12 @@
   </button>
 
   <nav id="sidebar" class="sidebar" role="navigation" aria-label="Menu principal">
-    <img src="logo.png" alt="GuaraSoftware" class="brand-logo">
+    <img src="logo-icon.png" alt="GuaraSoftware" class="brand-logo">
     <button id="ajudaBtn" class="sidebar-button" aria-label="Início" accesskey="h">Início</button>
     <button id="calcBtn" class="sidebar-button" aria-label="IPVA e Serviços" accesskey="c">Calculadora</button>
     <button id="tutorialBtn" class="sidebar-button" aria-label="Tutorial" accesskey="u">Tutorial</button>
     <button id="novaTabelaBtn" class="sidebar-button" aria-label="Tabela Aliquota 2026" accesskey="t">Alíquotas 2026</button>
-    <button id="siteDetranBtn" class="sidebar-button" aria-label="Site Detran" accesskey="d">DETRAN por estado</button>
+    <button id="siteDetranBtn" class="sidebar-button" aria-label="Site Detran" accesskey="d">DETRAN por Estado</button>
     <button id="contatoBtn" class="sidebar-button" aria-label="Contato" accesskey="o">Contato</button>
     <button id="sobreBtn" class="sidebar-button" aria-label="Sobre" accesskey="s">Sobre</button>
   </nav>
@@ -55,8 +56,8 @@
         <h1 id="ajuda-titulo">Leia o <em>IPVA</em> do seu veículo como quem lê o painel do carro.</h1>
         <p>Informe os dados do veículo e veja, em tempo real, o valor integral, o valor ajustado e o custo total com emplacamento e documentação.</p>
         <div class="hero-readout">
-          <div><div class="value">27 estados</div><div class="label">Alíquotas 2026</div></div>
-          <div><div class="value">100% online</div><div class="label">Sem cadastro</div></div>
+          <div><div class="value">27 Estados</div><div class="label">Alíquotas 2026</div></div>
+          <div><div class="value">100% Online</div><div class="label">Sem cadastro</div></div>
           <div><div class="value">PDF</div><div class="label">Orçamento exportável</div></div>
         </div>
       </div>
@@ -136,7 +137,7 @@
         </div>
         <div class="form-group">
           <label for="aliquota">Alíquota (%):</label>
-          <input type="number" step="0.01" id="aliquota" name="aliquota" value="3.5" required min="0.1" max="10" aria-describedby="aliquota-error">
+          <input type="number" step="0.01" id="aliquota" name="aliquota" value="1.9" required min="0.1" max="10" aria-describedby="aliquota-error">
           <small class="validation-message" id="aliquota-error"></small>
           <small class="field-tip">Percentual do estado sobre o valor do veículo. Veja em "Alíquotas 2026".</small>
         </div>
@@ -297,7 +298,7 @@
           <p><strong>Cenário:</strong> veículo de passeio de R$ 50.000,00 no Paraná, comprado em 1º de julho de 2026.</p>
           <ol>
             <li>Valor do veículo: R$ 50.000,00</li>
-            <li>Alíquota do Paraná: 3,5%</li>
+            <li>Alíquota do Paraná: 1,9%</li>
             <li>Data de referência: 01/07/2026 (restam 6 meses)</li>
             <li>IPVA integral: R$ 50.000,00 × 3,5% = R$ 1.750,00</li>
             <li>IPVA ajustado (6 meses): R$ 1.750,00 × (6/12) = R$ 875,00</li>
@@ -343,7 +344,7 @@
             <tr><td>Mato Grosso do Sul</td><td>3,50%</td><td>3,50%</td><td>2,00%</td></tr>
             <tr><td>Pará</td><td>2,50%</td><td>2,50%</td><td>1,00%</td></tr>
             <tr><td>Paraíba</td><td>2,50%</td><td>2,50%</td><td>2,50%</td></tr>
-            <tr><td>Paraná</td><td>3,50%</td><td>3,50%</td><td>3,50%</td></tr>
+            <tr><td>Paraná</td><td>1,90%</td><td>1,90</td><td>1,90%</td></tr>
             <tr><td>Pernambuco</td><td>3,00%</td><td>3,00%</td><td>2,50%</td></tr>
             <tr><td>Piauí</td><td>2,50%</td><td>2,50%</td><td>2,00%</td></tr>
             <tr><td>Rio de Janeiro</td><td>4,00%</td><td>3,00%</td><td>2,00%</td></tr>
