@@ -195,8 +195,6 @@ a:focus-visible,
   border-color: var(--teal);
 }
 
-.sidebar-hidden { /* mantido por compat.: no novo layout a navbar continua visível */ }
-
 /* Mobile: navbar vira menu hamburger + gaveta */
 @media (max-width: 860px) {
   .menu-toggle { display: block; }

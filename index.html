@@ -42,7 +42,8 @@
     <button id="calcBtn" class="sidebar-button" aria-label="IPVA e Serviços" accesskey="c">Calculadora</button>
     <button id="tutorialBtn" class="sidebar-button" aria-label="Tutorial" accesskey="u">Tutorial</button>
     <button id="novaTabelaBtn" class="sidebar-button" aria-label="Tabela Aliquota 2026" accesskey="t">Alíquotas 2026</button>
-    <button id="siteDetranBtn" class="sidebar-button" aria-label="Site Detran" accesskey="d">DETRAN por Estado</button>
+    <button id="siteDetranBtn" class="sidebar-button" aria-label="Site Detran" accesskey="d">DETRAN por estado</button>
+    <button id="siteIPVABtn" class="sidebar-button" aria-label="IPVA por estado" accesskey="i">IPVA por estado</button>
     <button id="contatoBtn" class="sidebar-button" aria-label="Contato" accesskey="o">Contato</button>
     <button id="sobreBtn" class="sidebar-button" aria-label="Sobre" accesskey="s">Sobre</button>
   </nav>
@@ -56,8 +57,8 @@
         <h1 id="ajuda-titulo">Leia o <em>IPVA</em> do seu veículo como quem lê o painel do carro.</h1>
         <p>Informe os dados do veículo e veja, em tempo real, o valor integral, o valor ajustado e o custo total com emplacamento e documentação.</p>
         <div class="hero-readout">
-          <div><div class="value">27 Estados</div><div class="label">Alíquotas 2026</div></div>
-          <div><div class="value">100% Online</div><div class="label">Sem cadastro</div></div>
+          <div><div class="value">27 estados</div><div class="label">Alíquotas 2026</div></div>
+          <div><div class="value">100% online</div><div class="label">Sem cadastro</div></div>
           <div><div class="value">PDF</div><div class="label">Orçamento exportável</div></div>
         </div>
       </div>
@@ -137,7 +138,7 @@
         </div>
         <div class="form-group">
           <label for="aliquota">Alíquota (%):</label>
-          <input type="number" step="0.01" id="aliquota" name="aliquota" value="1.9" required min="0.1" max="10" aria-describedby="aliquota-error">
+          <input type="number" step="0.01" id="aliquota" name="aliquota" value="3.5" required min="0.1" max="10" aria-describedby="aliquota-error">
           <small class="validation-message" id="aliquota-error"></small>
           <small class="field-tip">Percentual do estado sobre o valor do veículo. Veja em "Alíquotas 2026".</small>
         </div>
@@ -298,7 +299,7 @@
           <p><strong>Cenário:</strong> veículo de passeio de R$ 50.000,00 no Paraná, comprado em 1º de julho de 2026.</p>
           <ol>
             <li>Valor do veículo: R$ 50.000,00</li>
-            <li>Alíquota do Paraná: 1,9%</li>
+            <li>Alíquota do Paraná: 3,5%</li>
             <li>Data de referência: 01/07/2026 (restam 6 meses)</li>
             <li>IPVA integral: R$ 50.000,00 × 3,5% = R$ 1.750,00</li>
             <li>IPVA ajustado (6 meses): R$ 1.750,00 × (6/12) = R$ 875,00</li>
@@ -317,6 +318,7 @@
       <p class="sr-only">Pressione as setas do teclado para navegar pela tabela. Pressione Enter para selecionar uma alíquota.</p>
       <div class="table-explanation">
         <p><strong>Clique na linha do seu estado</strong> para aplicar automaticamente a alíquota na calculadora.</p>
+        <p style="margin-top:0.6rem; font-size:0.82rem;">Valores de "Particular e Passeio" atualizados com base em fontes oficiais de cada Sefaz, verificados em 07/2026. Alíquotas mudam de um ano para o outro — confirme sempre no site oficial do seu estado (aba "IPVA por estado") antes de pagar.</p>
       </div>
       <div class="table-container">
         <table role="grid" aria-label="Tabela de alíquotas por estado">
@@ -331,21 +333,21 @@
           <tbody>
             <tr><td>Acre</td><td>2,00%</td><td>1,00%</td><td>1,00%</td></tr>
             <tr><td>Alagoas</td><td>3,00%</td><td>3,25%</td><td>2,75%</td></tr>
-            <tr><td>Amazonas</td><td>3,00%</td><td>3,00%</td><td>2,00%</td></tr>
+            <tr><td>Amazonas</td><td>1,50%</td><td>3,00%</td><td>2,00%</td></tr>
             <tr><td>Amapá</td><td>3,00%</td><td>3,00%</td><td>1,50%</td></tr>
             <tr><td>Bahia</td><td>2,50%</td><td>2,50%</td><td>2,50%</td></tr>
             <tr><td>Ceará</td><td>3,00%</td><td>3,00%</td><td>2,00%</td></tr>
-            <tr><td>Distrito Federal</td><td>3,50%</td><td>1,00%</td><td>2,00%</td></tr>
+            <tr><td>Distrito Federal</td><td>3,00%</td><td>1,00%</td><td>2,00%</td></tr>
             <tr><td>Espírito Santo</td><td>2,00%</td><td>2,00%</td><td>1,00%</td></tr>
             <tr><td>Goiás</td><td>3,75%</td><td>3,45%</td><td>3,00%</td></tr>
             <tr><td>Maranhão</td><td>2,50%</td><td>2,50%</td><td>1,00%</td></tr>
             <tr><td>Minas Gerais</td><td>4,00%</td><td>3,00%</td><td>2,00%</td></tr>
             <tr><td>Mato Grosso</td><td>3,00%</td><td>2,50%</td><td>1,00%</td></tr>
-            <tr><td>Mato Grosso do Sul</td><td>3,50%</td><td>3,50%</td><td>2,00%</td></tr>
-            <tr><td>Pará</td><td>2,50%</td><td>2,50%</td><td>1,00%</td></tr>
-            <tr><td>Paraíba</td><td>2,50%</td><td>2,50%</td><td>2,50%</td></tr>
-            <tr><td>Paraná</td><td>1,90%</td><td>1,90</td><td>1,90%</td></tr>
-            <tr><td>Pernambuco</td><td>3,00%</td><td>3,00%</td><td>2,50%</td></tr>
+            <tr><td>Mato Grosso do Sul</td><td>3,00%</td><td>3,50%</td><td>2,00%</td></tr>
+            <tr><td>Pará</td><td>2,50%</td><td>2,50%</td><td>1,50%</td></tr>
+            <tr><td>Paraíba</td><td>2,00%</td><td>2,50%</td><td>1,50%</td></tr>
+            <tr><td>Paraná</td><td>1,90%</td><td>3,50%</td><td>3,50%</td></tr>
+            <tr><td>Pernambuco</td><td>2,40%</td><td>3,00%</td><td>2,50%</td></tr>
             <tr><td>Piauí</td><td>2,50%</td><td>2,50%</td><td>2,00%</td></tr>
             <tr><td>Rio de Janeiro</td><td>4,00%</td><td>3,00%</td><td>2,00%</td></tr>
             <tr><td>Rio Grande do Norte</td><td>3,00%</td><td>3,00%</td><td>2,00%</td></tr>
@@ -406,6 +408,51 @@
       </div>
     </div>
 
+    <!-- ===================== SITES DE IPVA (SEFAZ) POR ESTADO ===================== -->
+    <div id="tabelaIPVA" class="hidden" role="region" aria-labelledby="ipva-tabela-titulo">
+      <h2 id="ipva-tabela-titulo">Site para Pagar/Consultar o IPVA por Estado</h2>
+      <p class="sr-only">Pressione as setas do teclado para navegar pela tabela. Pressione Enter para acessar o site da Sefaz.</p>
+      <div class="table-explanation">
+        <p>O IPVA é administrado pela Secretaria da Fazenda (Sefaz) de cada estado — não pelo DETRAN. Use os links abaixo para consultar valores, gerar guias e pagar. Sempre confira o endereço exibido no navegador antes de informar dados ou pagar algo.</p>
+      </div>
+      <div class="table-container">
+        <table role="grid" aria-label="Tabela de sites de IPVA/Sefaz por estado">
+          <thead>
+            <tr><th scope="col">Estado</th><th scope="col">Site da Sefaz (IPVA)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Acre</td><td><a href="https://www.sefaz.ac.gov.br" target="_blank" class="detran-link">SEFAZ AC</a></td></tr>
+            <tr><td>Alagoas</td><td><a href="https://www.sefaz.al.gov.br" target="_blank" class="detran-link">SEFAZ AL</a></td></tr>
+            <tr><td>Amapá</td><td><a href="https://www.sefaz.ap.gov.br" target="_blank" class="detran-link">SEFAZ AP</a></td></tr>
+            <tr><td>Amazonas</td><td><a href="https://www.sefaz.am.gov.br" target="_blank" class="detran-link">SEFAZ AM</a></td></tr>
+            <tr><td>Bahia</td><td><a href="https://www.sefaz.ba.gov.br" target="_blank" class="detran-link">SEFAZ BA</a></td></tr>
+            <tr><td>Ceará</td><td><a href="https://www.sefaz.ce.gov.br" target="_blank" class="detran-link">SEFAZ CE</a></td></tr>
+            <tr><td>Distrito Federal</td><td><a href="https://www.fazenda.df.gov.br" target="_blank" class="detran-link">SEFAZ DF</a></td></tr>
+            <tr><td>Espírito Santo</td><td><a href="https://sefaz.es.gov.br" target="_blank" class="detran-link">SEFAZ ES</a></td></tr>
+            <tr><td>Goiás</td><td><a href="https://www.sefaz.go.gov.br" target="_blank" class="detran-link">SEFAZ GO</a></td></tr>
+            <tr><td>Maranhão</td><td><a href="https://www.sefaz.ma.gov.br" target="_blank" class="detran-link">SEFAZ MA</a></td></tr>
+            <tr><td>Mato Grosso</td><td><a href="https://www.sefaz.mt.gov.br" target="_blank" class="detran-link">SEFAZ MT</a></td></tr>
+            <tr><td>Mato Grosso do Sul</td><td><a href="https://www.sefaz.ms.gov.br" target="_blank" class="detran-link">SEFAZ MS</a></td></tr>
+            <tr><td>Minas Gerais</td><td><a href="https://www.fazenda.mg.gov.br" target="_blank" class="detran-link">SEFAZ MG</a></td></tr>
+            <tr><td>Pará</td><td><a href="https://www.sefa.pa.gov.br" target="_blank" class="detran-link">SEFA PA</a></td></tr>
+            <tr><td>Paraíba</td><td><a href="https://www.receita.pb.gov.br" target="_blank" class="detran-link">Receita PB</a></td></tr>
+            <tr><td>Paraná</td><td><a href="https://www.fazenda.pr.gov.br" target="_blank" class="detran-link">SEFAZ PR</a></td></tr>
+            <tr><td>Pernambuco</td><td><a href="https://www.sefaz.pe.gov.br" target="_blank" class="detran-link">SEFAZ PE</a></td></tr>
+            <tr><td>Piauí</td><td><a href="https://portal.sefaz.pi.gov.br" target="_blank" class="detran-link">SEFAZ PI</a></td></tr>
+            <tr><td>Rio de Janeiro</td><td><a href="https://www.fazenda.rj.gov.br" target="_blank" class="detran-link">SEFAZ RJ</a></td></tr>
+            <tr><td>Rio Grande do Norte</td><td><a href="https://www.set.rn.gov.br" target="_blank" class="detran-link">SET RN</a></td></tr>
+            <tr><td>Rio Grande do Sul</td><td><a href="https://www.sefaz.rs.gov.br" target="_blank" class="detran-link">SEFAZ RS</a></td></tr>
+            <tr><td>Rondônia</td><td><a href="https://portal.sefin.ro.gov.br" target="_blank" class="detran-link">SEFIN RO</a></td></tr>
+            <tr><td>Roraima</td><td><a href="https://www.sefaz.rr.gov.br" target="_blank" class="detran-link">SEFAZ RR</a></td></tr>
+            <tr><td>Santa Catarina</td><td><a href="https://www.sef.sc.gov.br" target="_blank" class="detran-link">SEF SC</a></td></tr>
+            <tr><td>São Paulo</td><td><a href="https://portal.fazenda.sp.gov.br" target="_blank" class="detran-link">SEFAZ SP</a></td></tr>
+            <tr><td>Sergipe</td><td><a href="https://www.sefaz.se.gov.br" target="_blank" class="detran-link">SEFAZ SE</a></td></tr>
+            <tr><td>Tocantins</td><td><a href="https://www.sefaz.to.gov.br" target="_blank" class="detran-link">SEFAZ TO</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- ===================== CONTATO ===================== -->
     <div id="contato" class="hidden" role="region" aria-labelledby="contato-titulo">
       <h2 id="contato-titulo">Contato</h2>
@@ -436,16 +483,22 @@
 
     <!-- ===================== SOBRE ===================== -->
     <div id="sobre" class="hidden" role="region" aria-labelledby="sobre-titulo">
-      <h2 id="sobre-titulo">Sobre</h2>
-      <p>Bem-vindo à Calculadora de IPVA VeículoFácil! Esta ferramenta foi criada para simplificar o cálculo do Imposto sobre a Propriedade de Veículos Automotores (IPVA) para proprietários, concessionárias e lojas de veículos.</p>
-      <p>Com uma interface simples, você calcula rapidamente:</p>
-      <ul>
-        <li>O valor integral do IPVA</li>
-        <li>O valor ajustado até o fim do ano</li>
-        <li>O total considerando emplacamento, placa e baixa de gravame</li>
-        <li>A diferença entre a proposta e o total calculado</li>
+      <span class="pix-eyebrow">🚗 GuaraSoftware · desde 21/09/2024</span>
+      <h2 id="sobre-titulo">Sobre o VeículoFácil</h2>
+      <p>Calcular IPVA na mão é chato e cheio de chance de erro — foi exatamente esse problema que o VeículoFácil resolve.</p>
+      <p>Criada pela GuaraSoftware, esta calculadora existe para dar uma resposta rápida e confiável a quem precisa saber quanto vai pagar de IPVA, sem depender de tabelas soltas ou calculadora de bolso.</p>
+
+      <h3>O que você resolve aqui em segundos</h3>
+      <ul class="sobre-checklist">
+        <li>Valor integral e valor ajustado do IPVA, considerando a data de compra</li>
+        <li>Total com emplacamento, placa e baixa de gravame — tudo somado</li>
+        <li>Comparação direta entre sua proposta e o valor real calculado</li>
+        <li>Orçamento pronto em PDF, com nome, marca/modelo e RENAVAM, pra enviar ao cliente ou guardar</li>
       </ul>
-      <p>Você também pode gerar um orçamento detalhado em PDF com nome, marca/modelo e RENAVAM.</p>
+
+      <p>Ideal para quem compra, vende ou negocia veículos no dia a dia — de proprietários a despachantes e lojas.</p>
+
+      <a href="#" id="sobreContatoBtn" class="primary-button tutorial-cta">Alguma dúvida? Fale comigo</a>
     </div>
 
     <!-- Atalhos de teclado -->
@@ -457,6 +510,7 @@
         <li>Alt+U: Tutorial</li>
         <li>Alt+T: Alíquotas</li>
         <li>Alt+D: Site Detran</li>
+        <li>Alt+I: IPVA por estado</li>
         <li>Alt+O: Contato</li>
         <li>Alt+S: Sobre</li>
         <li>Alt+H: Início</li>

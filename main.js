@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const sobre = document.getElementById('sobre');
   const ajuda = document.getElementById('ajuda');
   const tabelaDetran = document.getElementById('tabelaDetran');
+  const tabelaIPVA = document.getElementById('tabelaIPVA');
   const tutorial = document.getElementById('tutorial');
   const logo = document.getElementById('logo');
   const calcBtn = document.getElementById('calcBtn');
@@ -105,9 +106,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const sobreBtn = document.getElementById('sobreBtn');
   const ajudaBtn = document.getElementById('ajudaBtn');
   const siteDetranBtn = document.getElementById('siteDetranBtn');
+  const siteIPVABtn = document.getElementById('siteIPVABtn');
   const tutorialBtn = document.getElementById('tutorialBtn');
   const startCalculatorBtn = document.getElementById('startCalculator');
+  const sobreContatoBtn = document.getElementById('sobreContatoBtn');
   const sidebar = document.querySelector('.sidebar');
+
+  // Lista mestre de todas as seções da página (usada para saber o que
+  // esconder sempre que uma seção nova for exibida)
+  const allSections = [calculadora, tabelaServicos, tabelaDetran, tabelaIPVA, contato, sobre, ajuda, tutorial];
   
   // Toggle sidebar menu on mobile
   const menuToggle = document.getElementById('menu-toggle');
@@ -150,9 +157,9 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('resize', handleResize);
   handleResize();
 
-  function showSection(section, elements = []) {
+  function showSection(section, elements = allSections) {
     elements.forEach(elem => {
-      if (elem) elem.classList.add('hidden');
+      if (elem && elem !== section) elem.classList.add('hidden');
     });
     if (section) {
       section.classList.remove('hidden');
@@ -169,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
           [tutorial?.id]: tutorialBtn,
           [tabelaServicos?.id]: novaTabelaBtn,
           [tabelaDetran?.id]: siteDetranBtn,
+          [tabelaIPVA?.id]: siteIPVABtn,
           [contato?.id]: contatoBtn,
           [sobre?.id]: sobreBtn,
           [ajuda?.id]: ajudaBtn,
@@ -191,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (calcBtn) {
     calcBtn.addEventListener('click', () => {
-      showSection(calculadora, [tabelaServicos, tabelaDetran, contato, sobre, ajuda, tutorial]);
+      showSection(calculadora);
       if (sidebar) sidebar.classList.remove('sidebar-hidden');
       showFeedback('Preencha os campos para calcular o IPVA', 'info', 3000);
     });
@@ -199,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (tutorialBtn) {
     tutorialBtn.addEventListener('click', () => {
-      showSection(tutorial, [calculadora, tabelaServicos, tabelaDetran, contato, sobre, ajuda]);
+      showSection(tutorial);
       if (sidebar) sidebar.classList.remove('sidebar-hidden');
     });
   }
@@ -207,15 +215,23 @@ document.addEventListener('DOMContentLoaded', function () {
   if (startCalculatorBtn) {
     startCalculatorBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      showSection(calculadora, [tabelaServicos, tabelaDetran, contato, sobre, ajuda, tutorial]);
+      showSection(calculadora);
       if (sidebar) sidebar.classList.remove('sidebar-hidden');
       showFeedback('Preencha os campos para calcular o IPVA', 'info', 3000);
     });
   }
 
+  if (sobreContatoBtn) {
+    sobreContatoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      showSection(contato);
+      if (sidebar) sidebar.classList.remove('sidebar-hidden');
+    });
+  }
+
   if (novaTabelaBtn) {
     novaTabelaBtn.addEventListener('click', () => {
-      showSection(tabelaServicos, [calculadora, tabelaDetran, contato, sobre, ajuda, tutorial]);
+      showSection(tabelaServicos);
       if (sidebar) sidebar.classList.remove('sidebar-hidden');
       showFeedback('Consulte as alíquotas de IPVA para cada estado', 'info', 3000);
     });
@@ -223,30 +239,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (contatoBtn) {
     contatoBtn.addEventListener('click', () => {
-      showSection(contato, [calculadora, tabelaServicos, tabelaDetran, sobre, ajuda, tutorial]);
+      showSection(contato);
       if (sidebar) sidebar.classList.remove('sidebar-hidden');
     });
   }
 
   if (sobreBtn) {
     sobreBtn.addEventListener('click', () => {
-      showSection(sobre, [calculadora, tabelaServicos, tabelaDetran, contato, ajuda, tutorial]);
+      showSection(sobre);
       if (sidebar) sidebar.classList.remove('sidebar-hidden');
     });
   }
 
   if (ajudaBtn) {
     ajudaBtn.addEventListener('click', () => {
-      showSection(ajuda, [calculadora, tabelaServicos, tabelaDetran, contato, sobre, tutorial]);
+      showSection(ajuda);
       if (sidebar) sidebar.classList.add('sidebar-hidden');
     });
   }
 
   if (siteDetranBtn) {
     siteDetranBtn.addEventListener('click', () => {
-      showSection(tabelaDetran, [calculadora, tabelaServicos, contato, sobre, ajuda, tutorial]);
+      showSection(tabelaDetran);
       if (sidebar) sidebar.classList.remove('sidebar-hidden');
       showFeedback('Consulte os sites dos DETRANs de cada estado', 'info', 3000);
+    });
+  }
+
+  if (siteIPVABtn) {
+    siteIPVABtn.addEventListener('click', () => {
+      showSection(tabelaIPVA);
+      if (sidebar) sidebar.classList.remove('sidebar-hidden');
+      showFeedback('Consulte os sites de IPVA (Sefaz) de cada estado', 'info', 3000);
     });
   }
 
@@ -254,24 +278,23 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', function () {
       switch (this.dataset.action) {
         case 'calcular':
-          showSection(calculadora, [tabelaServicos, tabelaDetran, contato, sobre, ajuda, tutorial]);
+          showSection(calculadora);
           showFeedback('Preencha os campos para calcular o IPVA', 'info', 3000);
           break;
         case 'tutorial':
-          showSection(tutorial, [calculadora, tabelaServicos, tabelaDetran, contato, sobre, ajuda]);
+          showSection(tutorial);
           break;
         case 'contato':
-          showSection(contato, [calculadora, tabelaServicos, tabelaDetran, sobre, ajuda, tutorial]);
+          showSection(contato);
           break;
         case 'sobre':
-          showSection(sobre, [calculadora, tabelaServicos, tabelaDetran, contato, ajuda, tutorial]);
+          showSection(sobre);
           break;
       }
     });
   });
 
-  const elementsToHide = [calculadora, tabelaServicos, tabelaDetran, contato, sobre, ajuda, tutorial];
-  showSection(ajuda, elementsToHide);
+  showSection(ajuda);
 
   // Form validation functions
   function validateInput(input) {
@@ -623,7 +646,7 @@ document.addEventListener('DOMContentLoaded', function () {
       showFeedback(`Alíquota de ${estado} (${aliquota}%) aplicada com sucesso!`, 'success', 3000);
       
       // Switch to calculator view
-      showSection(calculadora, [tabelaServicos, tabelaDetran, contato, sobre, ajuda, tutorial]);
+      showSection(calculadora);
       
       // Trigger calculation update
       updateRealTimeResults();
