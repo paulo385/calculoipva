@@ -859,3 +859,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// Registra o Service Worker para permitir instalação como app (PWA)
+// Fica fora do DOMContentLoaded por recomendação da própria API
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch((error) => {
+      console.error('Falha ao registrar o Service Worker:', error);
+    });
+  });
+}

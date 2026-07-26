@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>VeículoFácil — Painel de IPVA e Serviços Automotivos</title>
 
   <meta name="description" content="Calculadora de IPVA online gratuita. Calcule valores de IPVA, emplacamento, placas e documentação de veículos em todo o Brasil. Consulte alíquotas por estado e acesse sites do DETRAN.">
@@ -16,6 +16,14 @@
 
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- PWA: permite instalar o site como app no celular -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VeículoFácil">
+  <meta name="mobile-web-app-capable" content="yes">
 
   <link rel="stylesheet" href="styles.css">
 
@@ -42,8 +50,8 @@
     <button id="calcBtn" class="sidebar-button" aria-label="IPVA e Serviços" accesskey="c">Calculadora</button>
     <button id="tutorialBtn" class="sidebar-button" aria-label="Tutorial" accesskey="u">Tutorial</button>
     <button id="novaTabelaBtn" class="sidebar-button" aria-label="Tabela Aliquota 2026" accesskey="t">Alíquotas 2026</button>
-    <button id="siteDetranBtn" class="sidebar-button" aria-label="Site Detran" accesskey="d">DETRAN por Estado</button>
-    <button id="siteIPVABtn" class="sidebar-button" aria-label="IPVA por estado" accesskey="i">IPVA por Estado</button>
+    <button id="siteDetranBtn" class="sidebar-button" aria-label="Site Detran" accesskey="d">DETRAN por estado</button>
+    <button id="siteIPVABtn" class="sidebar-button" aria-label="IPVA por estado" accesskey="i">IPVA por estado</button>
     <button id="contatoBtn" class="sidebar-button" aria-label="Contato" accesskey="o">Contato</button>
     <button id="sobreBtn" class="sidebar-button" aria-label="Sobre" accesskey="s">Sobre</button>
   </nav>
@@ -57,7 +65,7 @@
         <h1 id="ajuda-titulo">Leia o <em>IPVA</em> do seu veículo como quem lê o painel do carro.</h1>
         <p>Informe os dados do veículo e veja, em tempo real, o valor integral, o valor ajustado e o custo total com emplacamento e documentação.</p>
         <div class="hero-readout">
-          <div><div class="value">27 Estados</div><div class="label">Alíquotas 2026</div></div>
+          <div><div class="value">27 estados</div><div class="label">Alíquotas 2026</div></div>
           <div><div class="value">100% online</div><div class="label">Sem cadastro</div></div>
           <div><div class="value">PDF</div><div class="label">Orçamento exportável</div></div>
         </div>
@@ -286,7 +294,7 @@
       <div class="tutorial-section">
         <h2>Dicas Importantes</h2>
         <ul class="tutorial-tips">
-          <li><strong>Consulte o DETRAN:</strong> para valores oficiais, acesse o site do DETRAN do seu estado (aba "DETRAN por Estado").</li>
+          <li><strong>Consulte o DETRAN:</strong> para valores oficiais, acesse o site do DETRAN do seu estado (aba "DETRAN por estado").</li>
           <li><strong>Verifique descontos:</strong> alguns estados oferecem desconto para pagamento à vista.</li>
           <li><strong>Atenção aos prazos:</strong> atrasos geram multas, juros e impedem o licenciamento anual.</li>
           <li><strong>Veículos isentos:</strong> táxis, veículos de PCD e veículos antigos podem ter isenção, dependendo do estado.</li>
@@ -299,7 +307,7 @@
           <p><strong>Cenário:</strong> veículo de passeio de R$ 50.000,00 no Paraná, comprado em 1º de julho de 2026.</p>
           <ol>
             <li>Valor do veículo: R$ 50.000,00</li>
-            <li>Alíquota do Paraná: 1,9%</li>
+            <li>Alíquota do Paraná: 3,5%</li>
             <li>Data de referência: 01/07/2026 (restam 6 meses)</li>
             <li>IPVA integral: R$ 50.000,00 × 3,5% = R$ 1.750,00</li>
             <li>IPVA ajustado (6 meses): R$ 1.750,00 × (6/12) = R$ 875,00</li>

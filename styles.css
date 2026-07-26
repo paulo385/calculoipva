@@ -63,7 +63,7 @@ body {
   background: var(--surface);
   color: var(--indigo-text);
   -webkit-font-smoothing: antialiased;
-  padding-top: var(--nav-height);
+  padding-top: calc(var(--nav-height) + env(safe-area-inset-top, 0px));
 }
 
 h1, h2, h3 {
@@ -147,12 +147,14 @@ a:focus-visible,
 .sidebar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: var(--nav-height);
+  height: calc(var(--nav-height) + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 0 24px;
-  background: rgba(99, 147, 224, 0.72);
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+  background: rgba(11, 18, 32, 0.72);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   z-index: 900;
@@ -163,7 +165,7 @@ a:focus-visible,
 
 .brand-logo {
   width: auto;
-  height: 60px;
+  height: 40px;
   object-fit: contain;
   margin-right: 14px;
 }
@@ -414,8 +416,8 @@ a:focus-visible,
 }
 
 .footer-logo {
-  width: 300px;
-  height:200px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
 }
 
@@ -710,6 +712,35 @@ button, .fipe-button, .primary-button, .contact-button {
   font-weight: 500;
 }
 
+/* Checklist estilizada (usada em "Sobre") */
+.sobre-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 1.5rem;
+}
+.sobre-checklist li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 0.85rem;
+  line-height: 1.5;
+}
+.sobre-checklist li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.4rem;
+  height: 1.4rem;
+  background: var(--teal-100);
+  color: var(--teal-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 480px) {
   .pix-key-row { flex-direction: column; align-items: stretch; }
   .pix-copy-btn { width: 100%; }
@@ -915,7 +946,7 @@ td.keyboard-focus, th.keyboard-focus { box-shadow: inset 0 0 0 2px var(--teal); 
    ========================================================================== */
 
 @media (max-width: 860px) {
-  body { padding-top: var(--nav-height); }
+  body { padding-top: calc(var(--nav-height) + env(safe-area-inset-top, 0px)); }
   .content { padding: 1.25rem 1rem 3rem; }
   .container, #sobre, #contato, #tabela-servicos, #tabelaDetran, #tutorial { padding: 1.5rem; }
   #ajuda { margin: -1.25rem -1rem 0; }
