@@ -837,7 +837,24 @@ document.addEventListener('DOMContentLoaded', function () {
       if (obs) linhas.push(`Detalhes: ${obs}`);
 
       const mensagem = encodeURIComponent(linhas.join('\n'));
-      window.open(`https://wa.me/5541997185852?text=${mensagem}`, '_blank');
+      const whatsappUrl = `https://wa.me/5541997185852?text=${mensagem}`;
+
+      // Mostra o link de segurança sempre, caso a abertura automática seja bloqueada
+      const fallback = document.getElementById('servicoWhatsappFallback');
+      if (fallback) {
+        fallback.href = whatsappUrl;
+        fallback.classList.remove('hidden');
+      }
+
+      const link = document.createElement('a');
+      link.href = whatsappUrl;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showFeedback('Solicitação pronta! Se o WhatsApp não abriu sozinho, use o link abaixo do botão.', 'success', 6000);
     });
   }
 
