@@ -197,8 +197,6 @@ a:focus-visible,
   border-color: var(--teal);
 }
 
-.sidebar-hidden { /* mantido por compat.: no novo layout a navbar continua visível */ }
-
 /* Mobile: navbar vira menu hamburger + gaveta */
 @media (max-width: 860px) {
   .menu-toggle { display: block; }
@@ -428,14 +426,20 @@ a:focus-visible,
    ========================================================================== */
 
 .feedback {
+  position: fixed;
+  top: calc(var(--nav-height) + env(safe-area-inset-top, 0px) + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92%, 480px);
+  z-index: 950;
   border-radius: var(--radius-sm);
   padding: 0.85rem 1.1rem;
-  margin-bottom: 1.25rem;
   font-size: 0.92rem;
   font-weight: 500;
   border-left: 4px solid var(--info);
   background: #eaf4fd;
   color: #164a7a;
+  box-shadow: var(--shadow-float);
 }
 .feedback.success { border-color: var(--success); background: #e7f7f0; color: #0d6b4c; }
 .feedback.error { border-color: var(--error); background: #fdecea; color: #9c2b23; }
