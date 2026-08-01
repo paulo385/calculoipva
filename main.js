@@ -811,7 +811,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Solicitação de serviço assistido (CRLV/documentos) via WhatsApp
   const servicoWhatsappBtn = document.getElementById('servicoWhatsappBtn');
   if (servicoWhatsappBtn) {
-    servicoWhatsappBtn.addEventListener('click', () => {
+    servicoWhatsappBtn.addEventListener('click', (e) => {
       const nome = document.getElementById('servicoNome').value.trim();
       const placa = document.getElementById('servicoPlaca').value.trim();
       const uf = document.getElementById('servicoUF').value.trim();
@@ -819,11 +819,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const obs = document.getElementById('servicoObs').value.trim();
 
       if (!nome || !placa || !uf || !renavam) {
+        e.preventDefault();
         showFeedback('Preencha nome, placa, UF e Renavam antes de enviar.', 'error', 4000);
         return;
       }
 
       if (uf.toUpperCase() !== 'PR') {
+        e.preventDefault();
         showFeedback('Este serviço atende apenas veículos emplacados no Paraná (PR). Consulte o site do DETRAN do seu estado na aba "DETRAN por estado".', 'error', 6000);
         return;
       }
@@ -837,24 +839,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (obs) linhas.push(`Detalhes: ${obs}`);
 
       const mensagem = encodeURIComponent(linhas.join('\n'));
-      const whatsappUrl = `https://wa.me/5541997185852?text=${mensagem}`;
-
-      // Mostra o link de segurança sempre, caso a abertura automática seja bloqueada
-      const fallback = document.getElementById('servicoWhatsappFallback');
-      if (fallback) {
-        fallback.href = whatsappUrl;
-        fallback.classList.remove('hidden');
-      }
-
-      const link = document.createElement('a');
-      link.href = whatsappUrl;
-      link.target = '_blank';
-      link.rel = 'noopener';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      showFeedback('Solicitação pronta! Se o WhatsApp não abriu sozinho, use o link abaixo do botão.', 'success', 6000);
+      // Ajusta o destino do link real ANTES do navegador seguir o clique nativo
+      servicoWhatsappBtn.href = `https://wa.me/5541997185852?text=${mensagem}`;
+      // Não chama preventDefault aqui: deixa o navegador abrir o link normalmente,
+      // do mesmo jeito que faria com qualquer link clicado pelo usuário
     });
   }
 
