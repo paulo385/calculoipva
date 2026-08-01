@@ -808,6 +808,39 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   
+  // Solicitação de serviço assistido (CRLV/documentos) via WhatsApp
+  const servicoWhatsappBtn = document.getElementById('servicoWhatsappBtn');
+  if (servicoWhatsappBtn) {
+    servicoWhatsappBtn.addEventListener('click', () => {
+      const nome = document.getElementById('servicoNome').value.trim();
+      const placa = document.getElementById('servicoPlaca').value.trim();
+      const uf = document.getElementById('servicoUF').value.trim();
+      const renavam = document.getElementById('servicoRenavam').value.trim();
+      const obs = document.getElementById('servicoObs').value.trim();
+
+      if (!nome || !placa || !uf || !renavam) {
+        showFeedback('Preencha nome, placa, UF e Renavam antes de enviar.', 'error', 4000);
+        return;
+      }
+
+      if (uf.toUpperCase() !== 'PR') {
+        showFeedback('Este serviço atende apenas veículos emplacados no Paraná (PR). Consulte o site do DETRAN do seu estado na aba "DETRAN por estado".', 'error', 6000);
+        return;
+      }
+
+      const linhas = [
+        'Olá! Gostaria de solicitar um serviço assistido pelo VeículoFácil.',
+        `Nome: ${nome}`,
+        `Placa: ${placa} (PR)`,
+        `Renavam: ${renavam}`,
+      ];
+      if (obs) linhas.push(`Detalhes: ${obs}`);
+
+      const mensagem = encodeURIComponent(linhas.join('\n'));
+      window.open(`https://wa.me/5541997185852?text=${mensagem}`, '_blank');
+    });
+  }
+
   // Copiar chave Pix
   const pixCopyBtn = document.getElementById('pixCopyBtn');
   const pixKeyValue = document.getElementById('pixKeyValue');

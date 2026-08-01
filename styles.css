@@ -197,6 +197,8 @@ a:focus-visible,
   border-color: var(--teal);
 }
 
+.sidebar-hidden { /* mantido por compat.: no novo layout a navbar continua visível */ }
+
 /* Mobile: navbar vira menu hamburger + gaveta */
 @media (max-width: 860px) {
   .menu-toggle { display: block; }
@@ -710,6 +712,16 @@ button, .fipe-button, .primary-button, .contact-button {
   font-size: 0.9rem;
   color: var(--teal-dark);
   font-weight: 500;
+}
+
+.servico-card {
+  margin-bottom: 1.5rem;
+}
+.servico-card .form-group {
+  margin-bottom: 1rem;
+}
+.servico-card textarea {
+  min-height: 80px;
 }
 
 /* Checklist estilizada (usada em "Sobre") */
