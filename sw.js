@@ -2,7 +2,7 @@
 // Objetivo: permitir "Adicionar à tela inicial" (PWA instalável) e dar
 // uma camada básica de cache para os arquivos principais do site.
 
-const CACHE_NAME = 'veiculofacil-v1';
+const CACHE_NAME = 'veiculofacil-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -37,8 +37,9 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Estratégia: tenta a rede primeiro (pra sempre pegar dados atualizados,
-// como as alíquotas), e cai pro cache se estiver offline
+// Estratégia: tenta a rede primeiro, IGNORANDO o cache HTTP do navegador
+// (senão o "network first" pode acabar recebendo uma resposta antiga
+// guardada pelo próprio navegador, mesmo estando "na rede")
 self.addEventListener('fetch', (event) => {
   // Não interfere em chamadas para outros domínios (CDNs, fontes, etc.)
   if (new URL(event.request.url).origin !== self.location.origin) {
@@ -46,7 +47,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, { cache: 'no-store' })
       .then((response) => {
         const responseClone = response.clone();
         caches.open(CACHE_NAME).then((cache) => {
