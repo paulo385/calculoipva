@@ -946,6 +946,28 @@ td.keyboard-focus, th.keyboard-focus { box-shadow: inset 0 0 0 2px var(--teal); 
 .tutorial-section h2 { border-bottom: 2px solid var(--amber); padding-bottom: 0.5rem; display: inline-block; }
 .tutorial-section h3 { color: var(--teal-dark); margin-bottom: 0.4rem; }
 
+.video-section {
+  background: var(--ink);
+  text-align: center;
+}
+.video-section h2 {
+  color: #fff;
+  border-bottom-color: var(--teal);
+}
+.video-wrapper {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  margin: 0.5rem auto 0;
+  max-width: 720px;
+}
+.video-wrapper video {
+  width: 100%;
+  display: block;
+  max-height: 480px;
+  background: #000;
+}
+
 .tutorial-steps { list-style: none; padding: 0; counter-reset: step; }
 .tutorial-steps li {
   position: relative;
