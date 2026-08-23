@@ -39,7 +39,7 @@ function formatarInputMoeda(input) {
   });
 }
 
-function calcularIpvaNovo(valorVeiculo, aliquota = 3.5, mesesRestantes) {
+function calcularIpvaNovo(valorVeiculo, aliquota = 1.9, mesesRestantes) {
   const ipvaAnual = valorVeiculo * (aliquota / 100);
   const ipvaAjustado = ipvaAnual * (mesesRestantes / 12);
   return { ipvaAnual, ipvaAjustado };
@@ -572,7 +572,8 @@ document.addEventListener('DOMContentLoaded', function () {
   if (limparFormBtn) {
     limparFormBtn.addEventListener('click', () => {
       form.reset();
-      document.getElementById('aliquota').value = '3.5';
+      document.getElementById('aliquota').value = '1.9';
+      setDefaultDateToToday();
       limparRascunho();
       document.getElementById('results').classList.add('hidden');
       document.querySelectorAll('#ipvaForm input.valid, #ipvaForm input.invalid').forEach(el => {
@@ -593,7 +594,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const valorVeiculo = parseValorMoeda(document.getElementById('valor_veiculo').value) || 0;
-    const aliquota = parseFloat(document.getElementById('aliquota').value) || 3.5;
+    const aliquota = parseFloat(document.getElementById('aliquota').value) || 1.9;
     const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
     const valorExtra = parseFloat(document.getElementById('valorExtra').value) || 0;
     const valorAdicionalExtra = parseFloat(document.getElementById('valorAdicionalExtra').value) || 0;
@@ -660,7 +661,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const tipoCarro = document.getElementById('tipoCarro').value;
     const renavam = document.getElementById('renavam').value;
     const valorVeiculo = parseValorMoeda(document.getElementById('valor_veiculo').value) || 0;
-    const aliquota = parseFloat(document.getElementById('aliquota').value) || 3.5;
+    const aliquota = parseFloat(document.getElementById('aliquota').value) || 1.9;
     const valorAdicional = formatarParaMoeda(parseFloat(document.getElementById('valorAdicional').value) || 0);
     const valorExtra = formatarParaMoeda(parseFloat(document.getElementById('valorExtra').value) || 0);
     const valorAdicionalExtra = formatarParaMoeda(parseFloat(document.getElementById('valorAdicionalExtra').value) || 0);
