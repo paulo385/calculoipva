@@ -109,7 +109,9 @@
 
     <!-- ===================== CALCULADORA ===================== -->
     <div id="calculadora" class="container hidden" role="main">
-      <h1>Calculadora de IPVA e Serviços</h1>
+      <h1>Calculadora de IPVA e Serviços
+        <span id="rascunhoStatus" class="rascunho-status">💾 Rascunho salvo</span>
+      </h1>
 
       <div class="calculator-explanation">
         <details>
@@ -146,7 +148,7 @@
         </div>
         <div class="form-group">
           <label for="valor_veiculo">Valor do Veículo (R$):</label>
-          <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo" placeholder="Digite o valor do veículo" required min="1" aria-describedby="valor_veiculo-error">
+          <input type="text" inputmode="decimal" id="valor_veiculo" name="valor_veiculo" placeholder="Ex: digite 5000000 para R$ 50.000,00" required data-currency-mask="true" data-min="1" aria-describedby="valor_veiculo-error">
           <small class="validation-message" id="valor_veiculo-error"></small>
           <small class="field-tip">Consulte o valor de mercado na <a href="https://veiculos.fipe.org.br/" target="_blank">Tabela FIPE</a>.</small>
         </div>
@@ -157,7 +159,7 @@
           <small class="field-tip">Percentual do estado sobre o valor do veículo. Veja em "Alíquotas 2026".</small>
         </div>
         <div class="form-group">
-          <label for="valorAdicional">Valor do Emplacamento (R$):</label>
+          <label for="valorAdicional">Valor do Emplacamento/Transferência (R$):</label>
           <input type="number" step="0.01" id="valorAdicional" name="valorAdicional" placeholder="Digite o valor do emplacamento" min="0" aria-describedby="valorAdicional-error">
           <small class="validation-message" id="valorAdicional-error"></small>
           <small class="field-tip">Custos administrativos de registro do veículo.</small>
@@ -194,6 +196,7 @@
         </div>
         <a href="https://veiculos.fipe.org.br/" target="_blank" class="fipe-button" aria-label="Acesse a tabela Fipe (abre em nova janela)">Acesse Aqui a tabela Fipe</a>
         <a href="#" class="fipe-button calc-ipva-link" role="button" aria-label="Calcular IPVA">Calcular IPVA</a>
+        <button type="button" id="limparFormBtn" class="fipe-button" aria-label="Limpar formulário e rascunho salvo">Limpar formulário</button>
         <button type="submit" class="hidden">Calcular IPVA</button>
       </form>
 

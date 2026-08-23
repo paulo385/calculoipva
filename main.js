@@ -6,6 +6,39 @@ function formatarParaMoeda(valor) {
   });
 }
 
+// Converte um texto digitado em campo com máscara de moeda (ex: "156.500,00")
+// de volta para um número puro (156500), pra usar nos cálculos
+function parseValorMoeda(texto) {
+  if (!texto) return 0;
+  const limpo = String(texto)
+    .replace(/\./g, '')   // remove separador de milhar
+    .replace(',', '.');   // vírgula decimal vira ponto
+  const numero = parseFloat(limpo);
+  return isNaN(numero) ? 0 : numero;
+}
+
+// Aplica a máscara de moeda no padrão usado por apps de banco/e-commerce:
+// a pessoa só digita números, e os 2 últimos dígitos viram centavos
+// automaticamente (ex: digitar "12345000" mostra "R$ 123.450,00")
+function formatarInputMoeda(input) {
+  // Mantém só os dígitos digitados
+  const somenteDigitos = input.value.replace(/\D/g, '');
+
+  if (!somenteDigitos) {
+    input.value = '';
+    return;
+  }
+
+  // Trata os dígitos como centavos (os 2 últimos são sempre decimais)
+  const valorEmCentavos = parseInt(somenteDigitos, 10);
+  const valorEmReais = valorEmCentavos / 100;
+
+  input.value = valorEmReais.toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 function calcularIpvaNovo(valorVeiculo, aliquota = 3.5, mesesRestantes) {
   const ipvaAnual = valorVeiculo * (aliquota / 100);
   const ipvaAjustado = ipvaAnual * (mesesRestantes / 12);
@@ -336,6 +369,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }
     }
+    // Check campos de texto com máscara de moeda (ex: valor_veiculo)
+    else if (input.dataset.currencyMask === 'true') {
+      const value = parseValorMoeda(input.value);
+
+      if (!input.value.trim()) {
+        if (input.hasAttribute('required')) {
+          isValid = false;
+          errorMessage = 'Este campo é obrigatório.';
+        }
+      } else if (isNaN(value) || value <= 0) {
+        isValid = false;
+        errorMessage = 'Por favor, informe um valor numérico válido.';
+      } else if (input.dataset.min && value < parseFloat(input.dataset.min)) {
+        isValid = false;
+        errorMessage = `Valor mínimo: ${input.dataset.min}.`;
+      }
+    }
     // Validate date inputs
     else if (input.type === 'date' && input.hasAttribute('required') && !input.value) {
       isValid = false;
@@ -383,6 +433,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const inputs = form.querySelectorAll('input:not([type="checkbox"])');
   
   inputs.forEach(input => {
+    // Aplica a máscara de moeda em tempo real, antes de qualquer outra coisa
+    if (input.dataset.currencyMask === 'true') {
+      input.addEventListener('input', () => formatarInputMoeda(input));
+    }
+
     // Validate on blur (when user leaves the field)
     input.addEventListener('blur', () => {
       validateInput(input);
@@ -402,13 +457,127 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  // ============================================================
+  // Rascunho automático (localStorage) - salva o formulário
+  // enquanto o usuário digita, pra não perder nada se recarregar
+  // ============================================================
+  const RASCUNHO_KEY = 'veiculofacil:rascunho-calculadora';
+  const CAMPOS_RASCUNHO = [
+    'nome', 'tipoCarro', 'renavam', 'valor_veiculo', 'aliquota',
+    'valorAdicional', 'valorExtra', 'valorAdicionalExtra',
+    'valorProposta', 'dataReferencia', 'observacoes',
+  ];
+  const rascunhoStatus = document.getElementById('rascunhoStatus');
+  let rascunhoStatusTimer = null;
+
+  function mostrarRascunhoSalvo() {
+    if (!rascunhoStatus) return;
+    rascunhoStatus.classList.add('show');
+    clearTimeout(rascunhoStatusTimer);
+    rascunhoStatusTimer = setTimeout(() => {
+      rascunhoStatus.classList.remove('show');
+    }, 1800);
+  }
+
+  function salvarRascunho() {
+    try {
+      const dados = {};
+      CAMPOS_RASCUNHO.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) dados[id] = el.value;
+      });
+      const gerarPDFEl = document.getElementById('gerarPDF');
+      if (gerarPDFEl) dados.gerarPDF = gerarPDFEl.checked;
+
+      localStorage.setItem(RASCUNHO_KEY, JSON.stringify(dados));
+      mostrarRascunhoSalvo();
+    } catch (error) {
+      // localStorage pode falhar em modo privado/anônimo - falha silenciosamente
+      console.warn('Não foi possível salvar o rascunho:', error);
+    }
+  }
+
+  function restaurarRascunho() {
+    try {
+      const salvo = localStorage.getItem(RASCUNHO_KEY);
+      if (!salvo) return;
+
+      const dados = JSON.parse(salvo);
+      let restaurouAlgo = false;
+
+      CAMPOS_RASCUNHO.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && dados[id]) {
+          el.value = dados[id];
+          restaurouAlgo = true;
+        }
+      });
+
+      const gerarPDFEl = document.getElementById('gerarPDF');
+      if (gerarPDFEl && typeof dados.gerarPDF === 'boolean') {
+        gerarPDFEl.checked = dados.gerarPDF;
+      }
+
+      if (restaurouAlgo) {
+        showFeedback('Rascunho anterior restaurado. Clique em "Limpar formulário" para começar do zero.', 'info', 5000);
+      }
+    } catch (error) {
+      console.warn('Não foi possível restaurar o rascunho:', error);
+    }
+  }
+
+  function limparRascunho() {
+    try {
+      localStorage.removeItem(RASCUNHO_KEY);
+    } catch (error) {
+      console.warn('Não foi possível limpar o rascunho:', error);
+    }
+  }
+
+  // Restaura assim que a página carrega
+  restaurarRascunho();
+
+  // Salva a cada alteração, com debounce pra não gravar a cada tecla
+  let salvarRascunhoTimer = null;
+  CAMPOS_RASCUNHO.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      clearTimeout(salvarRascunhoTimer);
+      salvarRascunhoTimer = setTimeout(salvarRascunho, 500);
+    });
+  });
+  const gerarPDFCheckbox = document.getElementById('gerarPDF');
+  if (gerarPDFCheckbox) {
+    gerarPDFCheckbox.addEventListener('change', salvarRascunho);
+  }
+
+  // Botão "Limpar formulário"
+  const limparFormBtn = document.getElementById('limparFormBtn');
+  if (limparFormBtn) {
+    limparFormBtn.addEventListener('click', () => {
+      form.reset();
+      document.getElementById('aliquota').value = '3.5';
+      limparRascunho();
+      document.getElementById('results').classList.add('hidden');
+      document.querySelectorAll('#ipvaForm input.valid, #ipvaForm input.invalid').forEach(el => {
+        el.classList.remove('valid', 'invalid');
+      });
+      document.querySelectorAll('#ipvaForm .validation-message').forEach(el => {
+        el.textContent = '';
+      });
+      showFeedback('Formulário limpo.', 'success', 2500);
+    });
+  }
+
+
   function updateRealTimeResults() {
     // First validate required inputs
     if (!validateInput(document.getElementById('valor_veiculo'))) {
       return;
     }
 
-    const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value) || 0;
+    const valorVeiculo = parseValorMoeda(document.getElementById('valor_veiculo').value) || 0;
     const aliquota = parseFloat(document.getElementById('aliquota').value) || 3.5;
     const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
     const valorExtra = parseFloat(document.getElementById('valorExtra').value) || 0;
@@ -426,7 +595,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('valorPropostaResultado').textContent = `Valor da Proposta/Minuta: ${formatarParaMoeda(valorProposta)}`;
     document.getElementById('totalComAdicional').textContent = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicional)}`;
 
-    document.getElementById('valorEmplacamento').textContent = `Valor do Emplacamento: ${formatarParaMoeda(valorAdicional)}`;
+    document.getElementById('valorEmplacamento').textContent = `Valor do Emplacamento/Transferência: ${formatarParaMoeda(valorAdicional)}`;
     document.getElementById('valorPlaca').textContent = `Valor da Placa: ${formatarParaMoeda(valorExtra)}`;
     document.getElementById('valorGravame').textContent = `Valor da Baixa de Gravame/Débitos: ${formatarParaMoeda(valorAdicionalExtra)}`;
 
@@ -459,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Only run initial calculation if we have a valid value
   const valorVeiculoInput = document.getElementById('valor_veiculo');
-  if (valorVeiculoInput && valorVeiculoInput.value && !isNaN(parseFloat(valorVeiculoInput.value))) {
+  if (valorVeiculoInput && valorVeiculoInput.value && !isNaN(parseValorMoeda(valorVeiculoInput.value)) && parseValorMoeda(valorVeiculoInput.value) > 0) {
     updateRealTimeResults();
   }
 
@@ -475,7 +644,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const nome = document.getElementById('nome').value;
     const tipoCarro = document.getElementById('tipoCarro').value;
     const renavam = document.getElementById('renavam').value;
-    const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value) || 0;
+    const valorVeiculo = parseValorMoeda(document.getElementById('valor_veiculo').value) || 0;
     const aliquota = parseFloat(document.getElementById('aliquota').value) || 3.5;
     const valorAdicional = formatarParaMoeda(parseFloat(document.getElementById('valorAdicional').value) || 0);
     const valorExtra = formatarParaMoeda(parseFloat(document.getElementById('valorExtra').value) || 0);
@@ -573,7 +742,7 @@ document.addEventListener('DOMContentLoaded', function () {
     y += lineSpacing;
     doc.text(`Valor do IPVA Ajustado: ${data.ipvaAjustado}`, 14, y);
     y += lineSpacing;
-    doc.text(`Valor do Emplacamento: ${data.valorEmplacamento}`, 14, y);
+    doc.text(`Valor do Emplacamento/Transferência: ${data.valorEmplacamento}`, 14, y);
     y += lineSpacing;
     doc.text(`Valor da Placa: ${data.valorPlaca}`, 14, y);
     y += lineSpacing;
@@ -602,11 +771,7 @@ document.addEventListener('DOMContentLoaded', function () {
     doc.setFontSize(10);
     doc.setTextColor(91, 100, 120);
     const footerLines = [
-      dateString,
-      'Paulo Augusto Nascimento dos Santos',
-      '(41) 99718-5852',
-      'Curitiba/PR',
-      'CEP: 81750-190',
+      `Documento gerado em ${dateString}`,
     ];
 
     const footerY = 260;
