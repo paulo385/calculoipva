@@ -843,6 +843,16 @@ button, .fipe-button, .primary-button, .contact-button {
 
 .results > p:first-of-type { border-top: none; }
 
+.valor-total-final {
+  border-top: 2px solid rgba(255, 255, 255, 0.18);
+  border-bottom: none;
+  padding-top: 0.9rem;
+  margin-top: 0.4rem;
+  font-weight: 700;
+  color: var(--teal);
+  font-size: 1.1rem;
+}
+
 #valorDiferenca {
   border-bottom: none;
   font-weight: 600;

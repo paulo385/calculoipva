@@ -614,6 +614,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('valorEmplacamento').textContent = `Valor do Emplacamento/Transferência: ${formatarParaMoeda(valorAdicional)}`;
     document.getElementById('valorPlaca').textContent = `Valor da Placa: ${formatarParaMoeda(valorExtra)}`;
     document.getElementById('valorGravame').textContent = `Valor da Baixa de Gravame/Débitos: ${formatarParaMoeda(valorAdicionalExtra)}`;
+    document.getElementById('valorTotalFinal').textContent = `Total: ${formatarParaMoeda(totalComAdicional)}`;
 
     let mensagemDiferenca = '';
     if (valorProposta > 0) {
@@ -773,7 +774,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     doc.setFontSize(13);
     doc.setTextColor(14, 148, 136); // --teal-dark
-    doc.text(`Valor Total com Adicional: ${data.totalComAdicional}`, 14, y);
+    doc.text(`Total: ${data.totalComAdicional}`, 14, y);
     y += lineSpacing;
     doc.setFontSize(12);
     doc.setTextColor(27, 37, 89);
@@ -1006,6 +1007,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('valorEmplacamento').textContent,
         document.getElementById('valorPlaca').textContent,
         document.getElementById('valorGravame').textContent,
+        document.getElementById('valorTotalFinal').textContent,
       ].filter(Boolean);
 
       const valorPropostaTexto = document.getElementById('valorPropostaResultado').textContent;
@@ -1024,6 +1026,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (nome || tipoCarro || placa) linhas.push('');
 
       linhas.push(...linhasResultado);
+
+      const observacoesTexto = document.getElementById('observacoes').value.trim();
+      if (observacoesTexto) linhas.push('', `Observações: ${observacoesTexto}`);
+
       linhas.push('', 'Calculado em veiculofacil.com.br');
 
       const mensagem = encodeURIComponent(linhas.join('\n'));
