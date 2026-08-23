@@ -989,6 +989,49 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   
+  // Compartilhar resumo do cálculo no WhatsApp
+  const compartilharResumoBtn = document.getElementById('compartilharResumoBtn');
+  if (compartilharResumoBtn) {
+    compartilharResumoBtn.addEventListener('click', (e) => {
+      const nome = document.getElementById('nome').value.trim();
+      const tipoCarro = document.getElementById('tipoCarro').value.trim();
+      const placa = document.getElementById('renavam').value.trim();
+
+      // Reaproveita o texto já calculado e exibido na tela, pra garantir
+      // que a mensagem sempre bate exatamente com o que a pessoa está vendo
+      const linhasResultado = [
+        document.getElementById('ipvaIntegral').textContent,
+        document.getElementById('ipvaAjustado').textContent,
+        document.getElementById('totalComAdicional').textContent,
+        document.getElementById('valorEmplacamento').textContent,
+        document.getElementById('valorPlaca').textContent,
+        document.getElementById('valorGravame').textContent,
+      ].filter(Boolean);
+
+      const valorPropostaTexto = document.getElementById('valorPropostaResultado').textContent;
+      if (valorPropostaTexto) linhasResultado.push(valorPropostaTexto);
+
+      const diferencaTexto = document.getElementById('valorDiferenca').textContent;
+      if (diferencaTexto) linhasResultado.push(diferencaTexto);
+
+      const linhas = [
+        '📋 Resumo do cálculo de IPVA - VeículoFácil',
+        '',
+      ];
+      if (nome) linhas.push(`Nome: ${nome}`);
+      if (tipoCarro) linhas.push(`Veículo: ${tipoCarro}`);
+      if (placa) linhas.push(`Placa/Renavam: ${placa}`);
+      if (nome || tipoCarro || placa) linhas.push('');
+
+      linhas.push(...linhasResultado);
+      linhas.push('', 'Calculado em veiculofacil.com.br');
+
+      const mensagem = encodeURIComponent(linhas.join('\n'));
+      // Sem número de destino: abre o seletor de contatos do próprio WhatsApp
+      compartilharResumoBtn.href = `https://wa.me/?text=${mensagem}`;
+    });
+  }
+
   // Solicitação de serviço assistido (CRLV/documentos) via WhatsApp
   const servicoWhatsappBtn = document.getElementById('servicoWhatsappBtn');
   if (servicoWhatsappBtn) {
