@@ -676,6 +676,28 @@ button, .fipe-button, .primary-button, .contact-button {
   margin-bottom: 1.25rem;
 }
 
+.pix-qr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  border: 1.5px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.pix-qr-wrap img {
+  width: 180px;
+  height: 180px;
+  image-rendering: pixelated;
+}
+.pix-qr-caption {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 .pix-key-row {
   display: flex;
   flex-wrap: wrap;
