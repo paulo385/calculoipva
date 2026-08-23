@@ -347,15 +347,61 @@
         <h2>Exemplo Prático</h2>
         <div class="example-box">
           <p><strong>Cenário:</strong> veículo de passeio de R$ 50.000,00 no Paraná, comprado em 1º de julho de 2026.</p>
-          <ol>
-            <li>Valor do veículo: R$ 50.000,00</li>
-            <li>Alíquota do Paraná: 1,9%</li>
-            <li>Data de referência: 01/07/2026 (restam 6 meses)</li>
-            <li>IPVA integral: R$ 50.000,00 × 1,9% = R$ 950,00</li>
-            <li>IPVA ajustado (6 meses): R$ 950,00 × (6/12) = R$ 475,00</li>
-            <li>Adicionais: Emplacamento R$ 200,00 + Placa R$ 150,00 + Gravame R$ 100,00</li>
-            <li><strong>Total: R$ 925,00</strong></li>
-          </ol>
+
+          <svg class="calc-diagram" viewBox="0 0 640 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama do cálculo: valor do veículo vezes alíquota do Paraná, resultando no IPVA integral; proporcional aos 6 meses restantes; mais taxas; total de R$ 925,00">
+            <defs>
+              <marker id="seta" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="var(--teal)"></path>
+              </marker>
+              <marker id="seta-ambar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="var(--amber)"></path>
+              </marker>
+            </defs>
+
+            <!-- Box A: Valor do veículo -->
+            <rect x="70" y="10" width="500" height="90" rx="14" fill="var(--panel)" stroke="var(--panel-border)" stroke-width="1.5"></rect>
+            <text x="100" y="45" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--indigo-text)">Valor do veículo</text>
+            <text x="100" y="78" font-family="var(--font-mono)" font-size="26" font-weight="600" fill="var(--indigo-text)">R$ 50.000,00</text>
+
+            <line x1="320" y1="100" x2="320" y2="140" stroke="var(--teal)" stroke-width="3" marker-end="url(#seta)"></line>
+
+            <!-- Box B: Alíquota -->
+            <rect x="70" y="150" width="500" height="90" rx="14" fill="var(--panel)" stroke="var(--panel-border)" stroke-width="1.5"></rect>
+            <text x="100" y="185" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--indigo-text)">× Alíquota do Paraná (2026)</text>
+            <text x="100" y="218" font-family="var(--font-mono)" font-size="26" font-weight="600" fill="var(--teal-dark)">1,9%</text>
+
+            <line x1="320" y1="240" x2="320" y2="280" stroke="var(--teal)" stroke-width="3" marker-end="url(#seta)"></line>
+
+            <!-- Box C: IPVA Integral (destaque) -->
+            <rect x="40" y="290" width="560" height="100" rx="16" fill="var(--teal-100)" stroke="var(--teal)" stroke-width="2"></rect>
+            <text x="70" y="328" font-family="var(--font-display)" font-size="15" font-weight="700" fill="var(--teal-dark)">= IPVA Integral</text>
+            <text x="70" y="366" font-family="var(--font-mono)" font-size="30" font-weight="700" fill="var(--teal-dark)">R$ 950,00</text>
+
+            <line x1="320" y1="390" x2="320" y2="430" stroke="var(--teal)" stroke-width="3" marker-end="url(#seta)"></line>
+
+            <!-- Box D: Proporcional -->
+            <rect x="70" y="440" width="500" height="100" rx="14" fill="var(--panel)" stroke="var(--panel-border)" stroke-width="1.5"></rect>
+            <text x="100" y="472" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--indigo-text)">× Proporcional (6 de 12 meses restantes)</text>
+            <text x="100" y="510" font-family="var(--font-mono)" font-size="24" font-weight="600" fill="var(--indigo-text)">950,00 × 6/12 = R$ 475,00</text>
+
+            <line x1="320" y1="540" x2="320" y2="580" stroke="var(--amber)" stroke-width="3" marker-end="url(#seta-ambar)"></line>
+
+            <!-- Box E: Taxas -->
+            <rect x="70" y="590" width="500" height="130" rx="14" fill="var(--panel)" stroke="var(--panel-border)" stroke-width="1.5"></rect>
+            <text x="100" y="622" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--indigo-text)">+ Taxas administrativas</text>
+            <text x="100" y="652" font-family="var(--font-mono)" font-size="15" fill="var(--text-muted)">Emplacamento R$ 200,00</text>
+            <text x="100" y="674" font-family="var(--font-mono)" font-size="15" fill="var(--text-muted)">Placa R$ 150,00 · Gravame R$ 100,00</text>
+            <text x="100" y="702" font-family="var(--font-mono)" font-size="20" font-weight="600" fill="var(--indigo-text)">Total: R$ 450,00</text>
+
+            <line x1="320" y1="720" x2="320" y2="760" stroke="var(--amber)" stroke-width="3" marker-end="url(#seta-ambar)"></line>
+
+            <!-- Box F: Total final (destaque máximo) -->
+            <rect x="20" y="770" width="600" height="120" rx="18" fill="var(--ink)" stroke="var(--amber)" stroke-width="2.5"></rect>
+            <text x="50" y="810" font-family="var(--font-display)" font-size="16" font-weight="700" fill="#fff">= Total a pagar</text>
+            <text x="50" y="858" font-family="var(--font-mono)" font-size="40" font-weight="700" fill="var(--amber)">R$ 925,00</text>
+          </svg>
+
+          <p class="diagram-caption">R$ 475,00 (IPVA ajustado) + R$ 450,00 (taxas) = <strong>R$ 925,00</strong></p>
         </div>
       </div>
 
