@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const RASCUNHO_KEY = 'veiculofacil:rascunho-calculadora';
   const CAMPOS_RASCUNHO = [
     'nome', 'tipoCarro', 'renavam', 'valor_veiculo', 'aliquota',
-    'valorAdicional', 'valorExtra', 'valorAdicionalExtra',
+    'tipoServicoEmplacamento', 'valorAdicional', 'valorExtra', 'valorAdicionalExtra',
     'valorProposta', 'dataReferencia', 'observacoes',
   ];
   const rascunhoStatus = document.getElementById('rascunhoStatus');
@@ -561,6 +561,9 @@ document.addEventListener('DOMContentLoaded', function () {
       clearTimeout(salvarRascunhoTimer);
       salvarRascunhoTimer = setTimeout(salvarRascunho, 500);
     });
+    if (el.tagName === 'SELECT') {
+      el.addEventListener('change', salvarRascunho);
+    }
   });
   const gerarPDFCheckbox = document.getElementById('gerarPDF');
   if (gerarPDFCheckbox) {
@@ -611,7 +614,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('valorPropostaResultado').textContent = `Valor da Proposta/Minuta: ${formatarParaMoeda(valorProposta)}`;
     document.getElementById('totalComAdicional').textContent = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicional)}`;
 
-    document.getElementById('valorEmplacamento').textContent = `Valor do Emplacamento/Transferência: ${formatarParaMoeda(valorAdicional)}`;
+    const tipoServico = document.getElementById('tipoServicoEmplacamento')?.value || 'Emplacamento/Transferência';
+    document.getElementById('valorEmplacamento').textContent = `Valor do Serviço (${tipoServico}): ${formatarParaMoeda(valorAdicional)}`;
     document.getElementById('valorPlaca').textContent = `Valor da Placa: ${formatarParaMoeda(valorExtra)}`;
     document.getElementById('valorGravame').textContent = `Valor da Baixa de Gravame/Débitos: ${formatarParaMoeda(valorAdicionalExtra)}`;
     document.getElementById('valorTotalFinal').textContent = `Total: ${formatarParaMoeda(totalComAdicional)}`;
@@ -642,6 +646,10 @@ document.addEventListener('DOMContentLoaded', function () {
       element.addEventListener('input', updateRealTimeResults);
     }
   });
+  const tipoServicoSelect = document.getElementById('tipoServicoEmplacamento');
+  if (tipoServicoSelect) {
+    tipoServicoSelect.addEventListener('change', updateRealTimeResults);
+  }
 
   // Only run initial calculation if we have a valid value
   const valorVeiculoInput = document.getElementById('valor_veiculo');
@@ -661,6 +669,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const nome = document.getElementById('nome').value;
     const tipoCarro = document.getElementById('tipoCarro').value;
     const renavam = document.getElementById('renavam').value;
+    const tipoServico = document.getElementById('tipoServicoEmplacamento')?.value || 'Emplacamento/Transferência';
     const valorVeiculo = parseValorMoeda(document.getElementById('valor_veiculo').value) || 0;
     const aliquota = parseFloat(document.getElementById('aliquota').value) || 1.9;
     const valorAdicional = formatarParaMoeda(parseFloat(document.getElementById('valorAdicional').value) || 0);
@@ -698,6 +707,7 @@ document.addEventListener('DOMContentLoaded', function () {
           ipvaIntegral: formatarParaMoeda(ipvaAnual),
           ipvaAjustado: `${formatarParaMoeda(ipvaAjustado)} (${mesesRestantes} meses restantes)`,
           valorEmplacamento: valorAdicional,
+          tipoServico,
           valorPlaca: valorExtra,
           valorGravame: valorAdicionalExtra,
           totalComAdicional: formatarParaMoeda(totalComAdicional),
@@ -759,7 +769,7 @@ document.addEventListener('DOMContentLoaded', function () {
     y += lineSpacing;
     doc.text(`Valor do IPVA Ajustado: ${data.ipvaAjustado}`, 14, y);
     y += lineSpacing;
-    doc.text(`Valor do Emplacamento/Transferência: ${data.valorEmplacamento}`, 14, y);
+    doc.text(`Valor do Serviço (${data.tipoServico}): ${data.valorEmplacamento}`, 14, y);
     y += lineSpacing;
     doc.text(`Valor da Placa: ${data.valorPlaca}`, 14, y);
     y += lineSpacing;

@@ -504,6 +504,7 @@ label {
 input[type="number"],
 input[type="date"],
 input[type="text"],
+select,
 textarea {
   width: 100%;
   padding: 0.8rem 0.95rem;
@@ -517,12 +518,21 @@ textarea {
   appearance: none;
 }
 
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6478' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-size: 18px;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none; margin: 0;
 }
 
-input:focus, textarea:focus {
+input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--teal);
   background: var(--panel);
