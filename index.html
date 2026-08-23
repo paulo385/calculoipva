@@ -17,6 +17,10 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
+  <!-- Content Security Policy: só permite carregar recursos dos domínios
+       que o site realmente usa, bloqueando injeção de scripts externos -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+
   <!-- PWA: permite instalar o site como app no celular -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -36,7 +40,7 @@
   }
   </script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
 
   <!-- Cloudflare Web Analytics -->
   <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "06e3897f30ae46e7b3cc819f5fb5e44f"}'></script>
@@ -130,7 +134,7 @@
             <p>Esta calculadora estima o valor do IPVA e outros custos de documentação veicular.</p>
             <ol>
               <li><strong>Preencha os dados do veículo</strong> — nome, marca/modelo e identificação.</li>
-              <li><strong>Informe o valor do veículo</strong> — use o valor de mercado ou consulte a <a href="https://veiculos.fipe.org.br/" target="_blank">Tabela FIPE</a>.</li>
+              <li><strong>Informe o valor do veículo</strong> — use o valor de mercado ou consulte a <a href="https://veiculos.fipe.org.br/" target="_blank" rel="noopener noreferrer">Tabela FIPE</a>.</li>
               <li><strong>Ajuste a alíquota</strong> — cada estado tem uma alíquota diferente (veja em "Alíquotas 2026").</li>
               <li><strong>Adicione valores extras</strong> — emplacamento, placa e baixa de gravame/débitos, se houver.</li>
               <li><strong>Defina a data de referência</strong> — o sistema calcula o valor proporcional até o fim do ano.</li>
@@ -160,7 +164,7 @@
           <label for="valor_veiculo">Valor do Veículo (R$):</label>
           <input type="text" inputmode="decimal" id="valor_veiculo" name="valor_veiculo" placeholder="Ex: digite 5000000 para R$ 50.000,00" required data-currency-mask="true" data-min="1" aria-describedby="valor_veiculo-error">
           <small class="validation-message" id="valor_veiculo-error"></small>
-          <small class="field-tip">Consulte o valor de mercado na <a href="https://veiculos.fipe.org.br/" target="_blank">Tabela FIPE</a>.</small>
+          <small class="field-tip">Consulte o valor de mercado na <a href="https://veiculos.fipe.org.br/" target="_blank" rel="noopener noreferrer">Tabela FIPE</a>.</small>
         </div>
         <div class="form-group">
           <label for="aliquota">Alíquota (%):</label>
@@ -210,7 +214,7 @@
             Gerar orçamento em PDF
           </label>
         </div>
-        <a href="https://veiculos.fipe.org.br/" target="_blank" class="fipe-button" aria-label="Acesse a tabela Fipe (abre em nova janela)">Acesse Aqui a tabela Fipe</a>
+        <a href="https://veiculos.fipe.org.br/" target="_blank" rel="noopener noreferrer" class="fipe-button" aria-label="Acesse a tabela Fipe (abre em nova janela)">Acesse Aqui a tabela Fipe</a>
         <a href="#" class="fipe-button calc-ipva-link" role="button" aria-label="Calcular IPVA">Calcular IPVA</a>
         <button type="button" id="limparFormBtn" class="fipe-button" aria-label="Limpar formulário e rascunho salvo">Limpar formulário</button>
         <button type="submit" class="hidden">Calcular IPVA</button>
@@ -412,33 +416,33 @@
             <tr><th scope="col">Estado</th><th scope="col">Site do DETRAN</th><th scope="col">Telefone</th></tr>
           </thead>
           <tbody>
-            <tr><td>Acre</td><td><a href="https://www.detran.ac.gov.br" target="_blank" class="detran-link">DETRAN AC</a></td><td>(68) 3215-4100</td></tr>
-            <tr><td>Alagoas</td><td><a href="https://www.detran.al.gov.br" target="_blank" class="detran-link">DETRAN AL</a></td><td>(82) 3315-2200</td></tr>
-            <tr><td>Amapá</td><td><a href="https://www.detran.ap.gov.br" target="_blank" class="detran-link">DETRAN AP</a></td><td>(96) 3314-0500</td></tr>
-            <tr><td>Amazonas</td><td><a href="https://www.detran.am.gov.br" target="_blank" class="detran-link">DETRAN AM</a></td><td>(92) 3643-0200</td></tr>
-            <tr><td>Bahia</td><td><a href="http://www.detran.ba.gov.br" target="_blank" class="detran-link">DETRAN BA</a></td><td>(71) 3116-2300</td></tr>
-            <tr><td>Ceará</td><td><a href="https://www.detran.ce.gov.br" target="_blank" class="detran-link">DETRAN CE</a></td><td>(85) 3217-2300</td></tr>
-            <tr><td>Distrito Federal</td><td><a href="http://www.detran.df.gov.br" target="_blank" class="detran-link">DETRAN DF</a></td><td>(61) 3120-9800</td></tr>
-            <tr><td>Espírito Santo</td><td><a href="https://detran.es.gov.br" target="_blank" class="detran-link">DETRAN ES</a></td><td>(27) 3137-2600</td></tr>
-            <tr><td>Goiás</td><td><a href="https://www.detran.go.gov.br" target="_blank" class="detran-link">DETRAN GO</a></td><td>(62) 3272-8000</td></tr>
-            <tr><td>Maranhão</td><td><a href="http://www.detran.ma.gov.br" target="_blank" class="detran-link">DETRAN MA</a></td><td>(98) 3089-2050</td></tr>
-            <tr><td>Mato Grosso</td><td><a href="http://www.detran.mt.gov.br" target="_blank" class="detran-link">DETRAN MT</a></td><td>(65) 3615-4700</td></tr>
-            <tr><td>Mato Grosso do Sul</td><td><a href="http://www.detran.ms.gov.br" target="_blank" class="detran-link">DETRAN MS</a></td><td>(67) 3368-0100</td></tr>
-            <tr><td>Minas Gerais</td><td><a href="https://www.detran.mg.gov.br" target="_blank" class="detran-link">DETRAN MG</a></td><td>(31) 3222-1890</td></tr>
-            <tr><td>Pará</td><td><a href="http://www.detran.pa.gov.br" target="_blank" class="detran-link">DETRAN PA</a></td><td>(91) 3214-6000</td></tr>
-            <tr><td>Paraíba</td><td><a href="http://www.detran.pb.gov.br" target="_blank" class="detran-link">DETRAN PB</a></td><td>(83) 3216-2500</td></tr>
-            <tr><td>Paraná</td><td><a href="http://www.detran.pr.gov.br" target="_blank" class="detran-link">DETRAN PR</a></td><td>(41) 3361-1212</td></tr>
-            <tr><td>Pernambuco</td><td><a href="http://www.detran.pe.gov.br" target="_blank" class="detran-link">DETRAN PE</a></td><td>(81) 3184-8000</td></tr>
-            <tr><td>Piauí</td><td><a href="http://www.detran.pi.gov.br" target="_blank" class="detran-link">DETRAN PI</a></td><td>(86) 3215-4800</td></tr>
-            <tr><td>Rio de Janeiro</td><td><a href="http://www.detran.rj.gov.br" target="_blank" class="detran-link">DETRAN RJ</a></td><td>(21) 3460-4040</td></tr>
-            <tr><td>Rio Grande do Norte</td><td><a href="http://www.detran.rn.gov.br" target="_blank" class="detran-link">DETRAN RN</a></td><td>(84) 3232-1200</td></tr>
-            <tr><td>Rio Grande do Sul</td><td><a href="http://www.detran.rs.gov.br" target="_blank" class="detran-link">DETRAN RS</a></td><td>(51) 3288-2000</td></tr>
-            <tr><td>Rondônia</td><td><a href="http://www.detran.ro.gov.br" target="_blank" class="detran-link">DETRAN RO</a></td><td>(69) 3216-5000</td></tr>
-            <tr><td>Roraima</td><td><a href="http://www.detran.rr.gov.br" target="_blank" class="detran-link">DETRAN RR</a></td><td>(95) 3198-3000</td></tr>
-            <tr><td>Santa Catarina</td><td><a href="http://www.detran.sc.gov.br" target="_blank" class="detran-link">DETRAN SC</a></td><td>(48) 3381-2000</td></tr>
-            <tr><td>São Paulo</td><td><a href="http://www.detran.sp.gov.br" target="_blank" class="detran-link">DETRAN SP</a></td><td>0800 017 3333</td></tr>
-            <tr><td>Sergipe</td><td><a href="http://www.detran.se.gov.br" target="_blank" class="detran-link">DETRAN SE</a></td><td>(79) 3226-2000</td></tr>
-            <tr><td>Tocantins</td><td><a href="http://www.detran.to.gov.br" target="_blank" class="detran-link">DETRAN TO</a></td><td>(63) 3218-2700</td></tr>
+            <tr><td>Acre</td><td><a href="https://www.detran.ac.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN AC</a></td><td>(68) 3215-4100</td></tr>
+            <tr><td>Alagoas</td><td><a href="https://www.detran.al.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN AL</a></td><td>(82) 3315-2200</td></tr>
+            <tr><td>Amapá</td><td><a href="https://www.detran.ap.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN AP</a></td><td>(96) 3314-0500</td></tr>
+            <tr><td>Amazonas</td><td><a href="https://www.detran.am.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN AM</a></td><td>(92) 3643-0200</td></tr>
+            <tr><td>Bahia</td><td><a href="http://www.detran.ba.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN BA</a></td><td>(71) 3116-2300</td></tr>
+            <tr><td>Ceará</td><td><a href="https://www.detran.ce.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN CE</a></td><td>(85) 3217-2300</td></tr>
+            <tr><td>Distrito Federal</td><td><a href="http://www.detran.df.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN DF</a></td><td>(61) 3120-9800</td></tr>
+            <tr><td>Espírito Santo</td><td><a href="https://detran.es.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN ES</a></td><td>(27) 3137-2600</td></tr>
+            <tr><td>Goiás</td><td><a href="https://www.detran.go.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN GO</a></td><td>(62) 3272-8000</td></tr>
+            <tr><td>Maranhão</td><td><a href="http://www.detran.ma.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN MA</a></td><td>(98) 3089-2050</td></tr>
+            <tr><td>Mato Grosso</td><td><a href="http://www.detran.mt.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN MT</a></td><td>(65) 3615-4700</td></tr>
+            <tr><td>Mato Grosso do Sul</td><td><a href="http://www.detran.ms.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN MS</a></td><td>(67) 3368-0100</td></tr>
+            <tr><td>Minas Gerais</td><td><a href="https://www.detran.mg.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN MG</a></td><td>(31) 3222-1890</td></tr>
+            <tr><td>Pará</td><td><a href="http://www.detran.pa.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PA</a></td><td>(91) 3214-6000</td></tr>
+            <tr><td>Paraíba</td><td><a href="http://www.detran.pb.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PB</a></td><td>(83) 3216-2500</td></tr>
+            <tr><td>Paraná</td><td><a href="http://www.detran.pr.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PR</a></td><td>(41) 3361-1212</td></tr>
+            <tr><td>Pernambuco</td><td><a href="http://www.detran.pe.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PE</a></td><td>(81) 3184-8000</td></tr>
+            <tr><td>Piauí</td><td><a href="http://www.detran.pi.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PI</a></td><td>(86) 3215-4800</td></tr>
+            <tr><td>Rio de Janeiro</td><td><a href="http://www.detran.rj.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RJ</a></td><td>(21) 3460-4040</td></tr>
+            <tr><td>Rio Grande do Norte</td><td><a href="http://www.detran.rn.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RN</a></td><td>(84) 3232-1200</td></tr>
+            <tr><td>Rio Grande do Sul</td><td><a href="http://www.detran.rs.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RS</a></td><td>(51) 3288-2000</td></tr>
+            <tr><td>Rondônia</td><td><a href="http://www.detran.ro.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RO</a></td><td>(69) 3216-5000</td></tr>
+            <tr><td>Roraima</td><td><a href="http://www.detran.rr.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RR</a></td><td>(95) 3198-3000</td></tr>
+            <tr><td>Santa Catarina</td><td><a href="http://www.detran.sc.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN SC</a></td><td>(48) 3381-2000</td></tr>
+            <tr><td>São Paulo</td><td><a href="http://www.detran.sp.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN SP</a></td><td>0800 017 3333</td></tr>
+            <tr><td>Sergipe</td><td><a href="http://www.detran.se.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN SE</a></td><td>(79) 3226-2000</td></tr>
+            <tr><td>Tocantins</td><td><a href="http://www.detran.to.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN TO</a></td><td>(63) 3218-2700</td></tr>
           </tbody>
         </table>
       </div>
@@ -457,33 +461,33 @@
             <tr><th scope="col">Estado</th><th scope="col">Site da Sefaz (IPVA)</th></tr>
           </thead>
           <tbody>
-            <tr><td>Acre</td><td><a href="https://www.sefaz.ac.gov.br" target="_blank" class="detran-link">SEFAZ AC</a></td></tr>
-            <tr><td>Alagoas</td><td><a href="https://www.sefaz.al.gov.br" target="_blank" class="detran-link">SEFAZ AL</a></td></tr>
-            <tr><td>Amapá</td><td><a href="https://www.sefaz.ap.gov.br" target="_blank" class="detran-link">SEFAZ AP</a></td></tr>
-            <tr><td>Amazonas</td><td><a href="https://www.sefaz.am.gov.br" target="_blank" class="detran-link">SEFAZ AM</a></td></tr>
-            <tr><td>Bahia</td><td><a href="https://www.sefaz.ba.gov.br" target="_blank" class="detran-link">SEFAZ BA</a></td></tr>
-            <tr><td>Ceará</td><td><a href="https://www.sefaz.ce.gov.br" target="_blank" class="detran-link">SEFAZ CE</a></td></tr>
-            <tr><td>Distrito Federal</td><td><a href="https://www.fazenda.df.gov.br" target="_blank" class="detran-link">SEFAZ DF</a></td></tr>
-            <tr><td>Espírito Santo</td><td><a href="https://sefaz.es.gov.br" target="_blank" class="detran-link">SEFAZ ES</a></td></tr>
-            <tr><td>Goiás</td><td><a href="https://www.sefaz.go.gov.br" target="_blank" class="detran-link">SEFAZ GO</a></td></tr>
-            <tr><td>Maranhão</td><td><a href="https://www.sefaz.ma.gov.br" target="_blank" class="detran-link">SEFAZ MA</a></td></tr>
-            <tr><td>Mato Grosso</td><td><a href="https://www.sefaz.mt.gov.br" target="_blank" class="detran-link">SEFAZ MT</a></td></tr>
-            <tr><td>Mato Grosso do Sul</td><td><a href="https://www.sefaz.ms.gov.br" target="_blank" class="detran-link">SEFAZ MS</a></td></tr>
-            <tr><td>Minas Gerais</td><td><a href="https://www.fazenda.mg.gov.br" target="_blank" class="detran-link">SEFAZ MG</a></td></tr>
-            <tr><td>Pará</td><td><a href="https://www.sefa.pa.gov.br" target="_blank" class="detran-link">SEFA PA</a></td></tr>
-            <tr><td>Paraíba</td><td><a href="https://www.receita.pb.gov.br" target="_blank" class="detran-link">Receita PB</a></td></tr>
-            <tr><td>Paraná</td><td><a href="https://www.fazenda.pr.gov.br" target="_blank" class="detran-link">SEFAZ PR</a></td></tr>
-            <tr><td>Pernambuco</td><td><a href="https://www.sefaz.pe.gov.br" target="_blank" class="detran-link">SEFAZ PE</a></td></tr>
-            <tr><td>Piauí</td><td><a href="https://portal.sefaz.pi.gov.br" target="_blank" class="detran-link">SEFAZ PI</a></td></tr>
-            <tr><td>Rio de Janeiro</td><td><a href="https://www.fazenda.rj.gov.br" target="_blank" class="detran-link">SEFAZ RJ</a></td></tr>
-            <tr><td>Rio Grande do Norte</td><td><a href="https://www.set.rn.gov.br" target="_blank" class="detran-link">SET RN</a></td></tr>
-            <tr><td>Rio Grande do Sul</td><td><a href="https://www.sefaz.rs.gov.br" target="_blank" class="detran-link">SEFAZ RS</a></td></tr>
-            <tr><td>Rondônia</td><td><a href="https://portal.sefin.ro.gov.br" target="_blank" class="detran-link">SEFIN RO</a></td></tr>
-            <tr><td>Roraima</td><td><a href="https://www.sefaz.rr.gov.br" target="_blank" class="detran-link">SEFAZ RR</a></td></tr>
-            <tr><td>Santa Catarina</td><td><a href="https://www.sef.sc.gov.br" target="_blank" class="detran-link">SEF SC</a></td></tr>
-            <tr><td>São Paulo</td><td><a href="https://portal.fazenda.sp.gov.br" target="_blank" class="detran-link">SEFAZ SP</a></td></tr>
-            <tr><td>Sergipe</td><td><a href="https://www.sefaz.se.gov.br" target="_blank" class="detran-link">SEFAZ SE</a></td></tr>
-            <tr><td>Tocantins</td><td><a href="https://www.sefaz.to.gov.br" target="_blank" class="detran-link">SEFAZ TO</a></td></tr>
+            <tr><td>Acre</td><td><a href="https://www.sefaz.ac.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ AC</a></td></tr>
+            <tr><td>Alagoas</td><td><a href="https://www.sefaz.al.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ AL</a></td></tr>
+            <tr><td>Amapá</td><td><a href="https://www.sefaz.ap.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ AP</a></td></tr>
+            <tr><td>Amazonas</td><td><a href="https://www.sefaz.am.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ AM</a></td></tr>
+            <tr><td>Bahia</td><td><a href="https://www.sefaz.ba.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ BA</a></td></tr>
+            <tr><td>Ceará</td><td><a href="https://www.sefaz.ce.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ CE</a></td></tr>
+            <tr><td>Distrito Federal</td><td><a href="https://www.fazenda.df.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ DF</a></td></tr>
+            <tr><td>Espírito Santo</td><td><a href="https://sefaz.es.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ ES</a></td></tr>
+            <tr><td>Goiás</td><td><a href="https://www.sefaz.go.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ GO</a></td></tr>
+            <tr><td>Maranhão</td><td><a href="https://www.sefaz.ma.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ MA</a></td></tr>
+            <tr><td>Mato Grosso</td><td><a href="https://www.sefaz.mt.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ MT</a></td></tr>
+            <tr><td>Mato Grosso do Sul</td><td><a href="https://www.sefaz.ms.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ MS</a></td></tr>
+            <tr><td>Minas Gerais</td><td><a href="https://www.fazenda.mg.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ MG</a></td></tr>
+            <tr><td>Pará</td><td><a href="https://www.sefa.pa.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFA PA</a></td></tr>
+            <tr><td>Paraíba</td><td><a href="https://www.receita.pb.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">Receita PB</a></td></tr>
+            <tr><td>Paraná</td><td><a href="https://www.fazenda.pr.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ PR</a></td></tr>
+            <tr><td>Pernambuco</td><td><a href="https://www.sefaz.pe.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ PE</a></td></tr>
+            <tr><td>Piauí</td><td><a href="https://portal.sefaz.pi.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ PI</a></td></tr>
+            <tr><td>Rio de Janeiro</td><td><a href="https://www.fazenda.rj.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ RJ</a></td></tr>
+            <tr><td>Rio Grande do Norte</td><td><a href="https://www.set.rn.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SET RN</a></td></tr>
+            <tr><td>Rio Grande do Sul</td><td><a href="https://www.sefaz.rs.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ RS</a></td></tr>
+            <tr><td>Rondônia</td><td><a href="https://portal.sefin.ro.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFIN RO</a></td></tr>
+            <tr><td>Roraima</td><td><a href="https://www.sefaz.rr.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ RR</a></td></tr>
+            <tr><td>Santa Catarina</td><td><a href="https://www.sef.sc.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEF SC</a></td></tr>
+            <tr><td>São Paulo</td><td><a href="https://portal.fazenda.sp.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ SP</a></td></tr>
+            <tr><td>Sergipe</td><td><a href="https://www.sefaz.se.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ SE</a></td></tr>
+            <tr><td>Tocantins</td><td><a href="https://www.sefaz.to.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ TO</a></td></tr>
           </tbody>
         </table>
       </div>
@@ -493,7 +497,7 @@
     <div id="contato" class="hidden" role="region" aria-labelledby="contato-titulo">
       <h2 id="contato-titulo">Contato</h2>
       <p>Fale diretamente com o responsável pela ferramenta para tirar dúvidas ou solicitar suporte.</p>
-      <a href="https://wa.me/5541997185852" target="_blank" class="contact-button">Falar pelo WhatsApp</a>
+      <a href="https://wa.me/5541997185852" target="_blank" rel="noopener noreferrer" class="contact-button">Falar pelo WhatsApp</a>
 
       <div class="pix-card servico-card" id="servicoCard">
         <span class="pix-eyebrow">🧾 Serviço assistido · exclusivo PR</span>
