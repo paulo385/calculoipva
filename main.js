@@ -318,11 +318,26 @@ document.addEventListener('DOMContentLoaded', function () {
           showSection(tutorial);
           break;
         case 'contato':
+        case 'servico':
+        case 'pix':
           showSection(contato);
           break;
         case 'sobre':
           showSection(sobre);
           break;
+      }
+
+      // Se o card indicar um alvo específico dentro da seção, rola até ele
+      const scrollTargetId = this.dataset.scrollTarget;
+      if (scrollTargetId) {
+        setTimeout(() => {
+          const target = document.getElementById(scrollTargetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.classList.add('highlight-pulse');
+            setTimeout(() => target.classList.remove('highlight-pulse'), 1500);
+          }
+        }, 100);
       }
     });
   });
@@ -1000,6 +1015,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `Nome: ${nome}`,
         `Placa: ${placa} (PR)`,
         `Renavam: ${renavam}`,
+        'Valores: Emissão de CRLV: R$ 60,00 | Emissão de ATPV (DUT digital): R$ 80,00',
       ];
       if (obs) linhas.push(`Detalhes: ${obs}`);
 

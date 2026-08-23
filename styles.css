@@ -213,6 +213,8 @@ a:focus-visible,
   border-color: var(--teal);
 }
 
+.sidebar-hidden { /* mantido por compat.: no novo layout a navbar continua visível */ }
+
 /* Mobile: navbar vira menu hamburger + gaveta */
 @media (max-width: 860px) {
   .menu-toggle { display: block; }
@@ -742,6 +744,15 @@ button, .fipe-button, .primary-button, .contact-button {
 }
 .servico-card textarea {
   min-height: 80px;
+}
+
+@keyframes highlightPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0); }
+  30% { box-shadow: 0 0 0 6px rgba(20, 184, 166, 0.25); }
+}
+.highlight-pulse {
+  animation: highlightPulse 1.5s ease;
+  border-color: var(--teal) !important;
 }
 
 /* Checklist estilizada (usada em "Sobre") */
