@@ -1016,6 +1016,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `Placa: ${placa} (PR)`,
         `Renavam: ${renavam}`,
         'Valores: Emissão de CRLV: R$ 60,00 | Emissão de ATPV (DUT digital): R$ 80,00',
+        'Chave Pix: guto.pands@gmail.com',
       ];
       if (obs) linhas.push(`Detalhes: ${obs}`);
 
