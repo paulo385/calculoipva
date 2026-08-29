@@ -1021,7 +1021,18 @@ document.addEventListener('DOMContentLoaded', function () {
   // ============================================================
   // Anexo I - Intenção de Venda (DETRAN-PR)
   // ============================================================
-  function coletarDadosAnexoI() {
+  // Converte "YYYY-MM-DD" (formato do <input type="date">) para "DD/MM/AAAA",
+// sem depender do parser do navegador (evita "Invalid Date" em navegadores
+// que devolvem o valor em outro formato)
+function formatarDataBR(dataISO) {
+  if (!dataISO) return '';
+  const match = String(dataISO).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) return dataISO; // formato inesperado: mostra o valor bruto em vez de "Invalid Date"
+  const [, ano, mes, dia] = match;
+  return `${dia}/${mes}/${ano}`;
+}
+
+function coletarDadosAnexoI() {
     return {
       placa: document.getElementById('anexoPlaca').value.trim(),
       renavam: document.getElementById('anexoRenavam').value.trim(),
@@ -1061,9 +1072,7 @@ document.addEventListener('DOMContentLoaded', function () {
       preencherDocxBtn.textContent = 'Gerando documento...';
 
       try {
-        const dataFormatada = d.data
-          ? new Date(d.data + 'T00:00:00').toLocaleDateString('pt-BR')
-          : '';
+        const dataFormatada = formatarDataBR(d.data);
 
         // Ordem EXATA em que os rótulos aparecem no documento - importante
         // porque "Nome:", "CPF:" e "E-Mail:" se repetem (vendedor e comprador)
@@ -1208,9 +1217,7 @@ document.addEventListener('DOMContentLoaded', function () {
       doc.setTextColor(14, 148, 136);
       doc.text('Local e data', 14, y);
       y += 9;
-      const dataFormatada = d.data
-        ? new Date(d.data + 'T00:00:00').toLocaleDateString('pt-BR')
-        : '';
+      const dataFormatada = formatarDataBR(d.data);
       linha('Local:', d.local);
       linha('Data:', dataFormatada);
 
@@ -1247,9 +1254,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      const dataFormatada = d.data
-        ? new Date(d.data + 'T00:00:00').toLocaleDateString('pt-BR')
-        : '';
+      const dataFormatada = formatarDataBR(d.data);
 
       const linhas = [
         'Olá! Preciso de ajuda com o Anexo I (Intenção de Venda) - DETRAN-PR.',
