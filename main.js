@@ -6,7 +6,40 @@ function formatarParaMoeda(valor) {
   });
 }
 
-function calcularIpvaNovo(valorVeiculo, aliquota = 3.5, mesesRestantes) {
+// Converte um texto digitado em campo com máscara de moeda (ex: "156.500,00")
+// de volta para um número puro (156500), pra usar nos cálculos
+function parseValorMoeda(texto) {
+  if (!texto) return 0;
+  const limpo = String(texto)
+    .replace(/\./g, '')   // remove separador de milhar
+    .replace(',', '.');   // vírgula decimal vira ponto
+  const numero = parseFloat(limpo);
+  return isNaN(numero) ? 0 : numero;
+}
+
+// Aplica a máscara de moeda no padrão usado por apps de banco/e-commerce:
+// a pessoa só digita números, e os 2 últimos dígitos viram centavos
+// automaticamente (ex: digitar "12345000" mostra "R$ 123.450,00")
+function formatarInputMoeda(input) {
+  // Mantém só os dígitos digitados
+  const somenteDigitos = input.value.replace(/\D/g, '');
+
+  if (!somenteDigitos) {
+    input.value = '';
+    return;
+  }
+
+  // Trata os dígitos como centavos (os 2 últimos são sempre decimais)
+  const valorEmCentavos = parseInt(somenteDigitos, 10);
+  const valorEmReais = valorEmCentavos / 100;
+
+  input.value = valorEmReais.toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function calcularIpvaNovo(valorVeiculo, aliquota = 1.9, mesesRestantes) {
   const ipvaAnual = valorVeiculo * (aliquota / 100);
   const ipvaAjustado = ipvaAnual * (mesesRestantes / 12);
   return { ipvaAnual, ipvaAjustado };
@@ -98,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const ajuda = document.getElementById('ajuda');
   const tabelaDetran = document.getElementById('tabelaDetran');
   const tabelaIPVA = document.getElementById('tabelaIPVA');
+  const anexoI = document.getElementById('anexoI');
   const tutorial = document.getElementById('tutorial');
   const logo = document.getElementById('logo');
   const calcBtn = document.getElementById('calcBtn');
@@ -107,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const ajudaBtn = document.getElementById('ajudaBtn');
   const siteDetranBtn = document.getElementById('siteDetranBtn');
   const siteIPVABtn = document.getElementById('siteIPVABtn');
+  const anexoIBtn = document.getElementById('anexoIBtn');
   const tutorialBtn = document.getElementById('tutorialBtn');
   const startCalculatorBtn = document.getElementById('startCalculator');
   const sobreContatoBtn = document.getElementById('sobreContatoBtn');
@@ -114,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Lista mestre de todas as seções da página (usada para saber o que
   // esconder sempre que uma seção nova for exibida)
-  const allSections = [calculadora, tabelaServicos, tabelaDetran, tabelaIPVA, contato, sobre, ajuda, tutorial];
+  const allSections = [calculadora, tabelaServicos, tabelaDetran, tabelaIPVA, anexoI, contato, sobre, ajuda, tutorial];
   
   // Toggle sidebar menu on mobile
   const menuToggle = document.getElementById('menu-toggle');
@@ -177,6 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
           [tabelaServicos?.id]: novaTabelaBtn,
           [tabelaDetran?.id]: siteDetranBtn,
           [tabelaIPVA?.id]: siteIPVABtn,
+          [anexoI?.id]: anexoIBtn,
           [contato?.id]: contatoBtn,
           [sobre?.id]: sobreBtn,
           [ajuda?.id]: ajudaBtn,
@@ -274,6 +310,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  if (anexoIBtn) {
+    anexoIBtn.addEventListener('click', () => {
+      showSection(anexoI);
+      if (sidebar) sidebar.classList.remove('sidebar-hidden');
+    });
+  }
+
   document.querySelectorAll('.ajuda-opcao').forEach(button => {
     button.addEventListener('click', function () {
       switch (this.dataset.action) {
@@ -285,11 +328,26 @@ document.addEventListener('DOMContentLoaded', function () {
           showSection(tutorial);
           break;
         case 'contato':
+        case 'servico':
+        case 'pix':
           showSection(contato);
           break;
         case 'sobre':
           showSection(sobre);
           break;
+      }
+
+      // Se o card indicar um alvo específico dentro da seção, rola até ele
+      const scrollTargetId = this.dataset.scrollTarget;
+      if (scrollTargetId) {
+        setTimeout(() => {
+          const target = document.getElementById(scrollTargetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.classList.add('highlight-pulse');
+            setTimeout(() => target.classList.remove('highlight-pulse'), 1500);
+          }
+        }, 100);
       }
     });
   });
@@ -334,6 +392,23 @@ document.addEventListener('DOMContentLoaded', function () {
           isValid = false;
           errorMessage = `Valor máximo: ${input.getAttribute('max')}.`;
         }
+      }
+    }
+    // Check campos de texto com máscara de moeda (ex: valor_veiculo)
+    else if (input.dataset.currencyMask === 'true') {
+      const value = parseValorMoeda(input.value);
+
+      if (!input.value.trim()) {
+        if (input.hasAttribute('required')) {
+          isValid = false;
+          errorMessage = 'Este campo é obrigatório.';
+        }
+      } else if (isNaN(value) || value <= 0) {
+        isValid = false;
+        errorMessage = 'Por favor, informe um valor numérico válido.';
+      } else if (input.dataset.min && value < parseFloat(input.dataset.min)) {
+        isValid = false;
+        errorMessage = `Valor mínimo: ${input.dataset.min}.`;
       }
     }
     // Validate date inputs
@@ -381,8 +456,21 @@ document.addEventListener('DOMContentLoaded', function () {
   // Add validation event listeners to all form inputs
   const form = document.getElementById('ipvaForm');
   const inputs = form.querySelectorAll('input:not([type="checkbox"])');
-  
+
+  // Aplica a máscara de moeda em qualquer campo do site marcado com
+  // data-currency-mask, mesmo fora do formulário principal da calculadora
+  document.querySelectorAll('input[data-currency-mask="true"]').forEach(input => {
+    if (!form.contains(input)) {
+      input.addEventListener('input', () => formatarInputMoeda(input));
+    }
+  });
+
   inputs.forEach(input => {
+    // Aplica a máscara de moeda em tempo real, antes de qualquer outra coisa
+    if (input.dataset.currencyMask === 'true') {
+      input.addEventListener('input', () => formatarInputMoeda(input));
+    }
+
     // Validate on blur (when user leaves the field)
     input.addEventListener('blur', () => {
       validateInput(input);
@@ -402,14 +490,132 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  // ============================================================
+  // Rascunho automático (localStorage) - salva o formulário
+  // enquanto o usuário digita, pra não perder nada se recarregar
+  // ============================================================
+  const RASCUNHO_KEY = 'veiculofacil:rascunho-calculadora';
+  const CAMPOS_RASCUNHO = [
+    'nome', 'tipoCarro', 'renavam', 'valor_veiculo', 'aliquota',
+    'tipoServicoEmplacamento', 'valorAdicional', 'valorExtra', 'valorAdicionalExtra',
+    'valorProposta', 'dataReferencia', 'observacoes',
+  ];
+  const rascunhoStatus = document.getElementById('rascunhoStatus');
+  let rascunhoStatusTimer = null;
+
+  function mostrarRascunhoSalvo() {
+    if (!rascunhoStatus) return;
+    rascunhoStatus.classList.add('show');
+    clearTimeout(rascunhoStatusTimer);
+    rascunhoStatusTimer = setTimeout(() => {
+      rascunhoStatus.classList.remove('show');
+    }, 1800);
+  }
+
+  function salvarRascunho() {
+    try {
+      const dados = {};
+      CAMPOS_RASCUNHO.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) dados[id] = el.value;
+      });
+      const gerarPDFEl = document.getElementById('gerarPDF');
+      if (gerarPDFEl) dados.gerarPDF = gerarPDFEl.checked;
+
+      localStorage.setItem(RASCUNHO_KEY, JSON.stringify(dados));
+      mostrarRascunhoSalvo();
+    } catch (error) {
+      // localStorage pode falhar em modo privado/anônimo - falha silenciosamente
+      console.warn('Não foi possível salvar o rascunho:', error);
+    }
+  }
+
+  function restaurarRascunho() {
+    try {
+      const salvo = localStorage.getItem(RASCUNHO_KEY);
+      if (!salvo) return;
+
+      const dados = JSON.parse(salvo);
+      let restaurouAlgo = false;
+
+      CAMPOS_RASCUNHO.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && dados[id]) {
+          el.value = dados[id];
+          restaurouAlgo = true;
+        }
+      });
+
+      const gerarPDFEl = document.getElementById('gerarPDF');
+      if (gerarPDFEl && typeof dados.gerarPDF === 'boolean') {
+        gerarPDFEl.checked = dados.gerarPDF;
+      }
+
+      if (restaurouAlgo) {
+        showFeedback('Rascunho anterior restaurado. Clique em "Limpar formulário" para começar do zero.', 'info', 5000);
+      }
+    } catch (error) {
+      console.warn('Não foi possível restaurar o rascunho:', error);
+    }
+  }
+
+  function limparRascunho() {
+    try {
+      localStorage.removeItem(RASCUNHO_KEY);
+    } catch (error) {
+      console.warn('Não foi possível limpar o rascunho:', error);
+    }
+  }
+
+  // Restaura assim que a página carrega
+  restaurarRascunho();
+
+  // Salva a cada alteração, com debounce pra não gravar a cada tecla
+  let salvarRascunhoTimer = null;
+  CAMPOS_RASCUNHO.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      clearTimeout(salvarRascunhoTimer);
+      salvarRascunhoTimer = setTimeout(salvarRascunho, 500);
+    });
+    if (el.tagName === 'SELECT') {
+      el.addEventListener('change', salvarRascunho);
+    }
+  });
+  const gerarPDFCheckbox = document.getElementById('gerarPDF');
+  if (gerarPDFCheckbox) {
+    gerarPDFCheckbox.addEventListener('change', salvarRascunho);
+  }
+
+  // Botão "Limpar formulário"
+  const limparFormBtn = document.getElementById('limparFormBtn');
+  if (limparFormBtn) {
+    limparFormBtn.addEventListener('click', () => {
+      form.reset();
+      document.getElementById('aliquota').value = '1.9';
+      setDefaultDateToToday();
+      limparRascunho();
+      document.getElementById('results').classList.add('hidden');
+      document.querySelectorAll('#ipvaForm input.valid, #ipvaForm input.invalid').forEach(el => {
+        el.classList.remove('valid', 'invalid');
+      });
+      document.querySelectorAll('#ipvaForm .validation-message').forEach(el => {
+        el.textContent = '';
+      });
+      showFeedback('Formulário limpo.', 'success', 2500);
+    });
+  }
+
+
   function updateRealTimeResults() {
     // First validate required inputs
     if (!validateInput(document.getElementById('valor_veiculo'))) {
       return;
     }
 
-    const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value) || 0;
-    const aliquota = parseFloat(document.getElementById('aliquota').value) || 3.5;
+    const valorVeiculo = parseValorMoeda(document.getElementById('valor_veiculo').value) || 0;
+    const aliquota = parseFloat(document.getElementById('aliquota').value) || 1.9;
     const valorAdicional = parseFloat(document.getElementById('valorAdicional').value) || 0;
     const valorExtra = parseFloat(document.getElementById('valorExtra').value) || 0;
     const valorAdicionalExtra = parseFloat(document.getElementById('valorAdicionalExtra').value) || 0;
@@ -426,9 +632,11 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('valorPropostaResultado').textContent = `Valor da Proposta/Minuta: ${formatarParaMoeda(valorProposta)}`;
     document.getElementById('totalComAdicional').textContent = `Valor Total com Adicional: ${formatarParaMoeda(totalComAdicional)}`;
 
-    document.getElementById('valorEmplacamento').textContent = `Valor do Emplacamento: ${formatarParaMoeda(valorAdicional)}`;
+    const tipoServico = document.getElementById('tipoServicoEmplacamento')?.value || 'Emplacamento/Transferência';
+    document.getElementById('valorEmplacamento').textContent = `Valor do Serviço (${tipoServico}): ${formatarParaMoeda(valorAdicional)}`;
     document.getElementById('valorPlaca').textContent = `Valor da Placa: ${formatarParaMoeda(valorExtra)}`;
     document.getElementById('valorGravame').textContent = `Valor da Baixa de Gravame/Débitos: ${formatarParaMoeda(valorAdicionalExtra)}`;
+    document.getElementById('valorTotalFinal').textContent = `Total: ${formatarParaMoeda(totalComAdicional)}`;
 
     let mensagemDiferenca = '';
     if (valorProposta > 0) {
@@ -456,10 +664,14 @@ document.addEventListener('DOMContentLoaded', function () {
       element.addEventListener('input', updateRealTimeResults);
     }
   });
+  const tipoServicoSelect = document.getElementById('tipoServicoEmplacamento');
+  if (tipoServicoSelect) {
+    tipoServicoSelect.addEventListener('change', updateRealTimeResults);
+  }
 
   // Only run initial calculation if we have a valid value
   const valorVeiculoInput = document.getElementById('valor_veiculo');
-  if (valorVeiculoInput && valorVeiculoInput.value && !isNaN(parseFloat(valorVeiculoInput.value))) {
+  if (valorVeiculoInput && valorVeiculoInput.value && !isNaN(parseValorMoeda(valorVeiculoInput.value)) && parseValorMoeda(valorVeiculoInput.value) > 0) {
     updateRealTimeResults();
   }
 
@@ -475,8 +687,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const nome = document.getElementById('nome').value;
     const tipoCarro = document.getElementById('tipoCarro').value;
     const renavam = document.getElementById('renavam').value;
-    const valorVeiculo = parseFloat(document.getElementById('valor_veiculo').value) || 0;
-    const aliquota = parseFloat(document.getElementById('aliquota').value) || 3.5;
+    const tipoServico = document.getElementById('tipoServicoEmplacamento')?.value || 'Emplacamento/Transferência';
+    const valorVeiculo = parseValorMoeda(document.getElementById('valor_veiculo').value) || 0;
+    const aliquota = parseFloat(document.getElementById('aliquota').value) || 1.9;
     const valorAdicional = formatarParaMoeda(parseFloat(document.getElementById('valorAdicional').value) || 0);
     const valorExtra = formatarParaMoeda(parseFloat(document.getElementById('valorExtra').value) || 0);
     const valorAdicionalExtra = formatarParaMoeda(parseFloat(document.getElementById('valorAdicionalExtra').value) || 0);
@@ -512,6 +725,7 @@ document.addEventListener('DOMContentLoaded', function () {
           ipvaIntegral: formatarParaMoeda(ipvaAnual),
           ipvaAjustado: `${formatarParaMoeda(ipvaAjustado)} (${mesesRestantes} meses restantes)`,
           valorEmplacamento: valorAdicional,
+          tipoServico,
           valorPlaca: valorExtra,
           valorGravame: valorAdicionalExtra,
           totalComAdicional: formatarParaMoeda(totalComAdicional),
@@ -573,7 +787,7 @@ document.addEventListener('DOMContentLoaded', function () {
     y += lineSpacing;
     doc.text(`Valor do IPVA Ajustado: ${data.ipvaAjustado}`, 14, y);
     y += lineSpacing;
-    doc.text(`Valor do Emplacamento: ${data.valorEmplacamento}`, 14, y);
+    doc.text(`Valor do Serviço (${data.tipoServico}): ${data.valorEmplacamento}`, 14, y);
     y += lineSpacing;
     doc.text(`Valor da Placa: ${data.valorPlaca}`, 14, y);
     y += lineSpacing;
@@ -588,7 +802,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     doc.setFontSize(13);
     doc.setTextColor(14, 148, 136); // --teal-dark
-    doc.text(`Valor Total com Adicional: ${data.totalComAdicional}`, 14, y);
+    doc.text(`Total: ${data.totalComAdicional}`, 14, y);
     y += lineSpacing;
     doc.setFontSize(12);
     doc.setTextColor(27, 37, 89);
@@ -602,11 +816,7 @@ document.addEventListener('DOMContentLoaded', function () {
     doc.setFontSize(10);
     doc.setTextColor(91, 100, 120);
     const footerLines = [
-      dateString,
-      'Paulo Augusto Nascimento dos Santos',
-      '(41) 99718-5852',
-      'Curitiba/PR',
-      'CEP: 81750-190',
+      `Documento gerado em ${dateString}`,
     ];
 
     const footerY = 260;
@@ -808,6 +1018,303 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   
+  // ============================================================
+  // Anexo I - Intenção de Venda (DETRAN-PR)
+  // ============================================================
+  function coletarDadosAnexoI() {
+    return {
+      placa: document.getElementById('anexoPlaca').value.trim(),
+      renavam: document.getElementById('anexoRenavam').value.trim(),
+      crv: document.getElementById('anexoCRV').value.trim(),
+      odometro: document.getElementById('anexoOdometro').value.trim(),
+      valorVenda: document.getElementById('anexoValorVenda').value.trim(),
+      vendedorNome: document.getElementById('anexoVendedorNome').value.trim(),
+      vendedorCPF: document.getElementById('anexoVendedorCPF').value.trim(),
+      vendedorEmail: document.getElementById('anexoVendedorEmail').value.trim(),
+      compradorNome: document.getElementById('anexoCompradorNome').value.trim(),
+      compradorCPF: document.getElementById('anexoCompradorCPF').value.trim(),
+      compradorEndereco: document.getElementById('anexoCompradorEndereco').value.trim(),
+      compradorEmail: document.getElementById('anexoCompradorEmail').value.trim(),
+      local: document.getElementById('anexoLocal').value.trim(),
+      data: document.getElementById('anexoData').value,
+    };
+  }
+
+  function anexoITemDadosMinimos(d) {
+    return d.placa || d.renavam || d.vendedorNome || d.compradorNome;
+  }
+
+  // Preenche o documento .docx oficial de verdade, mantendo o timbre do
+  // DETRAN-PR intacto - só insere os valores nos campos em branco
+  const preencherDocxBtn = document.getElementById('preencherDocxBtn');
+  if (preencherDocxBtn) {
+    preencherDocxBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const d = coletarDadosAnexoI();
+
+      if (!anexoITemDadosMinimos(d)) {
+        showFeedback('Preencha ao menos a placa, o Renavam ou os nomes das partes antes de gerar o documento.', 'error', 5000);
+        return;
+      }
+
+      const textoOriginal = preencherDocxBtn.textContent;
+      preencherDocxBtn.textContent = 'Gerando documento...';
+
+      try {
+        const dataFormatada = d.data
+          ? new Date(d.data + 'T00:00:00').toLocaleDateString('pt-BR')
+          : '';
+
+        // Ordem EXATA em que os rótulos aparecem no documento - importante
+        // porque "Nome:", "CPF:" e "E-Mail:" se repetem (vendedor e comprador)
+        const campos = [
+          ['Placa:', d.placa],
+          ['Renavam:', d.renavam],
+          ['Número do CRV:', d.crv],
+          ['Odômetro:', d.odometro ? `${d.odometro} km` : ''],
+          ['Valor Venda:', d.valorVenda ? `R$ ${d.valorVenda}` : ''],
+          ['Nome:', d.vendedorNome],
+          ['CPF:', d.vendedorCPF],
+          ['E-Mail:', d.vendedorEmail],
+          ['Nome:', d.compradorNome],
+          ['CPF:', d.compradorCPF],
+          ['Endereço:', d.compradorEndereco],
+          ['E-Mail:', d.compradorEmail],
+          ['Local e data:', [d.local, dataFormatada].filter(Boolean).join(', ')],
+        ];
+
+        const response = await fetch('anexo1-template-preenchivel.docx');
+        if (!response.ok) throw new Error('Não foi possível carregar o modelo do documento.');
+        const arrayBuffer = await response.arrayBuffer();
+
+        const zip = await JSZip.loadAsync(arrayBuffer);
+        let xml = await zip.file('word/document.xml').async('string');
+
+        campos.forEach(([rotulo, valor]) => {
+          if (!valor) return;
+          // Escapa caracteres especiais de XML no valor digitado pelo usuário
+          const valorEscapado = String(valor)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+          const rotuloEscapado = rotulo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const regex = new RegExp(`(<w:t[^>]*>)${rotuloEscapado}(</w:t>)`);
+          const match = xml.match(regex);
+          if (!match) return; // rótulo já usado ou não encontrado - segue pro próximo
+
+          const tagAbertura = match[1].includes('xml:space')
+            ? match[1]
+            : match[1].replace('>', ' xml:space="preserve">');
+
+          xml = xml.replace(regex, `${tagAbertura}${rotulo} ${valorEscapado}${match[2]}`);
+        });
+
+        zip.file('word/document.xml', xml);
+        const blob = await zip.generateAsync({ type: 'blob' });
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'anexo1-preenchido.docx';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+
+        showFeedback('Documento preenchido gerado com sucesso! Confira os dados antes de assinar.', 'success', 5000);
+      } catch (error) {
+        console.error('Erro ao preencher o documento:', error);
+        showFeedback('Não foi possível gerar o documento preenchido. Tente novamente ou baixe o modelo em branco.', 'error', 6000);
+      } finally {
+        preencherDocxBtn.textContent = textoOriginal;
+      }
+    });
+  }
+
+  const gerarAnexoPdfBtn = document.getElementById('gerarAnexoPdfBtn');
+  if (gerarAnexoPdfBtn) {
+    gerarAnexoPdfBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const d = coletarDadosAnexoI();
+
+      if (!anexoITemDadosMinimos(d)) {
+        showFeedback('Preencha ao menos a placa, o Renavam ou os nomes das partes antes de gerar a ficha.', 'error', 5000);
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.width;
+
+      try {
+        doc.addImage(LOGO_BASE64, 'PNG', 14, 12, 22, 22);
+      } catch (error) {
+        console.error('Não foi possível inserir o logo no PDF:', error);
+      }
+
+      doc.setTextColor(11, 18, 32);
+      doc.setFontSize(15);
+      doc.text('Ficha organizada - Anexo I (Intenção de Venda)', 42, 20);
+      doc.setFontSize(10);
+      doc.setTextColor(91, 100, 120);
+      doc.text('GuaraSoftware · VeículoFácil', 42, 27);
+
+      doc.setDrawColor(20, 184, 166);
+      doc.setLineWidth(0.8);
+      doc.line(14, 38, pageWidth - 14, 38);
+
+      let y = 50;
+      const linha = (rotulo, valor) => {
+        doc.setFontSize(11);
+        doc.setTextColor(91, 100, 120);
+        doc.text(rotulo, 14, y);
+        doc.setTextColor(27, 37, 89);
+        doc.text(valor || '-', 90, y);
+        y += 9;
+      };
+
+      doc.setFontSize(13);
+      doc.setTextColor(14, 148, 136);
+      doc.text('Identificação do veículo', 14, y);
+      y += 9;
+      linha('Placa:', d.placa);
+      linha('Renavam:', d.renavam);
+      linha('Número do CRV:', d.crv);
+      linha('Odômetro:', d.odometro ? `${d.odometro} km` : '');
+      linha('Valor da venda:', d.valorVenda ? `R$ ${d.valorVenda}` : '');
+
+      y += 4;
+      doc.setFontSize(13);
+      doc.setTextColor(14, 148, 136);
+      doc.text('Identificação do vendedor', 14, y);
+      y += 9;
+      linha('Nome:', d.vendedorNome);
+      linha('CPF:', d.vendedorCPF);
+      linha('E-mail:', d.vendedorEmail);
+
+      y += 4;
+      doc.setFontSize(13);
+      doc.setTextColor(14, 148, 136);
+      doc.text('Identificação do comprador', 14, y);
+      y += 9;
+      linha('Nome:', d.compradorNome);
+      linha('CPF:', d.compradorCPF);
+      linha('Endereço:', d.compradorEndereco);
+      linha('E-mail:', d.compradorEmail);
+
+      y += 4;
+      doc.setFontSize(13);
+      doc.setTextColor(14, 148, 136);
+      doc.text('Local e data', 14, y);
+      y += 9;
+      const dataFormatada = d.data
+        ? new Date(d.data + 'T00:00:00').toLocaleDateString('pt-BR')
+        : '';
+      linha('Local:', d.local);
+      linha('Data:', dataFormatada);
+
+      y += 10;
+      doc.setDrawColor(230, 234, 244);
+      doc.setLineWidth(0.3);
+      doc.line(14, y, pageWidth - 14, y);
+      y += 8;
+      doc.setFontSize(9);
+      doc.setTextColor(91, 100, 120);
+      doc.text(
+        'Esta ficha é um resumo para conferência e não substitui o documento oficial',
+        14, y
+      );
+      y += 5;
+      doc.text(
+        'do DETRAN-PR, que deve ser preenchido e assinado conforme as instruções oficiais.',
+        14, y
+      );
+
+      doc.save('ficha-anexo-1-intencao-venda.pdf');
+      showFeedback('Ficha em PDF gerada com sucesso!', 'success', 3000);
+    });
+  }
+
+  const anexoWhatsappBtn = document.getElementById('anexoWhatsappBtn');
+  if (anexoWhatsappBtn) {
+    anexoWhatsappBtn.addEventListener('click', (e) => {
+      const d = coletarDadosAnexoI();
+
+      if (!anexoITemDadosMinimos(d)) {
+        e.preventDefault();
+        showFeedback('Preencha ao menos a placa, o Renavam ou os nomes das partes antes de enviar.', 'error', 5000);
+        return;
+      }
+
+      const dataFormatada = d.data
+        ? new Date(d.data + 'T00:00:00').toLocaleDateString('pt-BR')
+        : '';
+
+      const linhas = [
+        'Olá! Preciso de ajuda com o Anexo I (Intenção de Venda) - DETRAN-PR.',
+        `Placa: ${d.placa} | Renavam: ${d.renavam}`,
+        `CRV: ${d.crv} | Odômetro: ${d.odometro} km`,
+        `Valor da venda: R$ ${d.valorVenda}`,
+        `Vendedor: ${d.vendedorNome} (CPF ${d.vendedorCPF})`,
+        `Comprador: ${d.compradorNome} (CPF ${d.compradorCPF})`,
+        `Local/Data: ${d.local} - ${dataFormatada}`,
+      ];
+
+      const mensagem = encodeURIComponent(linhas.join('\n'));
+      anexoWhatsappBtn.href = `https://wa.me/5541997185852?text=${mensagem}`;
+      // Sem preventDefault: deixa o navegador seguir o link normalmente
+    });
+  }
+
+  // Compartilhar resumo do cálculo no WhatsApp
+  const compartilharResumoBtn = document.getElementById('compartilharResumoBtn');
+  if (compartilharResumoBtn) {
+    compartilharResumoBtn.addEventListener('click', (e) => {
+      const nome = document.getElementById('nome').value.trim();
+      const tipoCarro = document.getElementById('tipoCarro').value.trim();
+      const placa = document.getElementById('renavam').value.trim();
+
+      // Reaproveita o texto já calculado e exibido na tela, pra garantir
+      // que a mensagem sempre bate exatamente com o que a pessoa está vendo
+      const linhasResultado = [
+        document.getElementById('ipvaIntegral').textContent,
+        document.getElementById('ipvaAjustado').textContent,
+        document.getElementById('totalComAdicional').textContent,
+        document.getElementById('valorEmplacamento').textContent,
+        document.getElementById('valorPlaca').textContent,
+        document.getElementById('valorGravame').textContent,
+        document.getElementById('valorTotalFinal').textContent,
+      ].filter(Boolean);
+
+      const valorPropostaTexto = document.getElementById('valorPropostaResultado').textContent;
+      if (valorPropostaTexto) linhasResultado.push(valorPropostaTexto);
+
+      const diferencaTexto = document.getElementById('valorDiferenca').textContent;
+      if (diferencaTexto) linhasResultado.push(diferencaTexto);
+
+      const linhas = [
+        '📋 Resumo do cálculo de IPVA - VeículoFácil',
+        '',
+      ];
+      if (nome) linhas.push(`Nome: ${nome}`);
+      if (tipoCarro) linhas.push(`Veículo: ${tipoCarro}`);
+      if (placa) linhas.push(`Placa/Renavam: ${placa}`);
+      if (nome || tipoCarro || placa) linhas.push('');
+
+      linhas.push(...linhasResultado);
+
+      const observacoesTexto = document.getElementById('observacoes').value.trim();
+      if (observacoesTexto) linhas.push('', `Observações: ${observacoesTexto}`);
+
+      linhas.push('', 'Calculado em veiculofacil.com.br');
+
+      const mensagem = encodeURIComponent(linhas.join('\n'));
+      // Sem número de destino: abre o seletor de contatos do próprio WhatsApp
+      compartilharResumoBtn.href = `https://wa.me/?text=${mensagem}`;
+    });
+  }
+
   // Solicitação de serviço assistido (CRLV/documentos) via WhatsApp
   const servicoWhatsappBtn = document.getElementById('servicoWhatsappBtn');
   if (servicoWhatsappBtn) {
@@ -835,6 +1342,8 @@ document.addEventListener('DOMContentLoaded', function () {
         `Nome: ${nome}`,
         `Placa: ${placa} (PR)`,
         `Renavam: ${renavam}`,
+        'Valores: Emissão de CRLV: R$ 60,00 | Emissão de ATPV (DUT digital): R$ 80,00',
+        'Chave Pix: guto.pands@gmail.com',
       ];
       if (obs) linhas.push(`Detalhes: ${obs}`);
 

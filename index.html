@@ -17,6 +17,10 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
+  <!-- Content Security Policy: só permite carregar recursos dos domínios
+       que o site realmente usa, bloqueando injeção de scripts externos -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+
   <!-- PWA: permite instalar o site como app no celular -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -36,7 +40,8 @@
   }
   </script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous"></script>
 
   <!-- Cloudflare Web Analytics -->
   <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "06e3897f30ae46e7b3cc819f5fb5e44f"}'></script>
@@ -56,6 +61,7 @@
     <button id="novaTabelaBtn" class="sidebar-button" aria-label="Tabela Aliquota 2026" accesskey="t">Alíquotas 2026</button>
     <button id="siteDetranBtn" class="sidebar-button" aria-label="Site Detran" accesskey="d">DETRAN por estado</button>
     <button id="siteIPVABtn" class="sidebar-button" aria-label="IPVA por estado" accesskey="i">IPVA por estado</button>
+    <button id="anexoIBtn" class="sidebar-button" aria-label="Anexo I - Intenção de Venda" accesskey="v">Anexo I (Venda)</button>
     <button id="contatoBtn" class="sidebar-button" aria-label="Contato" accesskey="o">Contato</button>
     <button id="sobreBtn" class="sidebar-button" aria-label="Sobre" accesskey="s">Sobre</button>
   </nav>
@@ -96,6 +102,16 @@
           <strong>Saber mais sobre nós</strong>
           <span class="desc">Conheça a proposta e as tecnologias da ferramenta.</span>
         </button>
+        <button class="ajuda-opcao" data-action="servico" data-scroll-target="servicoCard" aria-label="Emissão de CRLV Digital e outros documentos">
+          <span class="icon">🧾</span>
+          <strong>Emissão de CRLV Digital</strong>
+          <span class="desc">Solicite a emissão assistida de documentos do seu veículo (PR).</span>
+        </button>
+        <button class="ajuda-opcao" data-action="pix" data-scroll-target="pixCard" aria-label="Apoiar via Pix">
+          <span class="icon">☕</span>
+          <strong>Apoiar o projeto</strong>
+          <span class="desc">Faça um Pix para ajudar a manter o site no ar e sempre atualizado.</span>
+        </button>
       </div>
 
       <div class="logo" id="logo">
@@ -109,7 +125,9 @@
 
     <!-- ===================== CALCULADORA ===================== -->
     <div id="calculadora" class="container hidden" role="main">
-      <h1>Calculadora de IPVA e Serviços</h1>
+      <h1>Calculadora de IPVA e Serviços
+        <span id="rascunhoStatus" class="rascunho-status">💾 Rascunho salvo</span>
+      </h1>
 
       <div class="calculator-explanation">
         <details>
@@ -118,7 +136,7 @@
             <p>Esta calculadora estima o valor do IPVA e outros custos de documentação veicular.</p>
             <ol>
               <li><strong>Preencha os dados do veículo</strong> — nome, marca/modelo e identificação.</li>
-              <li><strong>Informe o valor do veículo</strong> — use o valor de mercado ou consulte a <a href="https://veiculos.fipe.org.br/" target="_blank">Tabela FIPE</a>.</li>
+              <li><strong>Informe o valor do veículo</strong> — use o valor de mercado ou consulte a <a href="https://veiculos.fipe.org.br/" target="_blank" rel="noopener noreferrer">Tabela FIPE</a>.</li>
               <li><strong>Ajuste a alíquota</strong> — cada estado tem uma alíquota diferente (veja em "Alíquotas 2026").</li>
               <li><strong>Adicione valores extras</strong> — emplacamento, placa e baixa de gravame/débitos, se houver.</li>
               <li><strong>Defina a data de referência</strong> — o sistema calcula o valor proporcional até o fim do ano.</li>
@@ -146,19 +164,25 @@
         </div>
         <div class="form-group">
           <label for="valor_veiculo">Valor do Veículo (R$):</label>
-          <input type="number" step="0.01" id="valor_veiculo" name="valor_veiculo" placeholder="Digite o valor do veículo" required min="1" aria-describedby="valor_veiculo-error">
+          <input type="text" inputmode="decimal" id="valor_veiculo" name="valor_veiculo" placeholder="Ex: digite 5000000 para R$ 50.000,00" required data-currency-mask="true" data-min="1" aria-describedby="valor_veiculo-error">
           <small class="validation-message" id="valor_veiculo-error"></small>
-          <small class="field-tip">Consulte o valor de mercado na <a href="https://veiculos.fipe.org.br/" target="_blank">Tabela FIPE</a>.</small>
+          <small class="field-tip">Consulte o valor de mercado na <a href="https://veiculos.fipe.org.br/" target="_blank" rel="noopener noreferrer">Tabela FIPE</a>.</small>
         </div>
         <div class="form-group">
           <label for="aliquota">Alíquota (%):</label>
-          <input type="number" step="0.01" id="aliquota" name="aliquota" value="3.5" required min="0.1" max="10" aria-describedby="aliquota-error">
+          <input type="number" step="0.01" id="aliquota" name="aliquota" value="1.9" required min="0.1" max="10" aria-describedby="aliquota-error">
           <small class="validation-message" id="aliquota-error"></small>
           <small class="field-tip">Percentual do estado sobre o valor do veículo. Veja em "Alíquotas 2026".</small>
         </div>
         <div class="form-group">
-          <label for="valorAdicional">Valor do Emplacamento/Transferência (R$):</label>
-          <input type="number" step="0.01" id="valorAdicional" name="valorAdicional" placeholder="Digite o valor do emplacamento" min="0" aria-describedby="valorAdicional-error">
+          <label for="tipoServicoEmplacamento">Tipo de Serviço:</label>
+          <select id="tipoServicoEmplacamento" name="tipoServicoEmplacamento">
+            <option value="Emplacamento">Emplacamento</option>
+            <option value="Transferência">Transferência</option>
+            <option value="2ª via DUT">2ª via DUT</option>
+          </select>
+          <label for="valorAdicional" style="margin-top:0.9rem;">Valor do Serviço (R$):</label>
+          <input type="number" step="0.01" id="valorAdicional" name="valorAdicional" placeholder="Digite o valor do serviço" min="0" aria-describedby="valorAdicional-error">
           <small class="validation-message" id="valorAdicional-error"></small>
           <small class="field-tip">Custos administrativos de registro do veículo.</small>
         </div>
@@ -192,8 +216,9 @@
             Gerar orçamento em PDF
           </label>
         </div>
-        <a href="https://veiculos.fipe.org.br/" target="_blank" class="fipe-button" aria-label="Acesse a tabela Fipe (abre em nova janela)">Acesse Aqui a tabela Fipe</a>
+        <a href="https://veiculos.fipe.org.br/" target="_blank" rel="noopener noreferrer" class="fipe-button" aria-label="Acesse a tabela Fipe (abre em nova janela)">Acesse Aqui a tabela Fipe</a>
         <a href="#" class="fipe-button calc-ipva-link" role="button" aria-label="Calcular IPVA">Calcular IPVA</a>
+        <button type="button" id="limparFormBtn" class="fipe-button" aria-label="Limpar formulário e rascunho salvo">Limpar formulário</button>
         <button type="submit" class="hidden">Calcular IPVA</button>
       </form>
 
@@ -244,7 +269,10 @@
           <li id="valorPlaca"></li>
           <li id="valorGravame"></li>
         </ul>
+        <p id="valorTotalFinal" class="valor-total-final"></p>
         <p id="valorDiferenca"></p>
+
+        <a href="https://wa.me/" id="compartilharResumoBtn" class="contact-button" target="_blank" rel="noopener" aria-label="Compartilhar resumo no WhatsApp">📤 Compartilhar resumo no WhatsApp</a>
 
         <div class="form-group">
           <label for="observacoes">Observações:</label>
@@ -256,6 +284,16 @@
     <!-- ===================== TUTORIAL ===================== -->
     <div id="tutorial" class="container hidden" role="main">
       <h1>Tutorial — Como Calcular seu IPVA</h1>
+
+      <div class="tutorial-section video-section">
+        <h2>Assista ao vídeo explicativo</h2>
+        <div class="video-wrapper">
+          <video controls preload="metadata" poster="logo.png">
+            <source src="videos_explicando.mp4" type="video/mp4">
+            Seu navegador não suporta vídeo em HTML5. <a href="videos_explicando.mp4">Baixe o vídeo aqui</a>.
+          </video>
+        </div>
+      </div>
 
       <div class="tutorial-section">
         <h2>O que é o IPVA?</h2>
@@ -311,15 +349,61 @@
         <h2>Exemplo Prático</h2>
         <div class="example-box">
           <p><strong>Cenário:</strong> veículo de passeio de R$ 50.000,00 no Paraná, comprado em 1º de julho de 2026.</p>
-          <ol>
-            <li>Valor do veículo: R$ 50.000,00</li>
-            <li>Alíquota do Paraná: 1,9%</li>
-            <li>Data de referência: 01/07/2026 (restam 6 meses)</li>
-            <li>IPVA integral: R$ 50.000,00 × 1,9% = R$ 950,00</li>
-            <li>IPVA ajustado (6 meses): R$ 950,00 × (6/12) = R$ 475,00</li>
-            <li>Adicionais: Emplacamento R$ 200,00 + Placa R$ 150,00 + Gravame R$ 100,00</li>
-            <li><strong>Total: R$ 925,00</strong></li>
-          </ol>
+
+          <svg class="calc-diagram" viewBox="0 0 640 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama do cálculo: valor do veículo vezes alíquota do Paraná, resultando no IPVA integral; proporcional aos 6 meses restantes; mais taxas; total de R$ 925,00">
+            <defs>
+              <marker id="seta" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="var(--teal)"></path>
+              </marker>
+              <marker id="seta-ambar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="var(--amber)"></path>
+              </marker>
+            </defs>
+
+            <!-- Box A: Valor do veículo -->
+            <rect x="70" y="10" width="500" height="90" rx="14" fill="var(--panel)" stroke="var(--panel-border)" stroke-width="1.5"></rect>
+            <text x="100" y="45" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--indigo-text)">Valor do veículo</text>
+            <text x="100" y="78" font-family="var(--font-mono)" font-size="26" font-weight="600" fill="var(--indigo-text)">R$ 50.000,00</text>
+
+            <line x1="320" y1="100" x2="320" y2="140" stroke="var(--teal)" stroke-width="3" marker-end="url(#seta)"></line>
+
+            <!-- Box B: Alíquota -->
+            <rect x="70" y="150" width="500" height="90" rx="14" fill="var(--panel)" stroke="var(--panel-border)" stroke-width="1.5"></rect>
+            <text x="100" y="185" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--indigo-text)">× Alíquota do Paraná (2026)</text>
+            <text x="100" y="218" font-family="var(--font-mono)" font-size="26" font-weight="600" fill="var(--teal-dark)">1,9%</text>
+
+            <line x1="320" y1="240" x2="320" y2="280" stroke="var(--teal)" stroke-width="3" marker-end="url(#seta)"></line>
+
+            <!-- Box C: IPVA Integral (destaque) -->
+            <rect x="40" y="290" width="560" height="100" rx="16" fill="var(--teal-100)" stroke="var(--teal)" stroke-width="2"></rect>
+            <text x="70" y="328" font-family="var(--font-display)" font-size="15" font-weight="700" fill="var(--teal-dark)">= IPVA Integral</text>
+            <text x="70" y="366" font-family="var(--font-mono)" font-size="30" font-weight="700" fill="var(--teal-dark)">R$ 950,00</text>
+
+            <line x1="320" y1="390" x2="320" y2="430" stroke="var(--teal)" stroke-width="3" marker-end="url(#seta)"></line>
+
+            <!-- Box D: Proporcional -->
+            <rect x="70" y="440" width="500" height="100" rx="14" fill="var(--panel)" stroke="var(--panel-border)" stroke-width="1.5"></rect>
+            <text x="100" y="472" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--indigo-text)">× Proporcional (6 de 12 meses restantes)</text>
+            <text x="100" y="510" font-family="var(--font-mono)" font-size="24" font-weight="600" fill="var(--indigo-text)">950,00 × 6/12 = R$ 475,00</text>
+
+            <line x1="320" y1="540" x2="320" y2="580" stroke="var(--amber)" stroke-width="3" marker-end="url(#seta-ambar)"></line>
+
+            <!-- Box E: Taxas -->
+            <rect x="70" y="590" width="500" height="130" rx="14" fill="var(--panel)" stroke="var(--panel-border)" stroke-width="1.5"></rect>
+            <text x="100" y="622" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--indigo-text)">+ Taxas administrativas</text>
+            <text x="100" y="652" font-family="var(--font-mono)" font-size="15" fill="var(--text-muted)">Emplacamento R$ 200,00</text>
+            <text x="100" y="674" font-family="var(--font-mono)" font-size="15" fill="var(--text-muted)">Placa R$ 150,00 · Gravame R$ 100,00</text>
+            <text x="100" y="702" font-family="var(--font-mono)" font-size="20" font-weight="600" fill="var(--indigo-text)">Total: R$ 450,00</text>
+
+            <line x1="320" y1="720" x2="320" y2="760" stroke="var(--amber)" stroke-width="3" marker-end="url(#seta-ambar)"></line>
+
+            <!-- Box F: Total final (destaque máximo) -->
+            <rect x="20" y="770" width="600" height="120" rx="18" fill="var(--ink)" stroke="var(--amber)" stroke-width="2.5"></rect>
+            <text x="50" y="810" font-family="var(--font-display)" font-size="16" font-weight="700" fill="#fff">= Total a pagar</text>
+            <text x="50" y="858" font-family="var(--font-mono)" font-size="40" font-weight="700" fill="var(--amber)">R$ 925,00</text>
+          </svg>
+
+          <p class="diagram-caption">R$ 475,00 (IPVA ajustado) + R$ 450,00 (taxas) = <strong>R$ 925,00</strong></p>
         </div>
       </div>
 
@@ -390,33 +474,33 @@
             <tr><th scope="col">Estado</th><th scope="col">Site do DETRAN</th><th scope="col">Telefone</th></tr>
           </thead>
           <tbody>
-            <tr><td>Acre</td><td><a href="https://www.detran.ac.gov.br" target="_blank" class="detran-link">DETRAN AC</a></td><td>(68) 3215-4100</td></tr>
-            <tr><td>Alagoas</td><td><a href="https://www.detran.al.gov.br" target="_blank" class="detran-link">DETRAN AL</a></td><td>(82) 3315-2200</td></tr>
-            <tr><td>Amapá</td><td><a href="https://www.detran.ap.gov.br" target="_blank" class="detran-link">DETRAN AP</a></td><td>(96) 3314-0500</td></tr>
-            <tr><td>Amazonas</td><td><a href="https://www.detran.am.gov.br" target="_blank" class="detran-link">DETRAN AM</a></td><td>(92) 3643-0200</td></tr>
-            <tr><td>Bahia</td><td><a href="http://www.detran.ba.gov.br" target="_blank" class="detran-link">DETRAN BA</a></td><td>(71) 3116-2300</td></tr>
-            <tr><td>Ceará</td><td><a href="https://www.detran.ce.gov.br" target="_blank" class="detran-link">DETRAN CE</a></td><td>(85) 3217-2300</td></tr>
-            <tr><td>Distrito Federal</td><td><a href="http://www.detran.df.gov.br" target="_blank" class="detran-link">DETRAN DF</a></td><td>(61) 3120-9800</td></tr>
-            <tr><td>Espírito Santo</td><td><a href="https://detran.es.gov.br" target="_blank" class="detran-link">DETRAN ES</a></td><td>(27) 3137-2600</td></tr>
-            <tr><td>Goiás</td><td><a href="https://www.detran.go.gov.br" target="_blank" class="detran-link">DETRAN GO</a></td><td>(62) 3272-8000</td></tr>
-            <tr><td>Maranhão</td><td><a href="http://www.detran.ma.gov.br" target="_blank" class="detran-link">DETRAN MA</a></td><td>(98) 3089-2050</td></tr>
-            <tr><td>Mato Grosso</td><td><a href="http://www.detran.mt.gov.br" target="_blank" class="detran-link">DETRAN MT</a></td><td>(65) 3615-4700</td></tr>
-            <tr><td>Mato Grosso do Sul</td><td><a href="http://www.detran.ms.gov.br" target="_blank" class="detran-link">DETRAN MS</a></td><td>(67) 3368-0100</td></tr>
-            <tr><td>Minas Gerais</td><td><a href="https://www.detran.mg.gov.br" target="_blank" class="detran-link">DETRAN MG</a></td><td>(31) 3222-1890</td></tr>
-            <tr><td>Pará</td><td><a href="http://www.detran.pa.gov.br" target="_blank" class="detran-link">DETRAN PA</a></td><td>(91) 3214-6000</td></tr>
-            <tr><td>Paraíba</td><td><a href="http://www.detran.pb.gov.br" target="_blank" class="detran-link">DETRAN PB</a></td><td>(83) 3216-2500</td></tr>
-            <tr><td>Paraná</td><td><a href="http://www.detran.pr.gov.br" target="_blank" class="detran-link">DETRAN PR</a></td><td>(41) 3361-1212</td></tr>
-            <tr><td>Pernambuco</td><td><a href="http://www.detran.pe.gov.br" target="_blank" class="detran-link">DETRAN PE</a></td><td>(81) 3184-8000</td></tr>
-            <tr><td>Piauí</td><td><a href="http://www.detran.pi.gov.br" target="_blank" class="detran-link">DETRAN PI</a></td><td>(86) 3215-4800</td></tr>
-            <tr><td>Rio de Janeiro</td><td><a href="http://www.detran.rj.gov.br" target="_blank" class="detran-link">DETRAN RJ</a></td><td>(21) 3460-4040</td></tr>
-            <tr><td>Rio Grande do Norte</td><td><a href="http://www.detran.rn.gov.br" target="_blank" class="detran-link">DETRAN RN</a></td><td>(84) 3232-1200</td></tr>
-            <tr><td>Rio Grande do Sul</td><td><a href="http://www.detran.rs.gov.br" target="_blank" class="detran-link">DETRAN RS</a></td><td>(51) 3288-2000</td></tr>
-            <tr><td>Rondônia</td><td><a href="http://www.detran.ro.gov.br" target="_blank" class="detran-link">DETRAN RO</a></td><td>(69) 3216-5000</td></tr>
-            <tr><td>Roraima</td><td><a href="http://www.detran.rr.gov.br" target="_blank" class="detran-link">DETRAN RR</a></td><td>(95) 3198-3000</td></tr>
-            <tr><td>Santa Catarina</td><td><a href="http://www.detran.sc.gov.br" target="_blank" class="detran-link">DETRAN SC</a></td><td>(48) 3381-2000</td></tr>
-            <tr><td>São Paulo</td><td><a href="http://www.detran.sp.gov.br" target="_blank" class="detran-link">DETRAN SP</a></td><td>0800 017 3333</td></tr>
-            <tr><td>Sergipe</td><td><a href="http://www.detran.se.gov.br" target="_blank" class="detran-link">DETRAN SE</a></td><td>(79) 3226-2000</td></tr>
-            <tr><td>Tocantins</td><td><a href="http://www.detran.to.gov.br" target="_blank" class="detran-link">DETRAN TO</a></td><td>(63) 3218-2700</td></tr>
+            <tr><td>Acre</td><td><a href="https://www.detran.ac.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN AC</a></td><td>(68) 3215-4100</td></tr>
+            <tr><td>Alagoas</td><td><a href="https://www.detran.al.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN AL</a></td><td>(82) 3315-2200</td></tr>
+            <tr><td>Amapá</td><td><a href="https://www.detran.ap.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN AP</a></td><td>(96) 3314-0500</td></tr>
+            <tr><td>Amazonas</td><td><a href="https://www.detran.am.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN AM</a></td><td>(92) 3643-0200</td></tr>
+            <tr><td>Bahia</td><td><a href="http://www.detran.ba.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN BA</a></td><td>(71) 3116-2300</td></tr>
+            <tr><td>Ceará</td><td><a href="https://www.detran.ce.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN CE</a></td><td>(85) 3217-2300</td></tr>
+            <tr><td>Distrito Federal</td><td><a href="http://www.detran.df.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN DF</a></td><td>(61) 3120-9800</td></tr>
+            <tr><td>Espírito Santo</td><td><a href="https://detran.es.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN ES</a></td><td>(27) 3137-2600</td></tr>
+            <tr><td>Goiás</td><td><a href="https://www.detran.go.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN GO</a></td><td>(62) 3272-8000</td></tr>
+            <tr><td>Maranhão</td><td><a href="http://www.detran.ma.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN MA</a></td><td>(98) 3089-2050</td></tr>
+            <tr><td>Mato Grosso</td><td><a href="http://www.detran.mt.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN MT</a></td><td>(65) 3615-4700</td></tr>
+            <tr><td>Mato Grosso do Sul</td><td><a href="http://www.detran.ms.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN MS</a></td><td>(67) 3368-0100</td></tr>
+            <tr><td>Minas Gerais</td><td><a href="https://www.detran.mg.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN MG</a></td><td>(31) 3222-1890</td></tr>
+            <tr><td>Pará</td><td><a href="http://www.detran.pa.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PA</a></td><td>(91) 3214-6000</td></tr>
+            <tr><td>Paraíba</td><td><a href="http://www.detran.pb.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PB</a></td><td>(83) 3216-2500</td></tr>
+            <tr><td>Paraná</td><td><a href="http://www.detran.pr.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PR</a></td><td>(41) 3361-1212</td></tr>
+            <tr><td>Pernambuco</td><td><a href="http://www.detran.pe.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PE</a></td><td>(81) 3184-8000</td></tr>
+            <tr><td>Piauí</td><td><a href="http://www.detran.pi.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN PI</a></td><td>(86) 3215-4800</td></tr>
+            <tr><td>Rio de Janeiro</td><td><a href="http://www.detran.rj.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RJ</a></td><td>(21) 3460-4040</td></tr>
+            <tr><td>Rio Grande do Norte</td><td><a href="http://www.detran.rn.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RN</a></td><td>(84) 3232-1200</td></tr>
+            <tr><td>Rio Grande do Sul</td><td><a href="http://www.detran.rs.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RS</a></td><td>(51) 3288-2000</td></tr>
+            <tr><td>Rondônia</td><td><a href="http://www.detran.ro.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RO</a></td><td>(69) 3216-5000</td></tr>
+            <tr><td>Roraima</td><td><a href="http://www.detran.rr.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN RR</a></td><td>(95) 3198-3000</td></tr>
+            <tr><td>Santa Catarina</td><td><a href="http://www.detran.sc.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN SC</a></td><td>(48) 3381-2000</td></tr>
+            <tr><td>São Paulo</td><td><a href="http://www.detran.sp.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN SP</a></td><td>0800 017 3333</td></tr>
+            <tr><td>Sergipe</td><td><a href="http://www.detran.se.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN SE</a></td><td>(79) 3226-2000</td></tr>
+            <tr><td>Tocantins</td><td><a href="http://www.detran.to.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">DETRAN TO</a></td><td>(63) 3218-2700</td></tr>
           </tbody>
         </table>
       </div>
@@ -435,45 +519,133 @@
             <tr><th scope="col">Estado</th><th scope="col">Site da Sefaz (IPVA)</th></tr>
           </thead>
           <tbody>
-            <tr><td>Acre</td><td><a href="https://www.sefaz.ac.gov.br" target="_blank" class="detran-link">SEFAZ AC</a></td></tr>
-            <tr><td>Alagoas</td><td><a href="https://www.sefaz.al.gov.br" target="_blank" class="detran-link">SEFAZ AL</a></td></tr>
-            <tr><td>Amapá</td><td><a href="https://www.sefaz.ap.gov.br" target="_blank" class="detran-link">SEFAZ AP</a></td></tr>
-            <tr><td>Amazonas</td><td><a href="https://www.sefaz.am.gov.br" target="_blank" class="detran-link">SEFAZ AM</a></td></tr>
-            <tr><td>Bahia</td><td><a href="https://www.sefaz.ba.gov.br" target="_blank" class="detran-link">SEFAZ BA</a></td></tr>
-            <tr><td>Ceará</td><td><a href="https://www.sefaz.ce.gov.br" target="_blank" class="detran-link">SEFAZ CE</a></td></tr>
-            <tr><td>Distrito Federal</td><td><a href="https://www.fazenda.df.gov.br" target="_blank" class="detran-link">SEFAZ DF</a></td></tr>
-            <tr><td>Espírito Santo</td><td><a href="https://sefaz.es.gov.br" target="_blank" class="detran-link">SEFAZ ES</a></td></tr>
-            <tr><td>Goiás</td><td><a href="https://www.sefaz.go.gov.br" target="_blank" class="detran-link">SEFAZ GO</a></td></tr>
-            <tr><td>Maranhão</td><td><a href="https://www.sefaz.ma.gov.br" target="_blank" class="detran-link">SEFAZ MA</a></td></tr>
-            <tr><td>Mato Grosso</td><td><a href="https://www.sefaz.mt.gov.br" target="_blank" class="detran-link">SEFAZ MT</a></td></tr>
-            <tr><td>Mato Grosso do Sul</td><td><a href="https://www.sefaz.ms.gov.br" target="_blank" class="detran-link">SEFAZ MS</a></td></tr>
-            <tr><td>Minas Gerais</td><td><a href="https://www.fazenda.mg.gov.br" target="_blank" class="detran-link">SEFAZ MG</a></td></tr>
-            <tr><td>Pará</td><td><a href="https://www.sefa.pa.gov.br" target="_blank" class="detran-link">SEFA PA</a></td></tr>
-            <tr><td>Paraíba</td><td><a href="https://www.receita.pb.gov.br" target="_blank" class="detran-link">Receita PB</a></td></tr>
-            <tr><td>Paraná</td><td><a href="https://www.fazenda.pr.gov.br" target="_blank" class="detran-link">SEFAZ PR</a></td></tr>
-            <tr><td>Pernambuco</td><td><a href="https://www.sefaz.pe.gov.br" target="_blank" class="detran-link">SEFAZ PE</a></td></tr>
-            <tr><td>Piauí</td><td><a href="https://portal.sefaz.pi.gov.br" target="_blank" class="detran-link">SEFAZ PI</a></td></tr>
-            <tr><td>Rio de Janeiro</td><td><a href="https://www.fazenda.rj.gov.br" target="_blank" class="detran-link">SEFAZ RJ</a></td></tr>
-            <tr><td>Rio Grande do Norte</td><td><a href="https://www.set.rn.gov.br" target="_blank" class="detran-link">SET RN</a></td></tr>
-            <tr><td>Rio Grande do Sul</td><td><a href="https://www.sefaz.rs.gov.br" target="_blank" class="detran-link">SEFAZ RS</a></td></tr>
-            <tr><td>Rondônia</td><td><a href="https://portal.sefin.ro.gov.br" target="_blank" class="detran-link">SEFIN RO</a></td></tr>
-            <tr><td>Roraima</td><td><a href="https://www.sefaz.rr.gov.br" target="_blank" class="detran-link">SEFAZ RR</a></td></tr>
-            <tr><td>Santa Catarina</td><td><a href="https://www.sef.sc.gov.br" target="_blank" class="detran-link">SEF SC</a></td></tr>
-            <tr><td>São Paulo</td><td><a href="https://portal.fazenda.sp.gov.br" target="_blank" class="detran-link">SEFAZ SP</a></td></tr>
-            <tr><td>Sergipe</td><td><a href="https://www.sefaz.se.gov.br" target="_blank" class="detran-link">SEFAZ SE</a></td></tr>
-            <tr><td>Tocantins</td><td><a href="https://www.sefaz.to.gov.br" target="_blank" class="detran-link">SEFAZ TO</a></td></tr>
+            <tr><td>Acre</td><td><a href="https://www.sefaz.ac.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ AC</a></td></tr>
+            <tr><td>Alagoas</td><td><a href="https://www.sefaz.al.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ AL</a></td></tr>
+            <tr><td>Amapá</td><td><a href="https://www.sefaz.ap.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ AP</a></td></tr>
+            <tr><td>Amazonas</td><td><a href="https://www.sefaz.am.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ AM</a></td></tr>
+            <tr><td>Bahia</td><td><a href="https://www.sefaz.ba.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ BA</a></td></tr>
+            <tr><td>Ceará</td><td><a href="https://www.sefaz.ce.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ CE</a></td></tr>
+            <tr><td>Distrito Federal</td><td><a href="https://www.fazenda.df.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ DF</a></td></tr>
+            <tr><td>Espírito Santo</td><td><a href="https://sefaz.es.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ ES</a></td></tr>
+            <tr><td>Goiás</td><td><a href="https://www.sefaz.go.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ GO</a></td></tr>
+            <tr><td>Maranhão</td><td><a href="https://www.sefaz.ma.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ MA</a></td></tr>
+            <tr><td>Mato Grosso</td><td><a href="https://www.sefaz.mt.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ MT</a></td></tr>
+            <tr><td>Mato Grosso do Sul</td><td><a href="https://www.sefaz.ms.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ MS</a></td></tr>
+            <tr><td>Minas Gerais</td><td><a href="https://www.fazenda.mg.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ MG</a></td></tr>
+            <tr><td>Pará</td><td><a href="https://www.sefa.pa.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFA PA</a></td></tr>
+            <tr><td>Paraíba</td><td><a href="https://www.receita.pb.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">Receita PB</a></td></tr>
+            <tr><td>Paraná</td><td><a href="https://www.fazenda.pr.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ PR</a></td></tr>
+            <tr><td>Pernambuco</td><td><a href="https://www.sefaz.pe.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ PE</a></td></tr>
+            <tr><td>Piauí</td><td><a href="https://portal.sefaz.pi.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ PI</a></td></tr>
+            <tr><td>Rio de Janeiro</td><td><a href="https://www.fazenda.rj.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ RJ</a></td></tr>
+            <tr><td>Rio Grande do Norte</td><td><a href="https://www.set.rn.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SET RN</a></td></tr>
+            <tr><td>Rio Grande do Sul</td><td><a href="https://www.sefaz.rs.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ RS</a></td></tr>
+            <tr><td>Rondônia</td><td><a href="https://portal.sefin.ro.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFIN RO</a></td></tr>
+            <tr><td>Roraima</td><td><a href="https://www.sefaz.rr.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ RR</a></td></tr>
+            <tr><td>Santa Catarina</td><td><a href="https://www.sef.sc.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEF SC</a></td></tr>
+            <tr><td>São Paulo</td><td><a href="https://portal.fazenda.sp.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ SP</a></td></tr>
+            <tr><td>Sergipe</td><td><a href="https://www.sefaz.se.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ SE</a></td></tr>
+            <tr><td>Tocantins</td><td><a href="https://www.sefaz.to.gov.br" target="_blank" rel="noopener noreferrer" class="detran-link">SEFAZ TO</a></td></tr>
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- ===================== ANEXO I - INTENÇÃO DE VENDA ===================== -->
+    <div id="anexoI" class="container hidden" role="main">
+      <h1>Anexo I — Intenção de Venda (DETRAN-PR)</h1>
+
+      <div class="calculator-explanation">
+        <p>Este é o formulário oficial usado para registrar a intenção de venda de um veículo no Paraná (parte do processo de ATPV-e). Você pode:</p>
+        <ol style="margin: 0.6rem 0 0; padding-left: 1.2rem;">
+          <li>Baixar o modelo oficial em branco, direto do DETRAN-PR, para preencher à mão; ou</li>
+          <li>Preencher os dados abaixo e gerar o <strong>próprio documento oficial já preenchido</strong> (.docx), pronto para conferir e assinar; ou</li>
+          <li>Gerar uma ficha-resumo em PDF só para conferência, ou enviar os dados direto pelo WhatsApp para ajuda na emissão.</li>
+        </ol>
+      </div>
+
+      <a href="anexo1-intencao-venda-detran-pr.docx" download class="fipe-button" aria-label="Baixar o modelo oficial em branco (Word)">📄 Baixar modelo oficial em branco (.docx)</a>
+
+      <form id="anexoIForm" style="margin-top: 1.5rem;">
+        <h3 style="margin-bottom: 0.75rem;">Identificação do veículo</h3>
+        <div class="form-group">
+          <label for="anexoPlaca">Placa:</label>
+          <input type="text" id="anexoPlaca" placeholder="ABC1D23">
+        </div>
+        <div class="form-group">
+          <label for="anexoRenavam">Renavam:</label>
+          <input type="text" id="anexoRenavam" placeholder="Número do Renavam">
+        </div>
+        <div class="form-group">
+          <label for="anexoCRV">Número do CRV:</label>
+          <input type="text" id="anexoCRV" placeholder="Número do CRV (Certificado de Registro)">
+        </div>
+        <div class="form-group">
+          <label for="anexoOdometro">Odômetro (km):</label>
+          <input type="text" id="anexoOdometro" placeholder="Quilometragem atual">
+        </div>
+        <div class="form-group">
+          <label for="anexoValorVenda">Valor da venda (R$):</label>
+          <input type="text" inputmode="decimal" id="anexoValorVenda" data-currency-mask="true" placeholder="Digite o valor da venda">
+        </div>
+
+        <h3 style="margin: 1.5rem 0 0.75rem;">Identificação do vendedor</h3>
+        <div class="form-group">
+          <label for="anexoVendedorNome">Nome:</label>
+          <input type="text" id="anexoVendedorNome" placeholder="Nome completo do vendedor">
+        </div>
+        <div class="form-group">
+          <label for="anexoVendedorCPF">CPF:</label>
+          <input type="text" id="anexoVendedorCPF" placeholder="000.000.000-00">
+        </div>
+        <div class="form-group">
+          <label for="anexoVendedorEmail">E-mail:</label>
+          <input type="email" id="anexoVendedorEmail" placeholder="email@exemplo.com">
+        </div>
+
+        <h3 style="margin: 1.5rem 0 0.75rem;">Identificação do comprador</h3>
+        <div class="form-group">
+          <label for="anexoCompradorNome">Nome:</label>
+          <input type="text" id="anexoCompradorNome" placeholder="Nome completo do comprador">
+        </div>
+        <div class="form-group">
+          <label for="anexoCompradorCPF">CPF:</label>
+          <input type="text" id="anexoCompradorCPF" placeholder="000.000.000-00">
+        </div>
+        <div class="form-group">
+          <label for="anexoCompradorEndereco">Endereço:</label>
+          <input type="text" id="anexoCompradorEndereco" placeholder="Endereço completo do comprador">
+        </div>
+        <div class="form-group">
+          <label for="anexoCompradorEmail">E-mail:</label>
+          <input type="email" id="anexoCompradorEmail" placeholder="email@exemplo.com">
+        </div>
+
+        <h3 style="margin: 1.5rem 0 0.75rem;">Local e data</h3>
+        <div class="form-group">
+          <label for="anexoLocal">Local:</label>
+          <input type="text" id="anexoLocal" placeholder="Cidade/UF">
+        </div>
+        <div class="form-group">
+          <label for="anexoData">Data:</label>
+          <input type="date" id="anexoData">
+        </div>
+      </form>
+
+      <a href="#" id="preencherDocxBtn" class="fipe-button calc-ipva-link" role="button" aria-label="Preencher documento oficial automaticamente">✅ Preencher documento oficial (.docx) automaticamente</a>
+      <a href="#" id="gerarAnexoPdfBtn" class="fipe-button" role="button" aria-label="Gerar ficha em PDF">Gerar ficha organizada em PDF (resumo)</a>
+      <a href="https://wa.me/5541997185852" id="anexoWhatsappBtn" class="contact-button" target="_blank" rel="noopener">Enviar dados pelo WhatsApp para ajuda na emissão</a>
+
+      <p class="field-tip" style="margin-top: 1rem; text-align: center;">O botão verde gera o próprio documento oficial (.docx) preenchido com seus dados — confira tudo com atenção antes de assinar. A "ficha em PDF" é só um resumo à parte para conferência.</p>
     </div>
 
     <!-- ===================== CONTATO ===================== -->
     <div id="contato" class="hidden" role="region" aria-labelledby="contato-titulo">
       <h2 id="contato-titulo">Contato</h2>
       <p>Fale diretamente com o responsável pela ferramenta para tirar dúvidas ou solicitar suporte.</p>
-      <a href="https://wa.me/5541997185852" target="_blank" class="contact-button">Falar pelo WhatsApp</a>
+      <a href="https://wa.me/5541997185852" target="_blank" rel="noopener noreferrer" class="contact-button">Falar pelo WhatsApp</a>
 
-      <div class="pix-card servico-card">
+      <div class="pix-card servico-card" id="servicoCard">
         <span class="pix-eyebrow">🧾 Serviço assistido · exclusivo PR</span>
         <h3>Emissão de CRLV Digital e outros documentos</h3>
         <p><strong>Válido apenas para veículos emplacados no Paraná (PR).</strong> Não quer entrar você mesmo no site do DETRAN-PR? Preencha os dados abaixo e envie sua solicitação pelo WhatsApp — o pedido é feito manualmente, com verificação, e a emissão só é feita após a confirmação do pagamento via Pix.</p>
@@ -504,10 +676,15 @@
         <p class="pix-thanks" style="margin-top:0.75rem;">Você confirma os dados e o valor diretamente com o responsável antes de qualquer emissão.</p>
       </div>
 
-      <div class="pix-card">
+      <div class="pix-card" id="pixCard">
         <span class="pix-eyebrow">☕ Combustível para o projeto</span>
         <h3>Gostou da ferramenta?</h3>
         <p>Ela é gratuita e assim vai continuar. Se ela te poupou tempo ou dinheiro, considere fazer um Pix para ajudar a manter o site no ar e sempre atualizado. Qualquer valor é bem-vindo — de coração!</p>
+
+        <div class="pix-qr-wrap">
+          <img src="pix-qrcode.png" alt="QR Code Pix para doação (valor livre) — abra o app do seu banco e escaneie" width="180" height="180">
+          <span class="pix-qr-caption">Aponte a câmera do seu banco para pagar</span>
+        </div>
 
         <div class="pix-key-row">
           <div>
@@ -546,22 +723,6 @@
       <a href="#" id="sobreContatoBtn" class="primary-button tutorial-cta">Alguma dúvida? Fale comigo</a>
     </div>
 
-    <!-- Atalhos de teclado -->
-    <button class="show-keyboard-shortcuts" aria-label="Mostrar atalhos de teclado" aria-expanded="false">Atalhos ⌨</button>
-    <div class="keyboard-hint hidden" id="keyboard-hint" aria-live="polite">
-      <p><strong>Atalhos de Teclado:</strong></p>
-      <ul>
-        <li>Alt+C: Calculadora</li>
-        <li>Alt+U: Tutorial</li>
-        <li>Alt+T: Alíquotas</li>
-        <li>Alt+D: Site Detran</li>
-        <li>Alt+I: IPVA por estado</li>
-        <li>Alt+O: Contato</li>
-        <li>Alt+S: Sobre</li>
-        <li>Alt+H: Início</li>
-        <li>Tab: navegar · Enter/Espaço: ativar · Setas: navegar tabelas</li>
-      </ul>
-    </div>
   </div>
 
   <script src="main.js"></script>
