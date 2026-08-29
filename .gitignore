@@ -1,0 +1,15 @@
+# Logs (nunca versionar logs de acesso/erro)
+*.log
+access_log.log
+
+# Configurações de editor (opcional — remova se quiser padronizar o time)
+.vscode/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Node (caso adicione build/tooling no futuro)
+node_modules/
+dist/
+.env

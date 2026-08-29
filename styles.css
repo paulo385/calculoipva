@@ -74,6 +74,22 @@ h1, h2, h3 {
 }
 
 h1 { font-size: clamp(1.7rem, 2.4vw + 1rem, 2.5rem); }
+
+.rascunho-status {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--teal-dark);
+  background: var(--teal-100);
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  margin-left: 0.75rem;
+  vertical-align: middle;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.rascunho-status.show { opacity: 1; }
 h2 { font-size: clamp(1.3rem, 1.2vw + 1rem, 1.7rem); }
 h3 { font-size: 1.1rem; }
 
@@ -196,6 +212,8 @@ a:focus-visible,
   color: var(--ink);
   border-color: var(--teal);
 }
+
+.sidebar-hidden { /* mantido por compat.: no novo layout a navbar continua visível */ }
 
 /* Mobile: navbar vira menu hamburger + gaveta */
 @media (max-width: 860px) {
@@ -486,6 +504,7 @@ label {
 input[type="number"],
 input[type="date"],
 input[type="text"],
+select,
 textarea {
   width: 100%;
   padding: 0.8rem 0.95rem;
@@ -499,12 +518,21 @@ textarea {
   appearance: none;
 }
 
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6478' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  background-size: 18px;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none; margin: 0;
 }
 
-input:focus, textarea:focus {
+input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--teal);
   background: var(--panel);
@@ -648,6 +676,28 @@ button, .fipe-button, .primary-button, .contact-button {
   margin-bottom: 1.25rem;
 }
 
+.pix-qr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  border: 1.5px solid var(--panel-border);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.pix-qr-wrap img {
+  width: 180px;
+  height: 180px;
+  image-rendering: pixelated;
+}
+.pix-qr-caption {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 .pix-key-row {
   display: flex;
   flex-wrap: wrap;
@@ -726,6 +776,15 @@ button, .fipe-button, .primary-button, .contact-button {
 }
 .servico-card textarea {
   min-height: 80px;
+}
+
+@keyframes highlightPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0); }
+  30% { box-shadow: 0 0 0 6px rgba(20, 184, 166, 0.25); }
+}
+.highlight-pulse {
+  animation: highlightPulse 1.5s ease;
+  border-color: var(--teal) !important;
 }
 
 /* Checklist estilizada (usada em "Sobre") */
@@ -816,6 +875,16 @@ button, .fipe-button, .primary-button, .contact-button {
 
 .results > p:first-of-type { border-top: none; }
 
+.valor-total-final {
+  border-top: 2px solid rgba(255, 255, 255, 0.18);
+  border-bottom: none;
+  padding-top: 0.9rem;
+  margin-top: 0.4rem;
+  font-weight: 700;
+  color: var(--teal);
+  font-size: 1.1rem;
+}
+
 #valorDiferenca {
   border-bottom: none;
   font-weight: 600;
@@ -899,6 +968,28 @@ td.keyboard-focus, th.keyboard-focus { box-shadow: inset 0 0 0 2px var(--teal); 
 .tutorial-section h2 { border-bottom: 2px solid var(--amber); padding-bottom: 0.5rem; display: inline-block; }
 .tutorial-section h3 { color: var(--teal-dark); margin-bottom: 0.4rem; }
 
+.video-section {
+  background: var(--ink);
+  text-align: center;
+}
+.video-section h2 {
+  color: #fff;
+  border-bottom-color: var(--teal);
+}
+.video-wrapper {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  margin: 0.5rem auto 0;
+  max-width: 720px;
+}
+.video-wrapper video {
+  width: 100%;
+  display: block;
+  max-height: 480px;
+  background: #000;
+}
+
 .tutorial-steps { list-style: none; padding: 0; counter-reset: step; }
 .tutorial-steps li {
   position: relative;
@@ -923,6 +1014,25 @@ td.keyboard-focus, th.keyboard-focus { box-shadow: inset 0 0 0 2px var(--teal); 
   border: 1px dashed var(--panel-border);
   border-radius: var(--radius-sm);
   padding: 1.25rem 1.5rem;
+}
+
+.calc-diagram {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  display: block;
+  margin: 1.25rem auto 0.5rem;
+}
+
+.diagram-caption {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+.diagram-caption strong {
+  color: var(--amber-dark);
 }
 
 .tutorial-cta { margin: 1.5rem auto 0; display: block; max-width: 280px; text-align: center; }
