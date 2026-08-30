@@ -1143,7 +1143,7 @@ function coletarDadosAnexoI() {
       // confiável, e baixa o documento em paralelo para anexar manualmente.
       // ============================================================
       const linhasMsg = [
-        'Olá! Segue os dados do Anexo I (Intenção de Venda) - DETRAN-PR.',
+        'Olá! Segue os dados para a solicitação (Intenção de Venda) - DETRAN-PR.',
         'Baixei o documento oficial já preenchido automaticamente pelo VeículoFácil - vou anexar o arquivo aqui na conversa.',
         `Placa: ${d.placa} | Renavam: ${d.renavam}`,
         `Vendedor: ${d.vendedorNome} | Comprador: ${d.compradorNome}`,
