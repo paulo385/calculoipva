@@ -1059,86 +1059,100 @@ function coletarDadosAnexoI() {
   // DETRAN-PR intacto - só insere os valores nos campos em branco
   const preencherDocxBtn = document.getElementById('preencherDocxBtn');
   if (preencherDocxBtn) {
-    preencherDocxBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
+    preencherDocxBtn.addEventListener('click', (e) => {
       const d = coletarDadosAnexoI();
 
       if (!anexoITemDadosMinimos(d)) {
+        e.preventDefault();
         showFeedback('Preencha ao menos a placa, o Renavam ou os nomes das partes antes de gerar o documento.', 'error', 5000);
         return;
       }
 
-      const textoOriginal = preencherDocxBtn.textContent;
-      preencherDocxBtn.textContent = 'Gerando documento...';
+      // Monta a mensagem do WhatsApp e ajusta o link ANTES do navegador seguir
+      // o clique - assim a abertura do WhatsApp é confiável (gesto direto do
+      // usuário), sem depender de nada assíncrono
+      const dataFormatadaMsg = formatarDataBR(d.data);
+      const linhasMsg = [
+        'Olá! Segue os dados do Anexo I (Intenção de Venda) - DETRAN-PR.',
+        'Baixei o documento oficial já preenchido automaticamente pelo VeículoFácil - vou anexar o arquivo aqui na conversa.',
+        `Placa: ${d.placa} | Renavam: ${d.renavam}`,
+        `Vendedor: ${d.vendedorNome} | Comprador: ${d.compradorNome}`,
+        `Local/Data: ${d.local} - ${dataFormatadaMsg}`,
+      ];
+      const mensagem = encodeURIComponent(linhasMsg.join('\n'));
+      preencherDocxBtn.href = `https://wa.me/5541997185852?text=${mensagem}`;
+      // Sem preventDefault: o navegador já segue pro WhatsApp normalmente
 
-      try {
-        const dataFormatada = formatarDataBR(d.data);
-
-        // Ordem EXATA em que os rótulos aparecem no documento - importante
-        // porque "Nome:", "CPF:" e "E-Mail:" se repetem (vendedor e comprador)
-        const campos = [
-          ['Placa:', d.placa],
-          ['Renavam:', d.renavam],
-          ['Número do CRV:', d.crv],
-          ['Odômetro:', d.odometro ? `${d.odometro} km` : ''],
-          ['Valor Venda:', d.valorVenda ? `R$ ${d.valorVenda}` : ''],
-          ['Nome:', d.vendedorNome],
-          ['CPF:', d.vendedorCPF],
-          ['E-Mail:', d.vendedorEmail],
-          ['Nome:', d.compradorNome],
-          ['CPF:', d.compradorCPF],
-          ['Endereço:', d.compradorEndereco],
-          ['E-Mail:', d.compradorEmail],
-          ['Local e data:', [d.local, dataFormatada].filter(Boolean).join(', ')],
-        ];
-
-        const response = await fetch('anexo1-template-preenchivel.docx');
-        if (!response.ok) throw new Error('Não foi possível carregar o modelo do documento.');
-        const arrayBuffer = await response.arrayBuffer();
-
-        const zip = await JSZip.loadAsync(arrayBuffer);
-        let xml = await zip.file('word/document.xml').async('string');
-
-        campos.forEach(([rotulo, valor]) => {
-          if (!valor) return;
-          // Escapa caracteres especiais de XML no valor digitado pelo usuário
-          const valorEscapado = String(valor)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-
-          const rotuloEscapado = rotulo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const regex = new RegExp(`(<w:t[^>]*>)${rotuloEscapado}(</w:t>)`);
-          const match = xml.match(regex);
-          if (!match) return; // rótulo já usado ou não encontrado - segue pro próximo
-
-          const tagAbertura = match[1].includes('xml:space')
-            ? match[1]
-            : match[1].replace('>', ' xml:space="preserve">');
-
-          xml = xml.replace(regex, `${tagAbertura}${rotulo} ${valorEscapado}${match[2]}`);
-        });
-
-        zip.file('word/document.xml', xml);
-        const blob = await zip.generateAsync({ type: 'blob' });
-
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'anexo1-preenchido.docx';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(url), 5000);
-
-        showFeedback('Documento preenchido gerado com sucesso! Confira os dados antes de assinar.', 'success', 5000);
-      } catch (error) {
+      // Gera e baixa o documento preenchido em paralelo, sem bloquear a
+      // navegação que já está acontecendo pro WhatsApp
+      gerarDocumentoPreenchido(d).catch((error) => {
         console.error('Erro ao preencher o documento:', error);
-        showFeedback('Não foi possível gerar o documento preenchido. Tente novamente ou baixe o modelo em branco.', 'error', 6000);
-      } finally {
-        preencherDocxBtn.textContent = textoOriginal;
-      }
+        showFeedback('O WhatsApp abriu, mas não foi possível gerar o documento automaticamente. Tente de novo ou baixe o modelo em branco.', 'error', 7000);
+      });
+
+      showFeedback('Documento sendo gerado e baixado - anexe o arquivo na conversa do WhatsApp que já abriu.', 'info', 6000);
     });
+  }
+
+  async function gerarDocumentoPreenchido(d) {
+    const dataFormatada = formatarDataBR(d.data);
+
+    // Ordem EXATA em que os rótulos aparecem no documento - importante
+    // porque "Nome:", "CPF:" e "E-Mail:" se repetem (vendedor e comprador)
+    const campos = [
+      ['Placa:', d.placa],
+      ['Renavam:', d.renavam],
+      ['Número do CRV:', d.crv],
+      ['Odômetro:', d.odometro ? `${d.odometro} km` : ''],
+      ['Valor Venda:', d.valorVenda ? `R$ ${d.valorVenda}` : ''],
+      ['Nome:', d.vendedorNome],
+      ['CPF:', d.vendedorCPF],
+      ['E-Mail:', d.vendedorEmail],
+      ['Nome:', d.compradorNome],
+      ['CPF:', d.compradorCPF],
+      ['Endereço:', d.compradorEndereco],
+      ['E-Mail:', d.compradorEmail],
+      ['Local e data:', [d.local, dataFormatada].filter(Boolean).join(', ')],
+    ];
+
+    const response = await fetch('anexo1-template-preenchivel.docx');
+    if (!response.ok) throw new Error('Não foi possível carregar o modelo do documento.');
+    const arrayBuffer = await response.arrayBuffer();
+
+    const zip = await JSZip.loadAsync(arrayBuffer);
+    let xml = await zip.file('word/document.xml').async('string');
+
+    campos.forEach(([rotulo, valor]) => {
+      if (!valor) return;
+      // Escapa caracteres especiais de XML no valor digitado pelo usuário
+      const valorEscapado = String(valor)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      const rotuloEscapado = rotulo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(<w:t[^>]*>)${rotuloEscapado}(</w:t>)`);
+      const match = xml.match(regex);
+      if (!match) return; // rótulo já usado ou não encontrado - segue pro próximo
+
+      const tagAbertura = match[1].includes('xml:space')
+        ? match[1]
+        : match[1].replace('>', ' xml:space="preserve">');
+
+      xml = xml.replace(regex, `${tagAbertura}${rotulo} ${valorEscapado}${match[2]}`);
+    });
+
+    zip.file('word/document.xml', xml);
+    const blob = await zip.generateAsync({ type: 'blob' });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'anexo1-preenchido.docx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
   }
 
   const gerarAnexoPdfBtn = document.getElementById('gerarAnexoPdfBtn');
