@@ -1057,8 +1057,33 @@ function coletarDadosAnexoI() {
 
   // Preenche o documento .docx oficial de verdade, mantendo o timbre do
   // DETRAN-PR intacto - só insere os valores nos campos em branco
+  function baixarBlob(blob, nomeArquivo) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = nomeArquivo;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+
   const preencherDocxBtn = document.getElementById('preencherDocxBtn');
   if (preencherDocxBtn) {
+    // Detecta, de forma síncrona, se o navegador suporta compartilhar
+    // arquivos de verdade (Android/Chrome e iOS/Safari mais recentes).
+    // Em computadores, geralmente não suporta - por isso o fallback abaixo.
+    function suportaCompartilharArquivo() {
+      try {
+        const arquivoTeste = new File(['teste'], 'teste.docx', {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        });
+        return !!(navigator.canShare && navigator.share && navigator.canShare({ files: [arquivoTeste] }));
+      } catch {
+        return false;
+      }
+    }
+
     preencherDocxBtn.addEventListener('click', (e) => {
       const d = coletarDadosAnexoI();
 
@@ -1068,10 +1093,55 @@ function coletarDadosAnexoI() {
         return;
       }
 
-      // Monta a mensagem do WhatsApp e ajusta o link ANTES do navegador seguir
-      // o clique - assim a abertura do WhatsApp é confiável (gesto direto do
-      // usuário), sem depender de nada assíncrono
       const dataFormatadaMsg = formatarDataBR(d.data);
+
+      if (suportaCompartilharArquivo()) {
+        // ============================================================
+        // CAMINHO 1 - Celular com suporte real a compartilhar arquivos:
+        // abre o menu nativo de compartilhamento já com o documento
+        // anexado; a pessoa só escolhe o WhatsApp na lista.
+        // ============================================================
+        e.preventDefault();
+
+        const linhasMsg = [
+          'Olá! Segue o Anexo I (Intenção de Venda) preenchido pelo VeículoFácil.',
+          `Placa: ${d.placa} | Renavam: ${d.renavam}`,
+          `Vendedor: ${d.vendedorNome} | Comprador: ${d.compradorNome}`,
+          `Local/Data: ${d.local} - ${dataFormatadaMsg}`,
+        ];
+
+        gerarDocumentoPreenchido(d).then(async (blob) => {
+          const arquivo = new File([blob], 'anexo1-preenchido.docx', {
+            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          });
+          try {
+            await navigator.share({
+              files: [arquivo],
+              title: 'Anexo I - Intenção de Venda',
+              text: linhasMsg.join('\n'),
+            });
+          } catch (shareError) {
+            if (shareError.name === 'AbortError') return; // pessoa cancelou o menu, sem problema
+            console.warn('Compartilhamento nativo falhou, usando alternativa:', shareError);
+            baixarBlob(blob, 'anexo1-preenchido.docx');
+            const anexoWhatsappBtnAtual = document.getElementById('anexoWhatsappBtn');
+            if (anexoWhatsappBtnAtual) {
+              anexoWhatsappBtnAtual.href = `https://wa.me/5541997185852?text=${encodeURIComponent(linhasMsg.join('\n'))}`;
+            }
+            showFeedback('Documento baixado. Toque em "Enviar dados pelo WhatsApp" logo abaixo para continuar.', 'info', 7000);
+          }
+        }).catch((error) => {
+          console.error('Erro ao preencher o documento:', error);
+          showFeedback('Não foi possível gerar o documento. Tente novamente ou baixe o modelo em branco.', 'error', 6000);
+        });
+        return;
+      }
+
+      // ============================================================
+      // CAMINHO 2 - Computador (ou navegador sem suporte a compartilhar
+      // arquivos): abre o WhatsApp com a mensagem, de forma síncrona e
+      // confiável, e baixa o documento em paralelo para anexar manualmente.
+      // ============================================================
       const linhasMsg = [
         'Olá! Segue os dados do Anexo I (Intenção de Venda) - DETRAN-PR.',
         'Baixei o documento oficial já preenchido automaticamente pelo VeículoFácil - vou anexar o arquivo aqui na conversa.',
@@ -1083,9 +1153,9 @@ function coletarDadosAnexoI() {
       preencherDocxBtn.href = `https://wa.me/5541997185852?text=${mensagem}`;
       // Sem preventDefault: o navegador já segue pro WhatsApp normalmente
 
-      // Gera e baixa o documento preenchido em paralelo, sem bloquear a
-      // navegação que já está acontecendo pro WhatsApp
-      gerarDocumentoPreenchido(d).catch((error) => {
+      gerarDocumentoPreenchido(d).then((blob) => {
+        baixarBlob(blob, 'anexo1-preenchido.docx');
+      }).catch((error) => {
         console.error('Erro ao preencher o documento:', error);
         showFeedback('O WhatsApp abriu, mas não foi possível gerar o documento automaticamente. Tente de novo ou baixe o modelo em branco.', 'error', 7000);
       });
@@ -1144,15 +1214,7 @@ function coletarDadosAnexoI() {
 
     zip.file('word/document.xml', xml);
     const blob = await zip.generateAsync({ type: 'blob' });
-
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'anexo1-preenchido.docx';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    return blob;
   }
 
   const gerarAnexoPdfBtn = document.getElementById('gerarAnexoPdfBtn');
