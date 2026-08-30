@@ -19,7 +19,7 @@
 
   <!-- Content Security Policy: só permite carregar recursos dos domínios
        que o site realmente usa, bloqueando injeção de scripts externos -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://cloudflareinsights.com https://static.cloudflareinsights.com https://viacep.com.br; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 
   <!-- PWA: permite instalar o site como app no celular -->
   <link rel="manifest" href="manifest.json">
@@ -611,6 +611,11 @@
         <div class="form-group">
           <label for="anexoCompradorCPF">CPF:</label>
           <input type="text" id="anexoCompradorCPF" placeholder="000.000.000-00">
+        </div>
+        <div class="form-group">
+          <label for="anexoCompradorCEP">CEP:</label>
+          <input type="text" inputmode="numeric" id="anexoCompradorCEP" placeholder="00000-000" maxlength="9">
+          <small class="validation-message" id="anexoCompradorCEP-status"></small>
         </div>
         <div class="form-group">
           <label for="anexoCompradorEndereco">Endereço:</label>

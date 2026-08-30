@@ -1032,6 +1032,56 @@ function formatarDataBR(dataISO) {
   return `${dia}/${mes}/${ano}`;
 }
 
+// Aplica máscara 00000-000 ao campo de CEP
+function formatarCEP(input) {
+  let valor = input.value.replace(/\D/g, '').slice(0, 8);
+  if (valor.length > 5) {
+    valor = `${valor.slice(0, 5)}-${valor.slice(5)}`;
+  }
+  input.value = valor;
+}
+
+// Busca o endereço automaticamente pela API pública ViaCEP e preenche
+// o campo de endereço - só dispara quando o CEP tem os 8 dígitos
+async function buscarEnderecoPorCEP(cepInput, enderecoInput, statusEl) {
+  const cepLimpo = cepInput.value.replace(/\D/g, '');
+  if (cepLimpo.length !== 8) return;
+
+  if (statusEl) {
+    statusEl.style.color = 'var(--text-muted)';
+    statusEl.textContent = 'Buscando endereço...';
+  }
+
+  try {
+    const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+    if (!response.ok) throw new Error('Falha na consulta');
+    const dados = await response.json();
+
+    if (dados.erro) {
+      if (statusEl) {
+        statusEl.style.color = 'var(--error)';
+        statusEl.textContent = 'CEP não encontrado. Preencha o endereço manualmente.';
+      }
+      return;
+    }
+
+    const partes = [dados.logradouro, dados.bairro, dados.localidade && dados.uf ? `${dados.localidade}/${dados.uf}` : '']
+      .filter(Boolean);
+    enderecoInput.value = partes.join(', ');
+
+    if (statusEl) {
+      statusEl.style.color = 'var(--success)';
+      statusEl.textContent = 'Endereço encontrado! Complete com número e complemento, se precisar.';
+    }
+  } catch (error) {
+    console.warn('Não foi possível buscar o CEP:', error);
+    if (statusEl) {
+      statusEl.style.color = 'var(--error)';
+      statusEl.textContent = 'Não foi possível buscar o CEP agora. Preencha o endereço manualmente.';
+    }
+  }
+}
+
 function coletarDadosAnexoI() {
     return {
       placa: document.getElementById('anexoPlaca').value.trim(),
@@ -1215,6 +1265,22 @@ function coletarDadosAnexoI() {
     zip.file('word/document.xml', xml);
     const blob = await zip.generateAsync({ type: 'blob' });
     return blob;
+  }
+
+  // CEP do comprador: aplica máscara e busca o endereço automaticamente
+  const anexoCompradorCEP = document.getElementById('anexoCompradorCEP');
+  const anexoCompradorEndereco = document.getElementById('anexoCompradorEndereco');
+  const anexoCompradorCEPStatus = document.getElementById('anexoCompradorCEP-status');
+  if (anexoCompradorCEP && anexoCompradorEndereco) {
+    anexoCompradorCEP.addEventListener('input', () => {
+      formatarCEP(anexoCompradorCEP);
+      const cepLimpo = anexoCompradorCEP.value.replace(/\D/g, '');
+      if (cepLimpo.length === 8) {
+        buscarEnderecoPorCEP(anexoCompradorCEP, anexoCompradorEndereco, anexoCompradorCEPStatus);
+      } else if (anexoCompradorCEPStatus) {
+        anexoCompradorCEPStatus.textContent = '';
+      }
+    });
   }
 
   const gerarAnexoPdfBtn = document.getElementById('gerarAnexoPdfBtn');
